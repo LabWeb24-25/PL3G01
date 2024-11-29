@@ -1,3 +1,5 @@
+- AL78505 Beatriz Pinheiro
+- AL79089 Fábio Mota 
 - AL78734 Diogo Pinto
 - AL78231 Filipa Monteiro
 - AL78411 João Esteves
