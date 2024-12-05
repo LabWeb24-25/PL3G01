@@ -15,4 +15,12 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\Users\joaoe\Desktop\PL3G01\biblioon\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\joaoe\Desktop\PL3G01\biblioon\.editorconfig" />
+  </ItemGroup>
+
 </Project>
