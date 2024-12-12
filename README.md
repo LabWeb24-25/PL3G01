@@ -7,13 +7,17 @@
 
 # PORTAL DE GESTÃO DA BIBLIOTECA LEI-UTAD
 
-* [documentação](https://github.com/LabWeb24-25/PL3G01/tree/main/docs)
-* [branding](https://github.com/LabWeb24-25/PL3G01/tree/main/branding)
-
-
-## GRUPO 1
+## Grupo 1
 * AL78505 Beatriz Pinheiro
 * AL79089 Fábio Mota 
 * AL78734 Diogo Pinto
 * AL78231 Filipa Monteiro
 * AL78411 João Esteves
+
+## Quick Access
+* [Documentação](https://github.com/LabWeb24-25/PL3G01/tree/main/docs)
+* [Branding](https://github.com/LabWeb24-25/PL3G01/tree/main/branding)
+
+## Dependências
+### Tipografia
+* [Merriweather](https://fonts.google.com/specimen/Merriweather)
