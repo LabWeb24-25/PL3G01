@@ -8,11 +8,11 @@
 # PORTAL DE GESTÃO DA BIBLIOTECA LEI-UTAD
 
 ## Grupo 1
-* AL78505 Beatriz Pinheiro
-* AL79089 Fábio Mota 
-* AL78734 Diogo Pinto
-* AL78231 Filipa Monteiro
-* AL78411 João Esteves
+* ``AL78505`` Beatriz Pinheiro
+* ``AL79089`` Fábio Mota 
+* ``AL78734`` Diogo Pinto
+* ``AL78231`` Filipa Monteiro
+* ``AL78411`` João Esteves
 
 ## Quick Access
 * [Documentação](https://github.com/LabWeb24-25/PL3G01/tree/main/docs)
