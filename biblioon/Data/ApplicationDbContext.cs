@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using biblioon.Models;
 
 namespace biblioon.Data
 {
@@ -9,5 +10,7 @@ namespace biblioon.Data
             : base(options)
         {
         }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+
     }
 }

@@ -6,6 +6,7 @@
 
 # ignora atalhos do windows
 *.lnk
+*.url
 
 # User-specific files
 *.rsuser
