@@ -15,6 +15,7 @@
 * ``AL78411`` João Esteves
 
 ## Quick Access
+* [Trello](https://trello.com/w/trabalholawbd)
 * [Documentação](https://github.com/LabWeb24-25/PL3G01/tree/main/docs)
 * [Branding](https://github.com/LabWeb24-25/PL3G01/tree/main/branding)
 
