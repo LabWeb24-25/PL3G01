@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace biblioon.Models
 {
@@ -17,7 +19,7 @@ namespace biblioon.Models
         public required string Capa { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required string [] Idioma { get; set; }
+        public required string[] Idioma { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required string DescFisica { get; set; }
@@ -25,6 +27,13 @@ namespace biblioon.Models
         [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required DateOnly DataPublicacao { get; set; }
 
+        [Required(ErrorMessage = "Este é um field obrigatório.")]
+        public required string EditorId { get; set; }
+
+        [ForeignKey("EditorId")]
+        public required Editor Editor { get; set; }
+
+        public ICollection<Genero> Generos { get; set; } = new List<Genero>();
     }
 
 }
