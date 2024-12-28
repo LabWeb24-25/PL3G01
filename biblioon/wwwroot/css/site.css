@@ -16,17 +16,17 @@ html {
 }
 
 
-
 body {
-  margin-bottom: 60px;
-
+    width: 100%;
 }
+
 
 
 
 .grid-container {
     display: grid;
     gap: 10px;
+    background-color: #8ac6d1;
 }
 
 .row1 {
@@ -54,9 +54,126 @@ body {
 }
 
 
-    .grid-item {
+.grid-item {
     background-color: #8ac6d1;
     padding: 20px;
     text-align: center;
     border: 1px solid #333;
+}
+
+.parent {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 10px;
+    background-color: #8ac6d1;
+}
+
+.div1 {
+    grid-area: 1 / 1 / 2 / 4;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div2 {
+    grid-area: 1 / 4 / 2 / 8;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div3 {
+    grid-area: 1 / 8 / 2 / 11;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div4 {
+    grid-area: 2 / 1 / 5 / 2;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div5 {
+    grid-area: 2 / 10 / 5 / 11;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div6 {
+    grid-area: 2 / 2 / 5 / 3;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div7 {
+    grid-area: 2 / 3 / 5 / 4;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div8 {
+    grid-area: 2 / 4 / 5 / 5;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div9 {
+    grid-area: 2 / 5 / 5 / 6;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div10 {
+    grid-area: 2 / 6 / 5 / 7;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div11 {
+    grid-area: 2 / 7 / 5 / 8;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div12 {
+    grid-area: 2 / 8 / 5 / 9;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.div13 {
+    grid-area: 2 / 9 / 5 / 10;
+    background-color: #8ac6d1;
+    padding: 20px;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.container {
+    background-color: #8ac6d1;
 }
