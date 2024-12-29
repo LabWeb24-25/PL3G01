@@ -6,9 +6,9 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -18,6 +18,7 @@ html {
 
 body {
     width: 100%;
+    padding-bottom: 100px;
 }
 
 
@@ -26,7 +27,6 @@ body {
 .grid-container {
     display: grid;
     gap: 10px;
-    background-color: #8ac6d1;
 }
 
 .row1 {
@@ -53,127 +53,53 @@ body {
     gap: 10px;
 }
 
+.row6 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+
+
+
+
 
 .grid-item {
     background-color: #8ac6d1;
     padding: 20px;
     text-align: center;
     border: 1px solid #333;
+    position: relative;
+    display: inline-block;
 }
 
-.parent {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    gap: 10px;
-    background-color: #8ac6d1;
+
+
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    z-index: 1000;
 }
 
-.div1 {
-    grid-area: 1 / 1 / 2 / 4;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
+    .dropdown-menu a {
+        display: block;
+        padding: 10px;
+        color: #000;
+        text-decoration: none;
+    }
+ .dropdown-menu a:hover {
+            background: #f0f0f0;
+        }
 
-.div2 {
-    grid-area: 1 / 4 / 2 / 8;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div3 {
-    grid-area: 1 / 8 / 2 / 11;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div4 {
-    grid-area: 2 / 1 / 5 / 2;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div5 {
-    grid-area: 2 / 10 / 5 / 11;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div6 {
-    grid-area: 2 / 2 / 5 / 3;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div7 {
-    grid-area: 2 / 3 / 5 / 4;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div8 {
-    grid-area: 2 / 4 / 5 / 5;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div9 {
-    grid-area: 2 / 5 / 5 / 6;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div10 {
-    grid-area: 2 / 6 / 5 / 7;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div11 {
-    grid-area: 2 / 7 / 5 / 8;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div12 {
-    grid-area: 2 / 8 / 5 / 9;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.div13 {
-    grid-area: 2 / 9 / 5 / 10;
-    background-color: #8ac6d1;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid #333;
-}
-
-.container {
-    background-color: #8ac6d1;
+.grid-item:focus .dropdown-menu,
+.grid-item:hover .dropdown-menu {
+    display: block;
 }
