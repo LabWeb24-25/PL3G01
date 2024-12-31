@@ -18,6 +18,25 @@ namespace biblioon.Controllers
             return View();
         }
 
+        public IActionResult Terms()
+        {
+            return View();
+        }
+        public IActionResult Copyright()
+        {
+            return View();
+        }
+
+        public IActionResult Cookies()
+        {
+            return View();
+        }
+
+        public IActionResult Books()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

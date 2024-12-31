@@ -59,6 +59,14 @@ body {
     gap: 10px;
 }
 
+.row7 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    width: 70%;
+}
+
+
 
 
 
@@ -66,7 +74,7 @@ body {
 
 .grid-item {
     background-color: #8ac6d1;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     border: 1px solid #333;
     position: relative;

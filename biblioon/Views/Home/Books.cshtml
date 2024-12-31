@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "Books";
+}
+
+
+<style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+    }
+
+    .filter {
+        width: 30%;
+        margin-right: 20px;
+    }
+        
+        
+        
+        .filter-section {
+            margin-bottom: 20px;
+        }
+        .filter-section h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .filter-option input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .filter-option label {
+            font-size: 14px;
+            color: #333;
+        }
+</style>
+
+
+<body>
+    <div class="filter">
+    <div class="filter-section">
+        <h3>Entregas Express</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="loja">
+            <label for="loja">15 min grátis em loja</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="casa">
+            <label for="casa">2 horas em casa</label>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <h3>Melhores Escolhas</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="portes-gratis">
+            <label for="portes-gratis">Portes Grátis</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="em-campanha">
+            <label for="em-campanha">Em Campanha</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="exclusivo-worten">
+            <label for="exclusivo-worten">Exclusivo Worten</label>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <h3>Desconto Direto</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="ate-20">
+            <label for="ate-20">Até 20%</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="20-30">
+            <label for="20-30">De 20% a 30%</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="30-50">
+            <label for="30-50">De 30% a 50%</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="superior-50">
+            <label for="superior-50">Superior a 50%</label>
+        </div>
+    </div>
+
+    <div class="filter-section">
+        <h3>Entrega estimada em</h3>
+        <div class="filter-option">
+            <input type="checkbox" id="24h">
+            <label for="24h">Até 24 horas úteis</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="2-dias">
+            <label for="2-dias">Até 2 dias úteis</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="3-dias">
+            <label for="3-dias">Até 3 dias úteis</label>
+        </div>
+        <div class="filter-option">
+            <input type="checkbox" id="4-dias">
+            <label for="4-dias">Até 4 dias úteis</label>
+        </div>
+    </div>
+    </div>
+
+    <div class="row7">
+        <div class="grid-item">Item 1</div>
+        <div class="grid-item">Item 2</div>
+        <div class="grid-item">Item 3</div>
+        <div class="grid-item">Item 4</div>
+        <div class="grid-item">Item 5</div>
+        <div class="grid-item">Item 6</div>
+        <div class="grid-item">Item 7</div>
+        <div class="grid-item">Item 8</div>
+        <div class="grid-item">Item 9</div>
+        <div class="grid-item">Item 10</div>
+        <div class="grid-item">Item 11</div>
+        <div class="grid-item">Item 12</div>
+        <div class="grid-item">Item 13</div>
+        <div class="grid-item">Item 14</div>
+        <div class="grid-item">Item 15</div>
+        <div class="grid-item">Item 16</div>
+        <div class="grid-item">Item 17</div>
+        <div class="grid-item">Item 18</div>
+        <div class="grid-item">Item 19</div>
+        <div class="grid-item">Item 20</div>
+    </div>
+
+</body>
