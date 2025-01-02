@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/biblioon.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
+<body id="container">
+    <header id="header">
             <div class="row1">
                 <div class="grid-item">
                     <a href="#">
@@ -107,13 +107,11 @@
                 </div>
             </div>
     </header>
-    <div>
-        <main role="main" class="pb-3">
+    <div id ="body">
             @RenderBody()
-        </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer id="footer">
         <div class="row3">
             <div class="grid-item">
                 <a href="#">Termos de Uso</a>

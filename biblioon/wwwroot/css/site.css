@@ -1,28 +1,31 @@
-html {
-  font-size: 14px;
-  overflow-y: scroll;
-  position: relative;
-  min-height: 100%;
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+#container {
+    display: flex;
+    flex-direction: column;
 }
+
+#header {
+}
+
+#body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+#footer {
+    text-align: center;
+}
+
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
-
-
-body {
-    width: 100%;
-    padding-bottom: 100px;
-}
-
-
-
 
 .grid-container {
     display: grid;
@@ -63,7 +66,6 @@ body {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    width: 70%;
 }
 
 
@@ -74,7 +76,6 @@ body {
 
 .grid-item {
     background-color: #8ac6d1;
-    padding: 10px;
     text-align: center;
     border: 1px solid #333;
     position: relative;
@@ -111,3 +112,37 @@ body {
 .grid-item:hover .dropdown-menu {
     display: block;
 }
+
+
+.filter {
+    width: 30%;
+    margin-right: 20px;
+}
+
+
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+    .filter-section h3 {
+        font-size: 16px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+    }
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+    .filter-option input[type="checkbox"] {
+        margin-right: 10px;
+    }
+
+    .filter-option label {
+        font-size: 14px;
+        color: #333;
+    }
