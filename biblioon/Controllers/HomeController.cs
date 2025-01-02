@@ -37,6 +37,11 @@ namespace biblioon.Controllers
             return View();
         }
 
+        public IActionResult Livro()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

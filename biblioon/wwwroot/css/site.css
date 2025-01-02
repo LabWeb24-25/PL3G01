@@ -13,12 +13,12 @@ html, body {
 }
 
 #body {
-    display: flex;
     flex-direction: column;
     flex: 1;
 }
 
 #footer {
+
 }
 
 
@@ -67,6 +67,19 @@ html, body {
     gap: 10px;
 }
 
+.row8 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.row9 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+}
+
+
 
 
 
@@ -79,6 +92,7 @@ html, body {
     border: 1px solid #333;
     position: relative;
     display: inline-block;
+    max-width: 100%;
 }
 
 
