@@ -33,5 +33,7 @@ namespace biblioon.Models
 
         [ForeignKey("Isbn")]
         public required EdiLivro EdiLivro { get; set; }
+        public ICollection<Emprestimo> Emprestimos { get; set; } = new List<Emprestimo>();
+
     }
 }

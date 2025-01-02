@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace biblioon.Models
 {
@@ -6,21 +7,20 @@ namespace biblioon.Models
     public class Leitor
     {
         [Key]
-        public required string ID { get; set; } 
+        public required string Id { get; set; } 
 
-        [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required string Contacto { get; set; }
+        [ForeignKey("Id")]
+        public required ApplicationUser User { get; set; }
 
-        [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required string Morada { get; set; }
+        public required int LivrosLidos { get; set; } = 0;
+        public required int NRequisicoes { get; set; } = 0;
+        public required bool IsBanido { get; set; } = false;
 
-        [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required string CodPostal { get; set; }
+        public ICollection<Ban> Bans { get; set; } = new List<Ban>();
 
-        [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required string Localidade { get; set; }
+        public ICollection<Emprestimo> Emprestimos { get; set; } = new List<Emprestimo>();
 
-
+        public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
     }
 }

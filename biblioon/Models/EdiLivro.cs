@@ -39,6 +39,9 @@ namespace biblioon.Models
 
         public ICollection<UniLivro> UniLivros { get; set; } = new List<UniLivro>();
 
+        public ICollection<Emprestimo> Emprestimos { get; set; } = new List<Emprestimo>();
+
+        public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
     }
 
