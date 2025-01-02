@@ -31,9 +31,21 @@ body {
 
 .row1 {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
+
+.fds1 {
+    display: grid;
+    grid-template-columns: repeat(3,auto);
+}
+
+.fds2 {
+    display: grid;
+    grid-template-columns: repeat(3,auto);
+    gap: 10px;
+}
+
 
 .row2 {
     display: grid;
@@ -68,20 +80,41 @@ body {
 
 
 
-
-
-
-
 .grid-item {
-    background-color: #8ac6d1;
+    background-color: white;
     padding: 10px;
     text-align: center;
-    border: 1px solid #333;
     position: relative;
     display: inline-block;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
 }
 
+.grid-item2 {
+    background-color: white;
+    padding: 30px 50px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    text-align: center;
+}
 
+.grid-item3 {
+    background-color: white;
+    padding: 30px 50px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    text-align: center;
+}
 
 
 .dropdown-menu {
@@ -93,8 +126,9 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 150px;
+    width: fit-content;
     z-index: 1000;
+    align-self: center;
 }
 
     .dropdown-menu a {
@@ -110,4 +144,113 @@ body {
 .grid-item:focus .dropdown-menu,
 .grid-item:hover .dropdown-menu {
     display: block;
+}
+
+
+
+a {
+    all: unset;
+    color: #484848 !important;
+    font-family: "heebo";
+    font-size: 14px;
+    text-decoration: none;
+
+}
+
+
+    a:visited {
+        color: #484848 !important;
+    }
+
+    a:hover {
+        color: #3e5962 !important;
+        text-decoration: underline;
+        text-decoration-color: #dfc67b;
+        text-decoration-thickness: 1.5px;
+        text-underline-offset: 4px;
+    }
+
+livros1 {
+    all: unset;
+    color: black !important;
+    font-family: "Newsreader "; 
+    font-size: 14px;
+    text-decoration: none;
+}
+
+
+    livros1:visited {
+        color: black !important;
+    }
+
+    livros1:hover {
+        color: black !important;
+    }
+
+uni {
+    all: unset;
+    color: #484848 !important;
+    font-family: "heebo";
+    font-size: 12px;
+    text-decoration: none;
+}
+
+.logo {
+    height:100px;
+    width: auto;
+    object-fit: contain;
+}
+
+input.uni {
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid black;
+    font-size: 16px;
+    color: #717170;
+    transition: all 0.3s ease;
+}
+
+    input.uni:focus {
+        border-color: #3e5962;
+        outline: none;
+    }
+
+.button {
+    background-color: #3e5962;
+    height: 40px;
+    border: none;
+    color: white;
+    padding: 0px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.buttonlink {
+    background-color: white;
+    height: 40px;
+    border: none;
+    border-bottom: 2px solid #fff;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+    .buttonlink:hover {
+        background-color: white;
+        border: none;
+        border-bottom: 2px solid #dfc67b;
+    }
+
+.link-dropdown {
+    color: #3e5962 !important;
+}
+
+.link-dropdown:hover {
+    color: #3e5962 !important;
+    text-decoration: underline;
+    text-decoration-color: #3e5962;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
 }
