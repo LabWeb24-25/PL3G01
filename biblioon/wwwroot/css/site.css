@@ -49,7 +49,7 @@ body {
 
 .row2 {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 10px;
 }
 
@@ -116,6 +116,18 @@ body {
     text-align: center;
 }
 
+.grid-item4 {
+    background-color: white;
+    padding: 30px 50px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    text-align: center;
+    grid-column: span 4;
+}
 
 .dropdown-menu {
     display: none;
@@ -196,10 +208,11 @@ uni {
 }
 
 .logo {
-    height:100px;
+    height:50px;
     width: auto;
     object-fit: contain;
 }
+
 
 input.uni {
     width: 100%;
