@@ -21,4 +21,6 @@
 
 ## Dependências
 ### Tipografia
-* [Merriweather](https://fonts.google.com/specimen/Merriweather)
+* [Merriweather](https://fonts.google.com/specimen/Merriweather) (logo)
+* [Newsreader](https://fonts.google.com/specimen/Newsreader) (site)
+* [Roboto](https://fonts.google.com/specimen/Roboto) (site)
