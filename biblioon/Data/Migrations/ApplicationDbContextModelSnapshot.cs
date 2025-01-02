@@ -27,8 +27,8 @@ namespace biblioon.Data.Migrations
                     b.Property<string>("AutorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("EdiLivroId")
-                        .HasColumnType("int");
+                    b.Property<string>("EdiLivroId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("AutorId", "EdiLivroId");
 
@@ -39,8 +39,8 @@ namespace biblioon.Data.Migrations
 
             modelBuilder.Entity("EdiLivroGenero", b =>
                 {
-                    b.Property<int>("EdiLivroId")
-                        .HasColumnType("int");
+                    b.Property<string>("EdiLivroId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("GeneroId")
                         .HasColumnType("nvarchar(450)");
@@ -315,11 +315,8 @@ namespace biblioon.Data.Migrations
 
             modelBuilder.Entity("biblioon.Models.EdiLivro", b =>
                 {
-                    b.Property<int>("Isbn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Isbn"));
+                    b.Property<string>("Isbn")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Capa")
                         .IsRequired()
@@ -390,6 +387,44 @@ namespace biblioon.Data.Migrations
                     b.HasKey("GeneroId");
 
                     b.ToTable("Generos");
+                });
+
+            modelBuilder.Entity("biblioon.Models.UniLivro", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Anotacoes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("DataAquisicao")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("Disponivel")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Isbn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<float>("PrecoAquisicao")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("Requisitado")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Isbn");
+
+                    b.ToTable("UniLivros");
                 });
 
             modelBuilder.Entity("biblioon.Models.ApplicationUser", b =>
@@ -499,6 +534,22 @@ namespace biblioon.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Editor");
+                });
+
+            modelBuilder.Entity("biblioon.Models.UniLivro", b =>
+                {
+                    b.HasOne("biblioon.Models.EdiLivro", "EdiLivro")
+                        .WithMany("UniLivros")
+                        .HasForeignKey("Isbn")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EdiLivro");
+                });
+
+            modelBuilder.Entity("biblioon.Models.EdiLivro", b =>
+                {
+                    b.Navigation("UniLivros");
                 });
 
             modelBuilder.Entity("biblioon.Models.Editor", b =>

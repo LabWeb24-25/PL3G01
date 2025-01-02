@@ -7,7 +7,7 @@ namespace biblioon.Models
     public class EdiLivro
     {
         [Key]
-        public required int Isbn { get; set; }
+        public required string Isbn { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required string Titulo { get; set; }
@@ -36,6 +36,9 @@ namespace biblioon.Models
         public ICollection<Genero> Generos { get; set; } = new List<Genero>();
 
         public ICollection<Autor> Autores { get; set; } = new List<Autor>();
+
+        public ICollection<UniLivro> UniLivros { get; set; } = new List<UniLivro>();
+
 
     }
 

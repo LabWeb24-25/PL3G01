@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace biblioon.Models
 {
@@ -30,5 +31,7 @@ namespace biblioon.Models
 
         public string? Anotacoes { get; set; }
 
+        [ForeignKey("Isbn")]
+        public required EdiLivro EdiLivro { get; set; }
     }
 }

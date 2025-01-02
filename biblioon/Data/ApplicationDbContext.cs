@@ -17,6 +17,7 @@ namespace biblioon.Data
         public DbSet<Genero> Generos { get; set; }
         public DbSet<Biblioteca> Biblioteca { get; set; }
         public DbSet<Autor> Autores { get; set; }
+        public DbSet<UniLivro> UniLivros { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,6 +38,11 @@ namespace biblioon.Data
                     "EdiLivroAutor",
                     j => j.HasOne<Autor>().WithMany().HasForeignKey("AutorId"),
                     j => j.HasOne<EdiLivro>().WithMany().HasForeignKey("EdiLivroId"));
+
+            modelBuilder.Entity<EdiLivro>()
+                .HasMany(e => e.UniLivros)
+                .WithOne(u => u.EdiLivro)
+                .HasForeignKey(u => u.Isbn);
         }
     }
 }

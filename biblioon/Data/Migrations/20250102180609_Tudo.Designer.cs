@@ -12,8 +12,8 @@ using biblioon.Data;
 namespace biblioon.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241226234000_EdiLivrosGeneroEditorBiblioteca")]
-    partial class EdiLivrosGeneroEditorBiblioteca
+    [Migration("20250102180609_Tudo")]
+    partial class Tudo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,10 +25,25 @@ namespace biblioon.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("EdiLivroAutor", b =>
+                {
+                    b.Property<string>("AutorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EdiLivroId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AutorId", "EdiLivroId");
+
+                    b.HasIndex("EdiLivroId");
+
+                    b.ToTable("EdiLivroAutor");
+                });
+
             modelBuilder.Entity("EdiLivroGenero", b =>
                 {
-                    b.Property<int>("EdiLivroId")
-                        .HasColumnType("int");
+                    b.Property<string>("EdiLivroId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("GeneroId")
                         .HasColumnType("nvarchar(450)");
@@ -251,6 +266,26 @@ namespace biblioon.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("biblioon.Models.Autor", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Desc")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Foto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Autores");
+                });
+
             modelBuilder.Entity("biblioon.Models.Biblioteca", b =>
                 {
                     b.Property<string>("ID")
@@ -283,11 +318,8 @@ namespace biblioon.Data.Migrations
 
             modelBuilder.Entity("biblioon.Models.EdiLivro", b =>
                 {
-                    b.Property<int>("Isbn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Isbn"));
+                    b.Property<string>("Isbn")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Capa")
                         .IsRequired()
@@ -360,6 +392,44 @@ namespace biblioon.Data.Migrations
                     b.ToTable("Generos");
                 });
 
+            modelBuilder.Entity("biblioon.Models.UniLivro", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Anotacoes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateOnly>("DataAquisicao")
+                        .HasColumnType("date");
+
+                    b.Property<bool>("Disponivel")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Isbn")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Numero")
+                        .HasColumnType("int");
+
+                    b.Property<float>("PrecoAquisicao")
+                        .HasColumnType("real");
+
+                    b.Property<bool>("Requisitado")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Isbn");
+
+                    b.ToTable("UniLivros");
+                });
+
             modelBuilder.Entity("biblioon.Models.ApplicationUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -375,6 +445,21 @@ namespace biblioon.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("EdiLivroAutor", b =>
+                {
+                    b.HasOne("biblioon.Models.Autor", null)
+                        .WithMany()
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("biblioon.Models.EdiLivro", null)
+                        .WithMany()
+                        .HasForeignKey("EdiLivroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EdiLivroGenero", b =>
@@ -452,6 +537,22 @@ namespace biblioon.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Editor");
+                });
+
+            modelBuilder.Entity("biblioon.Models.UniLivro", b =>
+                {
+                    b.HasOne("biblioon.Models.EdiLivro", "EdiLivro")
+                        .WithMany("UniLivros")
+                        .HasForeignKey("Isbn")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EdiLivro");
+                });
+
+            modelBuilder.Entity("biblioon.Models.EdiLivro", b =>
+                {
+                    b.Navigation("UniLivros");
                 });
 
             modelBuilder.Entity("biblioon.Models.Editor", b =>
