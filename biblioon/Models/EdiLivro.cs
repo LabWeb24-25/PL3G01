@@ -34,6 +34,9 @@ namespace biblioon.Models
         public required Editor Editor { get; set; }
 
         public ICollection<Genero> Generos { get; set; } = new List<Genero>();
+
+        public ICollection<Autor> Autores { get; set; } = new List<Autor>();
+
     }
 
 }
