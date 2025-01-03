@@ -11,8 +11,38 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using biblioon.Models;
 
+
 namespace biblioon.Areas.Identity.Pages.Account.Manage
 {
+    public class RequiredIfLeitorAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (validationContext.Items.TryGetValue("HttpContext", out var context) && context is HttpContext httpContext)
+            {
+                var userManager = (UserManager<ApplicationUser>)validationContext.GetService(typeof(UserManager<ApplicationUser>));
+                if (userManager == null)
+                {
+                    throw new InvalidOperationException("UserManager<ApplicationUser> is not available.");
+                }
+
+                var user = userManager.GetUserAsync(httpContext.User).Result;
+                if (user == null)
+                {
+                    throw new InvalidOperationException("User is not available.");
+                }
+
+                var isLeitor = userManager.IsInRoleAsync(user, "leitor").Result;
+
+                if (isLeitor && string.IsNullOrEmpty(value?.ToString()))
+                {
+                    return new ValidationResult(ErrorMessage ?? "This field is required.");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
     public class IndexModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -36,7 +66,7 @@ namespace biblioon.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [Required(ErrorMessage = "O nome é um field obrigatório.")]
             [Display(Name = "Nome completo")]
             public string NomeCompleto { get; set; }
 
@@ -44,15 +74,15 @@ namespace biblioon.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
-            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [RequiredIfLeitor(ErrorMessage = "A morada é um field obrigatório.")]
             [Display(Name = "Morada")]
             public string MoradaRua { get; set; }
 
-            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [RequiredIfLeitor(ErrorMessage = "O código postal é um field obrigatório.")]
             [Display(Name = "Código Postal")]
             public string MoradaCodPostal { get; set; }
 
-            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [RequiredIfLeitor(ErrorMessage = "A localidade é um field obrigatório.")]
             [Display(Name = "Localidade")]
             public string MoradaLocalidade { get; set; }
         }
@@ -92,6 +122,16 @@ namespace biblioon.Areas.Identity.Pages.Account.Manage
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
+            // Pass HttpContext to ValidationContext
+            var validationContext = new ValidationContext(Input, serviceProvider: HttpContext.RequestServices, items: new Dictionary<object, object> { { "HttpContext", HttpContext } });
+            var validationResults = new List<ValidationResult>();
+            Validator.TryValidateObject(Input, validationContext, validationResults, validateAllProperties: true);
+
+            foreach (var validationResult in validationResults)
+            {
+                ModelState.AddModelError(string.Empty, validationResult.ErrorMessage);
             }
 
             if (!ModelState.IsValid)

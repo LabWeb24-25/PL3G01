@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 
 namespace biblioon.Areas.Identity.Pages.Account
 {
-    public class RegisterModel : PageModel
+    public class RegisterBibliotecarioModel : PageModel
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -32,7 +32,7 @@ namespace biblioon.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public RegisterModel(
+        public RegisterBibliotecarioModel(
             UserManager<ApplicationUser> userManager,
             RoleManager<IdentityRole> roleManager,
             IUserStore<ApplicationUser> userStore,
@@ -89,17 +89,6 @@ namespace biblioon.Areas.Identity.Pages.Account
             [Phone]
             public required string PhoneNumber { get; set; }
 
-            [Required(ErrorMessage = "Este é um field obrigatório.")]
-            [Display(Name = "Morada")]
-            public required string MoradaRua { get; set; }
-
-            [Required(ErrorMessage = "Este é um field obrigatório.")]
-            [Display(Name = "Código Postal")]
-            public required string MoradaCP { get; set; }
-
-            [Required(ErrorMessage = "Este é um field obrigatório.")]
-            [Display(Name = "Localidade")]
-            public required string MoradaLocalidade { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -145,9 +134,6 @@ namespace biblioon.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 user.NomeCompleto = Input.NomeCompleto;
-                user.MoradaRua = Input.MoradaRua;
-                user.MoradaCodPostal = Input.MoradaCP;
-                user.MoradaLocalidade = Input.MoradaLocalidade;
                 user.PhoneNumber = Input.PhoneNumber;
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
@@ -161,13 +147,13 @@ namespace biblioon.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // ROLES AQUI
-                    if (!await _roleManager.RoleExistsAsync("Leitor"))
+                    if (!await _roleManager.RoleExistsAsync("Bibliotecario"))
                     {
-                        var role = new IdentityRole("Leitor");
+                        var role = new IdentityRole("Bibliotecario");
                         await _roleManager.CreateAsync(role);
                     }
 
-                    await _userManager.AddToRoleAsync(user, "Leitor");
+                    await _userManager.AddToRoleAsync(user, "Bibliotecario");
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
