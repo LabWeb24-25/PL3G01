@@ -1,7 +1,7 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registar";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -9,20 +9,48 @@
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
+            <h2>Criar uma nova conta de leitor.</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-            <div class="form-floating mb-3">
-                <input asp-for="Input.NomeCompleto" class="form-control" autocomplete="username" aria-required="true" placeholder="Fulano da Silva" />
-                <label asp-for="Input.NomeCompleto">Nome Completo</label>
-                <span asp-validation-for="Input.NomeCompleto" class="text-danger"></span>
-            </div>
+
+
             <div class="form-floating mb-3">
                 <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="fulano123" />
                 <label asp-for="Input.Username">Username</label>
                 <span asp-validation-for="Input.Username" class="text-danger"></span>
             </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.NomeCompleto" class="form-control" autocomplete="name" aria-required="true" placeholder="Fulano da Silva" />
+                <label asp-for="Input.NomeCompleto">Nome Completo</label>
+                <span asp-validation-for="Input.NomeCompleto" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.MoradaRua" class="form-control" autocomplete="address-line1" aria-required="true" placeholder="Rua Fulano Costa, Bl.C 2Esq" />
+                <label asp-for="Input.MoradaRua">Morada</label>
+                <span asp-validation-for="Input.MoradaRua" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.MoradaCP" class="form-control" autocomplete="postal-code" aria-required="true" placeholder="5000-801" />
+                <label asp-for="Input.MoradaCP">Código Postal</label>
+                <span asp-validation-for="Input.MoradaCP" class="text-danger"></span>
+            </div>
+            
+            <div class="form-floating mb-3">
+                <input asp-for="Input.MoradaLocalidade" class="form-control" autocomplete="address-line2" aria-required="true" placeholder="Vila Real" />
+                <label asp-for="Input.MoradaLocalidade">Localidade</label>
+                <span asp-validation-for="Input.MoradaLocalidade" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" autocomplete="address-line2" aria-required="true" placeholder="+351911691200" />
+                <label asp-for="Input.PhoneNumber">Número de telemóvel</label>
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+
             <div class="form-floating mb-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="fulano123@sapo.pt" />
                 <label asp-for="Input.Email">Email</label>

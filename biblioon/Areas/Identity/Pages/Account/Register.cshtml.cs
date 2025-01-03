@@ -81,6 +81,22 @@ namespace biblioon.Areas.Identity.Pages.Account
             [Display(Name = "Nome de utilizador")]
             public required string Username { get; set; }
 
+            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [Display(Name = "Número de telemóvel")]
+            [Phone]
+            public required string PhoneNumber { get; set; }
+
+            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [Display(Name = "Morada")]
+            public required string MoradaRua { get; set; }
+
+            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [Display(Name = "Código Postal")]
+            public required string MoradaCP { get; set; }
+
+            [Required(ErrorMessage = "Este é um field obrigatório.")]
+            [Display(Name = "Localidade")]
+            public required string MoradaLocalidade { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -128,7 +144,13 @@ namespace biblioon.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
+                /*
                 user.NomeCompleto = Input.NomeCompleto;
+                user.MoradaRua = Input.MoradaRua;
+                user.MoradaCodPostal = Input.MoradaCP;
+                user.MoradaLocalidade = Input.MoradaLocalidade;
+                user.PhoneNumber = Input.PhoneNumber;
+                */
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
