@@ -217,7 +217,22 @@ body {
     width: 70%;
 }
 
-.rowfoot{
+.row8 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+
+
+.row9 {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+}
+
+
+.rowfoot {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     align-content: center;
