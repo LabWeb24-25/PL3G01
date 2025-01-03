@@ -1,0 +1,72 @@
+﻿@model IEnumerable<biblioon.Models.EdiLivro>
+
+@{
+    ViewData["Title"] = "Livros (edições)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Livros (edições)</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sinopse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Idioma)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescFisica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataPublicacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Editor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sinopse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Idioma)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DescFisica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataPublicacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Editor.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Isbn">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Isbn">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Isbn">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

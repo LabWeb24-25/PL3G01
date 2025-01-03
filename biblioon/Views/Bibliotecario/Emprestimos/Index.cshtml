@@ -1,0 +1,96 @@
+﻿@model IEnumerable<biblioon.Models.Emprestimo>
+
+@{
+    ViewData["Title"] = "Emprestimos";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Emprestimos</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DataRequisitado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataLimiteEntrega)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataLevantamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataEntrega)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsLevantado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsEntregue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leitor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UniLivro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EdiLivro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BibliotecarioLevantamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BibliotecarioEntrega)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataRequisitado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataLimiteEntrega)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataLevantamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataEntrega)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsLevantado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsEntregue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leitor.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UniLivro.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EdiLivro.Isbn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BibliotecarioLevantamento.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BibliotecarioEntrega.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
