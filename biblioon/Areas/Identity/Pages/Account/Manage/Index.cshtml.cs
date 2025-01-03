@@ -9,58 +9,85 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using biblioon.Models;
+
 
 namespace biblioon.Areas.Identity.Pages.Account.Manage
 {
+    public class RequiredIfLeitorAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (validationContext.Items.TryGetValue("HttpContext", out var context) && context is HttpContext httpContext)
+            {
+                var userManager = (UserManager<ApplicationUser>)validationContext.GetService(typeof(UserManager<ApplicationUser>));
+                if (userManager == null)
+                {
+                    throw new InvalidOperationException("UserManager<ApplicationUser> is not available.");
+                }
+
+                var user = userManager.GetUserAsync(httpContext.User).Result;
+                if (user == null)
+                {
+                    throw new InvalidOperationException("User is not available.");
+                }
+
+                var isLeitor = userManager.IsInRoleAsync(user, "leitor").Result;
+
+                if (isLeitor && string.IsNullOrEmpty(value?.ToString()))
+                {
+                    return new ValidationResult(ErrorMessage ?? "This field is required.");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
     public class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string Username { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [TempData]
         public string StatusMessage { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+            [Required(ErrorMessage = "O nome é um field obrigatório.")]
+            [Display(Name = "Nome completo")]
+            public string NomeCompleto { get; set; }
+
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [RequiredIfLeitor(ErrorMessage = "A morada é um field obrigatório.")]
+            [Display(Name = "Morada")]
+            public string MoradaRua { get; set; }
+
+            [RequiredIfLeitor(ErrorMessage = "O código postal é um field obrigatório.")]
+            [Display(Name = "Código Postal")]
+            public string MoradaCodPostal { get; set; }
+
+            [RequiredIfLeitor(ErrorMessage = "A localidade é um field obrigatório.")]
+            [Display(Name = "Localidade")]
+            public string MoradaLocalidade { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -69,7 +96,11 @@ namespace biblioon.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                NomeCompleto = user.NomeCompleto,
+                PhoneNumber = phoneNumber,
+                MoradaRua = user.MoradaRua,
+                MoradaCodPostal = user.MoradaCodPostal,
+                MoradaLocalidade = user.MoradaLocalidade
             };
         }
 
@@ -93,6 +124,16 @@ namespace biblioon.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+            // Pass HttpContext to ValidationContext
+            var validationContext = new ValidationContext(Input, serviceProvider: HttpContext.RequestServices, items: new Dictionary<object, object> { { "HttpContext", HttpContext } });
+            var validationResults = new List<ValidationResult>();
+            Validator.TryValidateObject(Input, validationContext, validationResults, validateAllProperties: true);
+
+            foreach (var validationResult in validationResults)
+            {
+                ModelState.AddModelError(string.Empty, validationResult.ErrorMessage);
+            }
+
             if (!ModelState.IsValid)
             {
                 await LoadAsync(user);
@@ -108,6 +149,18 @@ namespace biblioon.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            user.NomeCompleto = Input.NomeCompleto;
+            user.MoradaRua = Input.MoradaRua;
+            user.MoradaCodPostal = Input.MoradaCodPostal;
+            user.MoradaLocalidade = Input.MoradaLocalidade;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                StatusMessage = "Unexpected error when trying to update profile.";
+                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);
