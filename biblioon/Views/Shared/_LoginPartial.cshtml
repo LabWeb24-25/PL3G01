@@ -23,6 +23,19 @@
             </a>
         </div>
         <div class="dropdown-menu">
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" class="link-dropdown">Gerir conta</a>
+
+            @if (User.IsInRole("Admin"))
+                    {
+                        <a href="/Admin/Index" class="link-dropdown">Painel de Administrador</a>
+                    }
+
+                    else if (User.IsInRole("Bibliotecario"))
+                    {
+                        <a href="/Bibliotecario/Index" class="link-dropdown">Painel de Bibliotecário</a>
+                    }
+
+
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                 <button type="submit" class="link-dropdown">Logout</button>
             </form>
