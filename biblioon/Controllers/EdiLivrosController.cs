@@ -28,7 +28,9 @@ namespace biblioon.Controllers
         {
             var applicationDbContext = _context.EdiLivros
                 .Include(e => e.Editor)
-                .Include(e => e.Autores);
+                .Include(e => e.Autores)
+                .Include(e => e.Generos)
+                ;
             return View("/Views/Bibliotecario/EdiLivros/Index.cshtml", await applicationDbContext.ToListAsync());
         }
 
@@ -44,6 +46,7 @@ namespace biblioon.Controllers
             var ediLivro = await _context.EdiLivros
                 .Include(e => e.Autores)
                 .Include(e => e.Editor)
+                .Include(e => e.Generos)
                 .FirstOrDefaultAsync(m => m.Isbn == id);
             if (ediLivro == null)
             {
@@ -59,13 +62,14 @@ namespace biblioon.Controllers
         {
             ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName");
             ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+            ViewBag.Generos = _context.Generos.Select(g => new { g.GeneroId, g.Nome }).ToList();
             return View("/Views/Bibliotecario/EdiLivros/Create.cshtml");
         }
 
         // POST: EdiLivros/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds)
+        public async Task<IActionResult> Create([Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds, List<string> SelectedGeneroIds)
         {
             var editor = await _context.Editores.FindAsync(ediLivro.EditorId);
 
@@ -74,6 +78,7 @@ namespace biblioon.Controllers
                 ModelState.AddModelError("EditorId", "Invalid Editor ID.");
                 ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
                 ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                ViewBag.Generos = _context.Generos.Select(g => new { g.GeneroId, g.Nome }).ToList();
                 return View("/Views/Bibliotecario/EdiLivros/Create.cshtml", ediLivro);
             }
 
@@ -99,6 +104,29 @@ namespace biblioon.Controllers
                 ModelState.AddModelError("Autores", "Autores está vazio");
             }
 
+
+
+            if (SelectedGeneroIds != null && SelectedGeneroIds.Any())
+            {
+                List<Genero> gens = new();
+                foreach (var generoId in SelectedGeneroIds)
+                {
+                    var genero = await _context.Generos.FindAsync(generoId);
+                    if (genero != null)
+                    {
+                        gens.Add(genero);
+                    }
+                }
+
+                ediLivro.Generos = gens;
+            }
+            else
+            {
+                ModelState.AddModelError("Generos", "Generos está vazio");
+            }
+
+
+
             // Revalidate the ModelState
             TryValidateModel(ediLivro);
 
@@ -106,6 +134,7 @@ namespace biblioon.Controllers
             {
                 ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
                 ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                ViewBag.Generos = _context.Generos.Select(g => new { g.GeneroId, g.Nome }).ToList();
                 return View("/Views/Bibliotecario/EdiLivros/Create.cshtml", ediLivro);
             }
 
@@ -125,6 +154,8 @@ namespace biblioon.Controllers
 
             var ediLivro = await _context.EdiLivros
                 .Include(e => e.Autores)
+                .Include(e => e.Editor)
+                .Include(e => e.Generos)
                 .FirstOrDefaultAsync(m => m.Isbn == id);
             if (ediLivro == null)
             {
@@ -133,13 +164,14 @@ namespace biblioon.Controllers
 
             ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
             ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+            ViewBag.Generos = _context.Generos.Select(g => new { g.GeneroId, g.Nome }).ToList();
             return View("/Views/Bibliotecario/EdiLivros/Edit.cshtml", ediLivro);
         }
 
         // POST: EdiLivros/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds)
+        public async Task<IActionResult> Edit(string id, [Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds, List<string> SelectedGeneroIds)
         {
             if (id != ediLivro.Isbn)
             {
@@ -153,11 +185,32 @@ namespace biblioon.Controllers
                 ModelState.AddModelError("EditorId", "Invalid Editor ID.");
                 ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
                 ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                ViewBag.Generos = _context.Generos.Select(g => new { g.GeneroId, g.Nome }).ToList();
                 return View("/Views/Bibliotecario/EdiLivros/Edit.cshtml", ediLivro);
             }
 
             ModelState.Remove("Editor");
             ediLivro.Editor = editor;
+
+
+            if (SelectedGeneroIds != null && SelectedGeneroIds.Any())
+            {
+                List<Genero> gens = new();
+                foreach (var generoId in SelectedGeneroIds)
+                {
+                    var genero = await _context.Generos.FindAsync(generoId);
+                    if (genero != null)
+                    {
+                        gens.Add(genero);
+                    }
+                }
+
+                ediLivro.Generos = gens;
+            }
+            else
+            {
+                ModelState.AddModelError("Generos", "Generos está vazio");
+            }
 
             if (SelectedAuthorIds != null)
             {
@@ -198,6 +251,7 @@ namespace biblioon.Controllers
             {
                 ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
                 ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                ViewBag.Generos = _context.Generos.Select(g => new { g.GeneroId, g.Nome }).ToList();
                 return View("/Views/Bibliotecario/EdiLivros/Edit.cshtml", ediLivro);
             }
 
@@ -233,6 +287,7 @@ namespace biblioon.Controllers
             var ediLivro = await _context.EdiLivros
                 .Include(e => e.Editor)
                 .Include(e => e.Autores)
+                .Include(e => e.Generos)
                 .FirstOrDefaultAsync(m => m.Isbn == id);
             if (ediLivro == null)
             {

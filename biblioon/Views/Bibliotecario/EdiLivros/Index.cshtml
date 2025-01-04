@@ -20,6 +20,9 @@
                 @Html.DisplayNameFor(model => model.Autores)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Generos)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Sinopse)
             </th>
             <th>
@@ -56,7 +59,13 @@
                 @foreach (var autor in item.Autores)
                 {
                     <span>@autor.Nome</span>
-
+                    <br />
+                }
+            </td>
+            <td>
+                @foreach (var genero in item.Generos)
+                {
+                    <span>@genero.Nome</span>
                     <br />
                 }
             </td>
