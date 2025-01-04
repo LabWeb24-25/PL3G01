@@ -42,9 +42,29 @@ namespace biblioon.Controllers
             return View();
         }
 
-        public IActionResult Livro()
+        [HttpGet("Home/Livro/{id?}")]
+        public IActionResult Livro(string? id)
         {
-            return View();
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var livro = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Include(u => u.UniLivros)
+                .FirstOrDefault(a => a.Isbn == id);
+
+            if (livro == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            ViewData["Title"] = $"Livro: {livro.Titulo}";
+
+            return View(livro);
         }
 
         public IActionResult Privacy()
@@ -70,9 +90,10 @@ namespace biblioon.Controllers
                 .Include(a => a.EdiLivros)
                     .ThenInclude(l => l.Autores)
                 .FirstOrDefault(a => a.Id == id);
+
             if (autor == null)
             {
-                return Index();
+                return RedirectToAction("Index");
             }
 
             ViewData["Title"] = $"Autor: {autor.Nome}";
