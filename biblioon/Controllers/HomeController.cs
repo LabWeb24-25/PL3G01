@@ -1,16 +1,20 @@
 using System.Diagnostics;
+using biblioon.Data;
 using biblioon.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace biblioon.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -22,6 +26,7 @@ namespace biblioon.Controllers
         {
             return View();
         }
+
         public IActionResult Copyright()
         {
             return View();
@@ -52,9 +57,27 @@ namespace biblioon.Controllers
             return View();
         }
 
-        public IActionResult Autor()
+        /// autor
+        [HttpGet("Home/Autor/{id?}")]
+        public IActionResult Autor(string? id)
         {
-            return View();
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("Index");
+            }
+
+            var autor = _context.Autores
+                .Include(a => a.EdiLivros)
+                    .ThenInclude(l => l.Autores)
+                .FirstOrDefault(a => a.Id == id);
+            if (autor == null)
+            {
+                return Index();
+            }
+
+            ViewData["Title"] = $"Autor: {autor.Nome}";
+
+            return View(autor);
         }
 
         public IActionResult historico()
