@@ -29,6 +29,7 @@ namespace biblioon.Models
         public string? Anotacoes { get; set; }
 
         [ForeignKey("Isbn")]
+        [Required(ErrorMessage = "EDILIVRO é obrigatório")]
         public required EdiLivro EdiLivro { get; set; }
         public ICollection<Emprestimo> Emprestimos { get; set; } = new List<Emprestimo>();
 

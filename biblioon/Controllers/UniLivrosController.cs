@@ -27,7 +27,7 @@ namespace biblioon.Controllers
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.UniLivros.Include(u => u.EdiLivro);
+            var applicationDbContext = _context.UniLivros.Include(u => u.EdiLivro).Include(e => e.EdiLivro.Autores).Include(e => e.EdiLivro.Editor);
             return View("/Views/Bibliotecario/UniLivros/Index.cshtml", await applicationDbContext.ToListAsync());
         }
 
@@ -75,12 +75,6 @@ namespace biblioon.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Isbn,Estado,PrecoAquisicao,DataAquisicao,Requisitado,Disponivel,Anotacoes")] UniLivro uniLivro)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(uniLivro);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
             var ediLivros = _context.EdiLivros
                 .Include(e => e.Autores)
                 .Include(e => e.Editor)
@@ -91,6 +85,49 @@ namespace biblioon.Controllers
                     Autores = string.Join(", ", e.Autores.Select(a => a.Nome)),
                     Editor = e.Editor.Nome
                 }).ToList();
+
+            Console.WriteLine(uniLivro.Isbn);
+
+            // Use Include to ensure Editor is loaded
+            var ediLivro = await _context.EdiLivros
+                .Include(e => e.Editor)
+                .Include(e => e.Autores)
+                .Include(e => e.Generos)
+                .FirstOrDefaultAsync(e => e.Isbn == uniLivro.Isbn);
+
+            if (ediLivro == null)
+            {
+                ModelState.AddModelError("Isbn", "The selected ISBN does not exist.");
+                ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText", uniLivro.Isbn);
+                return View("/Views/Bibliotecario/UniLivros/Create.cshtml");
+            }
+
+            Console.WriteLine(ediLivro.Titulo);
+            Console.WriteLine(ediLivro.Isbn);
+            Console.WriteLine(ediLivro.Editor.Nome);
+
+            ModelState.Remove("EdiLivro");
+            uniLivro.EdiLivro = ediLivro;
+
+            TryValidateModel(uniLivro);
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(uniLivro);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // Add debug information on why the model is invalid
+                foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+            }
 
             ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText", uniLivro.Isbn);
             return View("/Views/Bibliotecario/UniLivros/Create.cshtml", uniLivro);
@@ -139,8 +176,18 @@ namespace biblioon.Controllers
             {
                 try
                 {
-                    _context.Update(uniLivro);
-                    await _context.SaveChangesAsync();
+                    var ediLivro = await _context.EdiLivros.FindAsync(uniLivro.Isbn);
+
+                    if (ediLivro == null)
+                    {
+                        ModelState.AddModelError("Isbn", "The selected ISBN does not exist.");
+                    }
+                    else
+                    {
+                        uniLivro.EdiLivro = ediLivro;
+                        _context.Update(uniLivro);
+                        await _context.SaveChangesAsync();
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -155,6 +202,8 @@ namespace biblioon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+
             var ediLivros = _context.EdiLivros
                 .Include(e => e.Autores)
                 .Include(e => e.Editor)
