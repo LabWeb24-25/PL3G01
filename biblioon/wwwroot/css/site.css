@@ -286,10 +286,11 @@ body {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     align-content: center;
+    border: none !important;
 }
 
         .footer-line {
-            border: none;
+            border: none !important;
             height: 1px;
             background-color: black;
             margin: 20px 0;
