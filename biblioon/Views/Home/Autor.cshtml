@@ -1,39 +1,37 @@
-﻿@model biblioon.Models.Autor
+@model biblioon.Models.Autor
 
 @{
     ViewData["Title"] = ViewData["Title"] ?? "Autor";
 }
 
-
-<div class="border">
-
-    <div class="row9">
-		<div class="grid-item">
-            <span id="nomeAutor">@Model.Nome</span>
-		</div>
-    </div>
-
-    <div class="row8">
-
-	    <div class="grid-item">
-            <img height="250" src="@(!string.IsNullOrEmpty(Model.Foto) ? Model.Foto : "/images/placeholder.svg")" alt="Foto do Autor">
-        </div>
-
-	    <div class="grid-item" id="descAutor">
+<div class="grid-autores">
+    <div class="grid-titleautores">
+		@Model.Nome
+	</div>
+</div>
+<div class="grid-colunasa">
+    <div class="grid-item"> </div>
+	<div class="grid-item7">
+    <img height="250" src="@(!string.IsNullOrEmpty(Model.Foto) ? Model.Foto : "/images/placeholder.svg")" alt="Foto do Autor">
+	</div>
+	<div class="grid-autorestxt">
             @(!string.IsNullOrEmpty(Model.Desc) ? Model.Desc: "< sem descrição >")
-	    </div>
+	</div>
+</div>
 
-    </div>
+<div class="grid-autores">
+<div class="grid-titleautores">
 
+Mais Livros deste Autor
+</div>
 
-    <div class="row9">
-	    <div class="grid-item">
-	    Mais Livros deste Autor
-	    </div>
-
-    </div>
-
-
+</div>
+<div class="grid-itemautores">
+    <a href="#" class="booklink">
+        See all
+    </a>
+</div>
+  
     <div class="row6">
         @if (Model.EdiLivros == null || !Model.EdiLivros.Any())
         {
