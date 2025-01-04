@@ -249,13 +249,23 @@
 		  const acceptButton = document.getElementById("accept-button");
 
 
-				if (localStorage.getItem("privacyAccepted") === "true") {
-		overlay.style.display = "none";
+				  const privacyData = JSON.parse(localStorage.getItem("privacyAccepted"));
+		const currentTime = new Date().getTime();
+
+		if (privacyData && currentTime - privacyData.timestamp < 1 * 10 * 1000) {
+		  overlay.style.display = "none";
+		} else {
+		  localStorage.removeItem("privacyAccepted");
+		}
 
 
-		  acceptButton.addEventListener("click", () => {
-			localStorage.setItem("privacyAccepted", "true"); 
-			overlay.style.display = "none"; 
+		acceptButton.addEventListener("click", () => {
+		  const timestamp = new Date().getTime();
+		  localStorage.setItem(
+			"privacyAccepted",
+			JSON.stringify({ accepted: true, timestamp })
+		  ); 
+		  overlay.style.display = "none"; 
 		  });
 		});
 	</script>
