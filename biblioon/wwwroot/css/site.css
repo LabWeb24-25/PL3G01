@@ -231,6 +231,12 @@ body {
     gap: 10px;
 }
 
+.row10 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
 
 .rowfoot {
     display: grid;
