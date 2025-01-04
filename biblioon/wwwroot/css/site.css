@@ -41,7 +41,6 @@ body {
     text-align: center;
     font-family: "Linux Libertine Display G";
     letter-spacing: 0.5px;
-    font-weight: 0;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -224,21 +223,27 @@ body {
         livros1 {
             all: unset;
             color: black !important;
-            font-family: Georgia; 
-            letter-spacing: 0px;
-            font-weight: 700;
-            font-size: 12px;
+            font-family: "Linux Libertine Display G";
+            letter-spacing: 0.5px;
+            font-optical-sizing: auto;
+            font-weight:800;
+            font-style: normal;
+            letter-spacing: 1px;
+            font-size: 14px;
             text-decoration: none;
         }
 
 
             livros1:visited {
                 color: black !important;
+
             }
 
             livros1:hover {
                 color: black !important;
                 cursor: pointer;
+                font-weight: 900;
+                font-size: 14.5px;
             }
 
 
@@ -527,13 +532,15 @@ body {
 
 .bookcategory {
     background-color: white;
-    font-family: "Playwrite AU SA", serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-style: normal;
-    font-size: 22px;
+    font-size: 26px;
     padding: 40px 0;
     text-align: left;
+    font-family: "Linux Libertine G";
+    font-style: italic;
+    letter-spacing: 0.5px;
+    font-weight: 0;
+    font-optical-sizing: auto;
+    font-weight: 600;
 }
 
 .booklink {
@@ -550,4 +557,80 @@ body {
     text-decoration-color: #3e5962;
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
+}
+
+/*Pagina Autor*/
+
+.grid-autores{
+    display: grid;
+    gap: 5px;
+    padding: 20px 0px;
+    grid-template-rows: repeat(4, auto);
+}
+
+.grid-titleautores { 
+    background-color: #3e5962;
+    height: 60px;
+    padding: 0px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Linux Libertine Display G";
+    letter-spacing: 0.5px;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+    color: white;
+}
+
+.grid-colunasa {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    padding: 0px 100px 10px 100px;
+    align-content:center;
+}
+
+.grid-item7{
+    padding: 0px 0px 0px 190px;
+}
+
+.grid-autorestxt { 
+    background-color: white;
+    text-align: justify;
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-indent: 2em;
+    font-family: "heebo";
+    font-size: 14px;
+    grid-column: span 2;
+    padding: 0px 190px 0px 100px;
+}
+
+.rowautores {
+    display: grid;
+    grid-template-columns: repeat(5, auto);
+    align-content: center;
+    align-self: center;
+    text-align: center;
+    gap: 10px;
+    padding: 0px 240px 10px 240px;
+}
+
+.grid-itemautores {
+    background-color: white;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    text-align: right;
+    padding: 0px 265px 25px 0px;
+    
 }
