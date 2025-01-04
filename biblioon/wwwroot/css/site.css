@@ -635,3 +635,107 @@ body {
     padding: 0px 265px 25px 0px;
     
 }
+
+
+.card {
+    --shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 2px 6px 2px;
+    width: 80%;
+    max-width: 300px;
+    background-color: white;
+    border-radius: 1.5rem;
+    box-shadow: var(--shadow);
+    margin: 20px auto;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2rem 1.5rem;
+    position: relative;
+}
+
+.icon {
+    position: relative;
+    margin: -4rem auto 2rem;
+}
+
+.title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    color: #4b5563;
+}
+
+.description {
+    width: 100%;
+    margin-bottom: 2.5rem;
+    font-size: 0.875rem;
+    text-align: justify;
+    color: #4b5563; 
+}
+
+.privacy-link {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #634647;
+    transition: color 0.3s;
+}
+
+    .privacy-link:hover {
+        color: #845556; 
+        text-decoration: underline;
+    }
+
+.more-options {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563; 
+    cursor: pointer;
+    font-weight: 600;
+    transition: color 0.3s;
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.5rem;
+    background: transparent;
+    border: 0;
+}
+
+    .more-options:hover {
+        color: #634647; 
+        text-decoration: underline;
+    }
+
+.accept-button {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    padding: 0.5rem 2rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #634647;
+    background-color: #ddad81;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .accept-button:hover {
+        background-color: #634647; 
+        color: #ddad81; 
+    }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); 
+    z-index: 9998; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
