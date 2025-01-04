@@ -20,34 +20,21 @@
 </div>
 
 <div class="grid-autores">
-<div class="grid-titleautores">
-
-Mais Livros deste Autor
-</div>
-
-</div>
-<div class="grid-itemautores">
-    <a href="#" class="booklink">
-        See all
-    </a>
-</div>
-  
-    <div class="row6">
+    <div class="grid-titleautores">
+    Mais Livros deste Autor
+    </div>
+      
+    <div class="rowautores">
         @if (Model.EdiLivros == null || !Model.EdiLivros.Any())
         {
-            <div class="grid-item">
+            <div class="grid-book">
                 <p>&lt; sem livros &gt;</p>
             </div>
         }
         else
         {
-            var bookCounter = 0;
             @foreach (var livro in Model.EdiLivros)
             {
-                if (bookCounter % 5 == 0 && bookCounter != 0)
-                {
-                    <div class="clearfix"></div>
-                }
 
                 <div class="grid-book">
                     <div>
@@ -71,7 +58,6 @@ Mais Livros deste Autor
                         </span>
                     </div>
                 </div>
-                bookCounter++;
             }
         }
     </div>
