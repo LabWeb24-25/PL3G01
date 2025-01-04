@@ -9,9 +9,6 @@ namespace biblioon.Models
         public required string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required int Numero { get; set; }
-
-        [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required string Isbn { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
@@ -32,6 +29,7 @@ namespace biblioon.Models
         public string? Anotacoes { get; set; }
 
         [ForeignKey("Isbn")]
+        [Required(ErrorMessage = "EDILIVRO é obrigatório")]
         public required EdiLivro EdiLivro { get; set; }
         public ICollection<Emprestimo> Emprestimos { get; set; } = new List<Emprestimo>();
 

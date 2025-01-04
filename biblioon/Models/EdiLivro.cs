@@ -10,16 +10,16 @@ namespace biblioon.Models
         public required string Isbn { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
+        public string? BarCode { get; set; }
         public required string Titulo { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required string Sinopse { get; set; }
 
-        [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required string Capa { get; set; }
+        public string? Capa { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required string[] Idioma { get; set; }
+        public required string Idioma { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required string DescFisica { get; set; }
@@ -31,6 +31,7 @@ namespace biblioon.Models
         public required string EditorId { get; set; }
 
         [ForeignKey("EditorId")]
+        [Required(ErrorMessage = "O Editor (não o id do mesmo) é obrigatório.")]
         public required Editor Editor { get; set; }
 
         public ICollection<Genero> Generos { get; set; } = new List<Genero>();

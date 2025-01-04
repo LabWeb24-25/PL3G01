@@ -1,0 +1,111 @@
+﻿@model IEnumerable<biblioon.Models.EdiLivro>
+
+@{
+    ViewData["Title"] = "Livros (edições)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Livros (edições)</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Autores)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Generos)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sinopse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Idioma)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DescFisica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataPublicacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Editor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isbn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BarCode)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @foreach (var autor in item.Autores)
+                {
+                    <span>@autor.Nome</span>
+                    <br />
+                }
+            </td>
+            <td>
+                @foreach (var genero in item.Generos)
+                {
+                    <span>@genero.Nome</span>
+                    <br />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sinopse)
+            </td>
+            <td>
+                @if (string.IsNullOrEmpty(item.Capa))
+                {
+                    <span>&lt;sem fotografia&gt;</span>
+                }
+                else
+                {
+                    <img src="@item.Capa" alt="Capa" style="max-width: 100px; max-height: 150px;" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Idioma)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DescFisica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataPublicacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Editor.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isbn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BarCode)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Isbn">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Isbn">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Isbn">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

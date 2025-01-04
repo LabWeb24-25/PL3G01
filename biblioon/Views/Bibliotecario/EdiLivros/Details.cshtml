@@ -1,0 +1,98 @@
+﻿@model biblioon.Models.EdiLivro
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>EdiLivro</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarCode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Sinopse)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Sinopse)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Capa)
+        </dt>
+        <dd class="col-sm-10">
+            @if (string.IsNullOrEmpty(Model.Capa))
+            {
+                <span>&lt;sem fotografia&gt;</span>
+            }
+            else
+            {
+                <img src="@Model.Capa" alt="Capa" style="max-width: 200px; max-height: 300px;" />
+                <br />
+                <span>@Model.Capa</span>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Generos
+        </dt>
+        <dd class="col-sm-10">
+            <ul>
+                @foreach (var g in Model.Generos)
+                {
+                    <li>@g.Nome (@g.GeneroId)</li>
+                }
+            </ul>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Idioma)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Idioma)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DescFisica)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DescFisica)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataPublicacao)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataPublicacao)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Editor)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Editor.Nome (@Model.Editor.Id)
+        </dd>
+        <dt class="col-sm-2">
+            Autores
+        </dt>
+        <dd class="col-sm-10">
+            <ul>
+                @foreach (var a in Model.Autores)
+                {
+                    <li>@a.Nome (@a.Id)</li>
+                }
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Isbn">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

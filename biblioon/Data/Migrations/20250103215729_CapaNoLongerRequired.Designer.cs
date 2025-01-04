@@ -12,8 +12,8 @@ using biblioon.Data;
 namespace biblioon.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250102224614_AddTudo")]
-    partial class AddTudo
+    [Migration("20250103215729_CapaNoLongerRequired")]
+    partial class CapaNoLongerRequired
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -472,6 +472,10 @@ namespace biblioon.Data.Migrations
                     b.Property<string>("Isbn")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("BarCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Capa")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -675,9 +679,6 @@ namespace biblioon.Data.Migrations
                     b.Property<string>("Isbn")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Numero")
-                        .HasColumnType("int");
 
                     b.Property<float>("PrecoAquisicao")
                         .HasColumnType("real");

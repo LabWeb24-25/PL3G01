@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -18,7 +18,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Assets\" />
+    <EditorConfigFiles Remove="C:\Users\joaoe\Desktop\PL3G01\biblioon\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\Users\joaoe\Desktop\PL3G01\biblioon\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\authors\" />
+    <Folder Include="wwwroot\images\covers\" />
   </ItemGroup>
 
 </Project>

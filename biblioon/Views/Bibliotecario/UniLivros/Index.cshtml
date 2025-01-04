@@ -1,0 +1,72 @@
+﻿@model IEnumerable<biblioon.Models.UniLivro>
+
+@{
+    ViewData["Title"] = "Livros (unidades)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Livros (unidades)</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EdiLivro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecoAquisicao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DataAquisicao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Requisitado)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Disponivel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Anotacoes)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EdiLivro.Titulo) - @Html.DisplayFor(modelItem => item.EdiLivro.Isbn) - @string.Join(", ", item.EdiLivro.Autores.Select(a => a.Nome)) - @Html.DisplayFor(modelItem => item.EdiLivro.Editor.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecoAquisicao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DataAquisicao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Requisitado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disponivel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anotacoes)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

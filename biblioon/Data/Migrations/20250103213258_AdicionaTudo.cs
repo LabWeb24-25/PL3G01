@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace biblioon.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTudo : Migration
+    public partial class AdicionaTudo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -368,7 +368,6 @@ namespace biblioon.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Numero = table.Column<int>(type: "int", nullable: false),
                     Isbn = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PrecoAquisicao = table.Column<float>(type: "real", nullable: false),
