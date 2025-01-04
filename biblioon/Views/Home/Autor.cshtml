@@ -1,19 +1,21 @@
-﻿@{
-	ViewData["Title"] = "Autor";
+@model biblioon.Models.Autor
+
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "Autor";
 }
 
 <div class="grid-autores">
     <div class="grid-titleautores">
-		Nome do Autor
+		@Model.Nome
 	</div>
 </div>
 <div class="grid-colunasa">
     <div class="grid-item"> </div>
 	<div class="grid-item7">
-		<img src="https://placehold.co/159x239">
+    <img height="250" src="@(!string.IsNullOrEmpty(Model.Foto) ? Model.Foto : "/images/placeholder.svg")" alt="Foto do Autor">
 	</div>
 	<div class="grid-autorestxt">
-        Percival Everett is a Distinguished Professor of English at USC. His most recent books include James, Dr. No (finalist for the NBCC Award for Fiction and winner of the PEN/ Jean Stein Book Award), The Trees (finalist for the Booker Prize and the PEN/Faulkner Award for Fiction), Telephone (finalist for the Pulitzer Prize), So Much Blue, Erasure, and I Am Not Sidney Poitier. He has received the NBCC Ivan Sandrof Life Achievement Award and The Windham Campbell Prize from Yale University. American Fiction, the feature film based on his novel Erasure, was released in 2023 and was awarded the Academy Award for Best Adapted Screenplay. He lives in Los Angeles with his wife, the writer Danzy Senna, and their children.
+            @(!string.IsNullOrEmpty(Model.Desc) ? Model.Desc: "< sem descrição >")
 	</div>
 </div>
 
@@ -29,110 +31,48 @@ Mais Livros deste Autor
         See all
     </a>
 </div>
-<div class="rowautores">
-	<div class="grid-book">
-		<div>
-			<a href="#" class="bookcover">
-				<div>
-					<img src="https://placehold.co/159x239">
-				</div>
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty1">
-				NOME DO LIVRO
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty2">
-				NOME DO ESCRITOR
-			</a>
-		</div>
+  
+    <div class="row6">
+        @if (Model.EdiLivros == null || !Model.EdiLivros.Any())
+        {
+            <div class="grid-item">
+                <p>&lt; sem livros &gt;</p>
+            </div>
+        }
+        else
+        {
+            var bookCounter = 0;
+            @foreach (var livro in Model.EdiLivros)
+            {
+                if (bookCounter % 5 == 0 && bookCounter != 0)
+                {
+                    <div class="clearfix"></div>
+                }
 
-	</div>
-
-	<div class="grid-book">
-		<div>
-			<a href="#" class="bookcover">
-				<div>
-					<img src="https://placehold.co/159x239">
-				</div>
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty1">
-				NOME DO LIVRO
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty2">
-				NOME DO ESCRITOR
-			</a>
-		</div>
-
-	</div>
-
-	<div class="grid-book">
-		<div>
-			<a href="#" class="bookcover">
-				<div>
-					<img src="https://placehold.co/159x239">
-				</div>
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty1">
-				NOME DO LIVRO
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty2">
-				NOME DO ESCRITOR
-			</a>
-		</div>
-
-	</div>
-
-	<div class="grid-book">
-		<div>
-			<a href="#" class="bookcover">
-				<div>
-					<img src="https://placehold.co/159x239">
-				</div>
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty1">
-				NOME DO LIVRO
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty2">
-				NOME DO ESCRITOR
-			</a>
-		</div>
-
-	</div>
-
-	<div class="grid-book">
-		<div>
-			<a href="#" class="bookcover">
-				<div>
-					<img src="https://placehold.co/159x239">
-				</div>
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty1">
-				NOME DO LIVRO
-			</a>
-		</div>
-		<div>
-			<a href="#" class="bookproperty2">
-				NOME DO ESCRITOR
-			</a>
-		</div>
-
-	</div>
-
+                <div class="grid-book">
+                    <div>
+                        <a href="#" class="bookcover">
+                            <div>
+                                <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                            </div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="/home/livro/@livro.Isbn" class="bookproperty1">
+                            @livro.Titulo
+                        </a>
+                    </div>
+                    <div>
+                        <span class="bookproperty2">
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </span>
+                    </div>
+                </div>
+                bookCounter++;
+            }
+        }
+    </div>
 </div>
