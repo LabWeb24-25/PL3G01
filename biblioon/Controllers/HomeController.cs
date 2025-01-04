@@ -57,11 +57,6 @@ namespace biblioon.Controllers
             return View();
         }
 
-        public IActionResult SettingsConta()
-        {
-            return View();
-        }
-
         public IActionResult historico()
         {
             return View();
