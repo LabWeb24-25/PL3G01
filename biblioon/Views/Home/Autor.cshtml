@@ -8,6 +8,13 @@
     <div class="grid-titleautores">
 		@Model.Nome
 	</div>
+    
+    @if (User.IsInRole("Bibliotecario"))
+    {
+    <div class="linksbibliotecario" style="text-align: center;"> 
+            <a href="/Bibliotecario/Autores/Edit/@Model.Id">[editar no painel bibliotecário]</a>
+    </div>
+    }
 </div>
 <div class="grid-colunasa">
     <div class="grid-item"> </div>

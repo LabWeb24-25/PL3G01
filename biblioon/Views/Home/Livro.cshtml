@@ -6,7 +6,12 @@
 
 
 <div class="border">
-
+    @if (User.IsInRole("Bibliotecario"))
+    {
+        <div class="linksbibliotecario" style="text-align: center;">
+            <a href="/Bibliotecario/EdiLivros/Edit/@Model.Isbn">[editar no painel bibliotecário]</a>
+        </div>
+    }
     <div class="row8">
         <div class="grid-book">
 		    <div >
@@ -33,6 +38,12 @@
                 <div>
                     Exemplares
                 </div>
+                @if (User.IsInRole("Bibliotecario"))
+                {
+                    <div class="linksbibliotecario">
+                        <a href="/Bibliotecario/UniLivros/?isbn=@Model.Isbn">[editar no painel bibliotecário]</a>
+                    </div>
+                }
 
                 
                 var counter = 1;

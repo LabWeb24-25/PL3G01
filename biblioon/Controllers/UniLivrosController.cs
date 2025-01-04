@@ -25,11 +25,34 @@ namespace biblioon.Controllers
 
         // GET: UniLivros
         [HttpGet("")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] string? isbn)
         {
-            var applicationDbContext = _context.UniLivros.Include(u => u.EdiLivro).Include(e => e.EdiLivro.Autores).Include(e => e.EdiLivro.Editor);
+            var applicationDbContext = _context.UniLivros
+                .Include(u => u.EdiLivro)
+                .Include(e => e.EdiLivro.Autores)
+                .Include(e => e.EdiLivro.Editor);
+
+            var count = await applicationDbContext.CountAsync();
+
+            ViewData["amostrar"] = "A mostrar todas as " + count + " unidades";
+
+            if (!string.IsNullOrEmpty(isbn))
+            {
+                applicationDbContext = _context.UniLivros
+                    .Include(u => u.EdiLivro)
+                    .Where(u => u.EdiLivro.Isbn == isbn)
+                    .Include(e => e.EdiLivro.Autores)
+                    .Include(e => e.EdiLivro.Editor);
+
+                var fcount = await applicationDbContext.CountAsync();
+
+                ViewData["amostrar"] = "A mostrar todas as " + count + " unidades com ISBN \"" + isbn + "\", de um total de " + count + " unidades.";
+            }
+
             return View("/Views/Bibliotecario/UniLivros/Index.cshtml", await applicationDbContext.ToListAsync());
         }
+
+
 
         // GET: UniLivros/Details/5
         [HttpGet("Details/{id}")]
