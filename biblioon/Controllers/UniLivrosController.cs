@@ -172,22 +172,42 @@ namespace biblioon.Controllers
                 return NotFound();
             }
 
+            var ediLivros = _context.EdiLivros
+                .Include(e => e.Autores)
+                .Include(e => e.Editor)
+                .Select(e => new EdiLivroViewModel
+                {
+                    Isbn = e.Isbn,
+                    Titulo = e.Titulo,
+                    Autores = string.Join(", ", e.Autores.Select(a => a.Nome)),
+                    Editor = e.Editor.Nome
+                }).ToList();
+
+            // Use Include to ensure Editor is loaded
+            var ediLivro = await _context.EdiLivros
+                .Include(e => e.Editor)
+                .Include(e => e.Autores)
+                .Include(e => e.Generos)
+                .FirstOrDefaultAsync(e => e.Isbn == uniLivro.Isbn);
+
+            if (ediLivro == null)
+            {
+                ModelState.AddModelError("Isbn", "The selected ISBN does not exist.");
+                ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText", uniLivro.Isbn);
+                return View("/Views/Bibliotecario/UniLivros/Edit.cshtml", uniLivro);
+            }
+
+            ModelState.Remove("EdiLivro");
+            uniLivro.EdiLivro = ediLivro;
+
+            TryValidateModel(uniLivro);
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var ediLivro = await _context.EdiLivros.FindAsync(uniLivro.Isbn);
-
-                    if (ediLivro == null)
-                    {
-                        ModelState.AddModelError("Isbn", "The selected ISBN does not exist.");
-                    }
-                    else
-                    {
-                        uniLivro.EdiLivro = ediLivro;
-                        _context.Update(uniLivro);
-                        await _context.SaveChangesAsync();
-                    }
+                    _context.Update(uniLivro);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -202,18 +222,17 @@ namespace biblioon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-
-            var ediLivros = _context.EdiLivros
-                .Include(e => e.Autores)
-                .Include(e => e.Editor)
-                .Select(e => new EdiLivroViewModel
+            else
+            {
+                // Add debug information on why the model is invalid
+                foreach (var modelState in ModelState.Values)
                 {
-                    Isbn = e.Isbn,
-                    Titulo = e.Titulo,
-                    Autores = string.Join(", ", e.Autores.Select(a => a.Nome)),
-                    Editor = e.Editor.Nome
-                }).ToList();
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+            }
 
             ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText", uniLivro.Isbn);
             return View("/Views/Bibliotecario/UniLivros/Edit.cshtml", uniLivro);

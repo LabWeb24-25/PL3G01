@@ -34,7 +34,18 @@
             @Html.DisplayNameFor(model => model.Capa)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Capa)
+            @if (string.IsNullOrEmpty(Model.Capa))
+            {
+                <span>&lt;sem fotografia&gt;</span>
+            }
+            else
+            {
+                <img src="@Model.Capa" alt="Capa" style="max-width: 200px; max-height: 300px;" />
+                <br />
+                <span>@Model.Capa</span>
+                <br />
+                <span class="text-danger">Esta imagem será apagada do servidor se escolher continuar.</span>
+            }
         </dd>
         <dt class="col-sm-2">
             Generos

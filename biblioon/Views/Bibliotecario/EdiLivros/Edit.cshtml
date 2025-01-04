@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Isbn" />
             <div class="form-group">
@@ -30,22 +30,29 @@
             </div>
             <div class="form-group">
                 <label asp-for="Capa" class="control-label"></label>
-                <input asp-for="Capa" class="form-control" />
+                @if (!string.IsNullOrEmpty(Model.Capa))
+                {
+                    <img src="@Model.Capa" alt="Current Cover" style="max-width: 200px; max-height: 200px;" />
+                    <br />
+                    <span>@Model.Capa</span>
+                    <br />
+                    <input type="checkbox" name="removeCapa" value="true">
+                    <label for="removeCapa">Remove cover</label>
+                }
+                <input type="file" name="capaFile" class="form-control" />
                 <span asp-validation-for="Capa" class="text-danger"></span>
             </div>
-
             <div class="form-group">
                 <label class="control-label">Generos</label>
                 @foreach (var g in ViewBag.Generos)
                 {
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="SelectedGeneroIds" value="@g.GeneroId" id="genero_@g.GeneroId" />
+                        <input class="form-check-input" type="checkbox" name="SelectedGeneroIds" value="@g.GeneroId" id="genero_@g.GeneroId" @(Model.Generos.Any(gen => gen.GeneroId == g.GeneroId) ? "checked" : "") />
                         <label class="form-check-label" for="genero_@g.GeneroId">@g.Nome</label>
                     </div>
                 }
-                <a asp-controller="Generos" asp-action="Create" class="btn btn-link">Adicionar novo género</a>
+                <a asp-controller="Generos" asp-action="Create" class="btn btn-link">Adicionar novo genero</a>
             </div>
-
             <div class="form-group">
                 <label asp-for="Idioma" class="control-label"></label>
                 <input asp-for="Idioma" class="form-control" />

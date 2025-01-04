@@ -25,4 +25,8 @@
     <None Include="C:\Users\joaoe\Desktop\PL3G01\biblioon\.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\authors\" />
+  </ItemGroup>
+
 </Project>

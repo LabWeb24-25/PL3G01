@@ -35,7 +35,14 @@
                 @Html.DisplayFor(modelItem => item.Desc)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Foto)
+                @if (!string.IsNullOrEmpty(item.Foto))
+                {
+                    <img src="@item.Foto" alt="Author Photo" style="max-width: 100px; max-height: 100px;" />
+                }
+                else
+                {
+                    <span>&lt; sem fotografia &gt;</span>
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

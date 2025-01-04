@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -26,7 +26,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="Foto" class="control-label"></label>
-                <input asp-for="Foto" class="form-control" />
+                @if (!string.IsNullOrEmpty(Model.Foto))
+                {
+                    <img src="@Model.Foto" alt="Current Photo" style="max-width: 200px; max-height: 200px;" />
+                    <br />
+                    <span>@Model.Foto</span>
+                    <br />
+                    <input type="checkbox" name="removePhoto" value="true">
+                    <label for="removePhoto">Remover foto</label>
+                }
+                <input type="file" name="fotoFile" class="form-control" />
                 <span asp-validation-for="Foto" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,4 +48,3 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
-

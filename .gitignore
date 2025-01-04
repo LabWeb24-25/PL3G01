@@ -4,6 +4,16 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 
+# ignora os ficheiros nas pastas de imagens uploaded do wwwroot
+biblioon/wwwroot/images/authors/*
+biblioon/wwwroot/images/covers/*
+##
+!biblioon/wwwroot/images/authors/
+!biblioon/wwwroot/images/covers/
+#
+!biblioon/wwwroot/images/authors/.gitkeep
+!biblioon/wwwroot/images/covers/.gitkeep
+
 # ignora atalhos do windows
 *.lnk
 *.url

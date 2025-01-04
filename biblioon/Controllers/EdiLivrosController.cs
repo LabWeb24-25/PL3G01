@@ -69,7 +69,7 @@ namespace biblioon.Controllers
         // POST: EdiLivros/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds, List<string> SelectedGeneroIds)
+        public async Task<IActionResult> Create([Bind("Isbn,BarCode,Titulo,Sinopse,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds, List<string> SelectedGeneroIds, IFormFile? capaFile)
         {
             var editor = await _context.Editores.FindAsync(ediLivro.EditorId);
 
@@ -126,6 +126,20 @@ namespace biblioon.Controllers
             }
 
 
+            if (capaFile != null && capaFile.Length > 0)
+            {
+                var fileName = Path.GetFileName(capaFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/covers", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await capaFile.CopyToAsync(stream);
+                }
+
+                ediLivro.Capa = "/images/covers/" + fileName;
+            }
+
+
 
             // Revalidate the ModelState
             TryValidateModel(ediLivro);
@@ -171,7 +185,7 @@ namespace biblioon.Controllers
         // POST: EdiLivros/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds, List<string> SelectedGeneroIds)
+        public async Task<IActionResult> Edit(string id, [Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds, List<string> SelectedGeneroIds, IFormFile? capaFile, bool removeCapa)
         {
             if (id != ediLivro.Isbn)
             {
@@ -192,6 +206,19 @@ namespace biblioon.Controllers
             ModelState.Remove("Editor");
             ediLivro.Editor = editor;
 
+            // Clear existing relationships
+            var existingLivro = await _context.EdiLivros
+                .Include(e => e.Autores)
+                .Include(e => e.Generos)
+                .FirstOrDefaultAsync(m => m.Isbn == id);
+
+            if (existingLivro == null)
+            {
+                return NotFound();
+            }
+
+            existingLivro.Autores.Clear();
+            existingLivro.Generos.Clear();
 
             if (SelectedGeneroIds != null && SelectedGeneroIds.Any())
             {
@@ -205,7 +232,7 @@ namespace biblioon.Controllers
                     }
                 }
 
-                ediLivro.Generos = gens;
+                existingLivro.Generos = gens;
             }
             else
             {
@@ -214,41 +241,68 @@ namespace biblioon.Controllers
 
             if (SelectedAuthorIds != null)
             {
-                // Get the current authors
-                var currentAuthors = ediLivro.Autores.Select(a => a.Id).ToList();
-
-                // Remove authors that are not in the selected list
-                foreach (var author in currentAuthors)
-                {
-                    if (!SelectedAuthorIds.Contains(author))
-                    {
-                        var authorToRemove = ediLivro.Autores.FirstOrDefault(a => a.Id == author);
-                        if (authorToRemove != null)
-                        {
-                            ediLivro.Autores.Remove(authorToRemove);
-                        }
-                    }
-                }
-
-                // Add new authors that are not already in the list
+                List<Autor> auts = new();
                 foreach (var authorId in SelectedAuthorIds)
                 {
-                    if (!currentAuthors.Contains(authorId))
+                    var author = await _context.Autores.FindAsync(authorId);
+                    if (author != null)
                     {
-                        var author = await _context.Autores.FindAsync(authorId);
-                        if (author != null)
-                        {
-                            ediLivro.Autores.Add(author);
-                        }
+                        auts.Add(author);
                     }
                 }
+
+                existingLivro.Autores = auts;
             }
 
-            // Revalidate the ModelState
-            TryValidateModel(ediLivro);
+            // Handle the picture upload
+            if (capaFile != null && capaFile.Length > 0)
+            {
+                // Delete the old photo if it exists
+                if (!string.IsNullOrEmpty(existingLivro.Capa))
+                {
+                    var oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingLivro.Capa.TrimStart('/'));
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
 
+                var fileName = Path.GetFileName(capaFile.FileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/covers", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await capaFile.CopyToAsync(stream);
+                }
+
+                existingLivro.Capa = "/images/covers/" + fileName;
+            }
+            else if (removeCapa && !string.IsNullOrEmpty(existingLivro.Capa))
+            {
+                // Remove the existing picture
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingLivro.Capa.TrimStart('/'));
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                existingLivro.Capa = null;
+            }
+
+
+            // Revalidate the ModelState
+            TryValidateModel(existingLivro);
+
+            // Log the model state errors
             if (!ModelState.IsValid)
             {
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Console.WriteLine($"ModelState Error: {state.Key} - {error.ErrorMessage}");
+                    }
+                }
+
                 ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
                 ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
                 ViewBag.Generos = _context.Generos.Select(g => new { g.GeneroId, g.Nome }).ToList();
@@ -257,7 +311,7 @@ namespace biblioon.Controllers
 
             try
             {
-                _context.Update(ediLivro);
+                _context.Update(existingLivro);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -305,10 +359,20 @@ namespace biblioon.Controllers
             var ediLivro = await _context.EdiLivros.FindAsync(id);
             if (ediLivro != null)
             {
+                // Delete the image file if it exists
+                if (!string.IsNullOrEmpty(ediLivro.Capa))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", ediLivro.Capa.TrimStart('/'));
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+
                 _context.EdiLivros.Remove(ediLivro);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

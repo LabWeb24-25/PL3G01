@@ -73,7 +73,14 @@
                 @Html.DisplayFor(modelItem => item.Sinopse)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Capa)
+                @if (string.IsNullOrEmpty(item.Capa))
+                {
+                    <span>&lt;sem fotografia&gt;</span>
+                }
+                else
+                {
+                    <img src="@item.Capa" alt="Capa" style="max-width: 100px; max-height: 150px;" />
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Idioma)
