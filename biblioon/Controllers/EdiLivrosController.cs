@@ -26,7 +26,9 @@ namespace biblioon.Controllers
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.EdiLivros.Include(e => e.Editor);
+            var applicationDbContext = _context.EdiLivros
+                .Include(e => e.Editor)
+                .Include(e => e.Autores);
             return View("/Views/Bibliotecario/EdiLivros/Index.cshtml", await applicationDbContext.ToListAsync());
         }
 
@@ -40,6 +42,7 @@ namespace biblioon.Controllers
             }
 
             var ediLivro = await _context.EdiLivros
+                .Include(e => e.Autores)
                 .Include(e => e.Editor)
                 .FirstOrDefaultAsync(m => m.Isbn == id);
             if (ediLivro == null)
@@ -54,23 +57,61 @@ namespace biblioon.Controllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            ViewData["EditorId"] = new SelectList(_context.Editores, "Id", "Id");
+            ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName");
+            ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
             return View("/Views/Bibliotecario/EdiLivros/Create.cshtml");
         }
 
         // POST: EdiLivros/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Isbn,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro)
+        public async Task<IActionResult> Create([Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds)
         {
-            if (ModelState.IsValid)
+            var editor = await _context.Editores.FindAsync(ediLivro.EditorId);
+
+            if (editor == null)
             {
-                _context.Add(ediLivro);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("EditorId", "Invalid Editor ID.");
+                ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
+                ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                return View("/Views/Bibliotecario/EdiLivros/Create.cshtml", ediLivro);
             }
-            ViewData["EditorId"] = new SelectList(_context.Editores, "Id", "Id", ediLivro.EditorId);
-            return View("/Views/Bibliotecario/EdiLivros/Create.cshtml", ediLivro);
+
+            ModelState.Remove("Editor");
+            ediLivro.Editor = editor;
+
+            if (SelectedAuthorIds != null && SelectedAuthorIds.Any())
+            {
+                List<Autor> auts = new();
+                foreach (var authorId in SelectedAuthorIds)
+                {
+                    var author = await _context.Autores.FindAsync(authorId);
+                    if (author != null)
+                    {
+                        auts.Add(author);
+                    }
+                }
+
+                ediLivro.Autores = auts;
+            }
+            else
+            {
+                ModelState.AddModelError("Autores", "Autores está vazio");
+            }
+
+            // Revalidate the ModelState
+            TryValidateModel(ediLivro);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
+                ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                return View("/Views/Bibliotecario/EdiLivros/Create.cshtml", ediLivro);
+            }
+
+            _context.Add(ediLivro);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: EdiLivros/Edit/5
@@ -82,47 +123,102 @@ namespace biblioon.Controllers
                 return NotFound();
             }
 
-            var ediLivro = await _context.EdiLivros.FindAsync(id);
+            var ediLivro = await _context.EdiLivros
+                .Include(e => e.Autores)
+                .FirstOrDefaultAsync(m => m.Isbn == id);
             if (ediLivro == null)
             {
                 return NotFound();
             }
-            ViewData["EditorId"] = new SelectList(_context.Editores, "Id", "Id", ediLivro.EditorId);
+
+            ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
+            ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
             return View("/Views/Bibliotecario/EdiLivros/Edit.cshtml", ediLivro);
         }
 
         // POST: EdiLivros/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Isbn,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro)
+        public async Task<IActionResult> Edit(string id, [Bind("Isbn,BarCode,Titulo,Sinopse,Capa,Idioma,DescFisica,DataPublicacao,EditorId")] EdiLivro ediLivro, List<string> SelectedAuthorIds)
         {
             if (id != ediLivro.Isbn)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var editor = await _context.Editores.FindAsync(ediLivro.EditorId);
+
+            if (editor == null)
             {
-                try
-                {
-                    _context.Update(ediLivro);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EdiLivroExists(ediLivro.Isbn))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ModelState.AddModelError("EditorId", "Invalid Editor ID.");
+                ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
+                ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                return View("/Views/Bibliotecario/EdiLivros/Edit.cshtml", ediLivro);
             }
-            ViewData["EditorId"] = new SelectList(_context.Editores, "Id", "Id", ediLivro.EditorId);
-            return View("/Views/Bibliotecario/EdiLivros/Edit.cshtml", ediLivro);
+
+            ModelState.Remove("Editor");
+            ediLivro.Editor = editor;
+
+            if (SelectedAuthorIds != null)
+            {
+                // Get the current authors
+                var currentAuthors = ediLivro.Autores.Select(a => a.Id).ToList();
+
+                // Remove authors that are not in the selected list
+                foreach (var author in currentAuthors)
+                {
+                    if (!SelectedAuthorIds.Contains(author))
+                    {
+                        var authorToRemove = ediLivro.Autores.FirstOrDefault(a => a.Id == author);
+                        if (authorToRemove != null)
+                        {
+                            ediLivro.Autores.Remove(authorToRemove);
+                        }
+                    }
+                }
+
+                // Add new authors that are not already in the list
+                foreach (var authorId in SelectedAuthorIds)
+                {
+                    if (!currentAuthors.Contains(authorId))
+                    {
+                        var author = await _context.Autores.FindAsync(authorId);
+                        if (author != null)
+                        {
+                            ediLivro.Autores.Add(author);
+                        }
+                    }
+                }
+            }
+
+            // Revalidate the ModelState
+            TryValidateModel(ediLivro);
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.EditorId = new SelectList(_context.Editores.Select(e => new { e.Id, DisplayName = $"{e.Nome} ({e.Id})" }), "Id", "DisplayName", ediLivro.EditorId);
+                ViewBag.Autores = _context.Autores.Select(a => new { a.Id, a.Nome }).ToList();
+                return View("/Views/Bibliotecario/EdiLivros/Edit.cshtml", ediLivro);
+            }
+
+            try
+            {
+                _context.Update(ediLivro);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!EdiLivroExists(ediLivro.Isbn))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: EdiLivros/Delete/5
@@ -136,6 +232,7 @@ namespace biblioon.Controllers
 
             var ediLivro = await _context.EdiLivros
                 .Include(e => e.Editor)
+                .Include(e => e.Autores)
                 .FirstOrDefaultAsync(m => m.Isbn == id);
             if (ediLivro == null)
             {

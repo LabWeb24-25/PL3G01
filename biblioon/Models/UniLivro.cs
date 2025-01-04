@@ -9,9 +9,6 @@ namespace biblioon.Models
         public required string Id { get; set; } = Guid.NewGuid().ToString();
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]
-        public required int Numero { get; set; }
-
-        [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required string Isbn { get; set; }
 
         [Required(ErrorMessage = "Este é um field obrigatório.")]

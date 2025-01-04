@@ -17,6 +17,9 @@
                 @Html.DisplayNameFor(model => model.Titulo)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Autores)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Sinopse)
             </th>
             <th>
@@ -34,6 +37,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Editor)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Isbn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BarCode)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -42,6 +51,14 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @foreach (var autor in item.Autores)
+                {
+                    <span>@autor.Nome</span>
+
+                    <br />
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Sinopse)
@@ -59,7 +76,13 @@
                 @Html.DisplayFor(modelItem => item.DataPublicacao)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Editor.Id)
+                @Html.DisplayFor(modelItem => item.Editor.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Isbn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BarCode)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Isbn">Edit</a> |

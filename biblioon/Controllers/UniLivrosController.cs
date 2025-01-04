@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using biblioon.Data;
 using biblioon.Models;
 using Microsoft.AspNetCore.Authorization;
+using biblioon.ViewModels;
 
 namespace biblioon.Controllers
 {
@@ -54,14 +55,25 @@ namespace biblioon.Controllers
         [HttpGet("Create")]
         public IActionResult Create()
         {
-            ViewData["Isbn"] = new SelectList(_context.EdiLivros, "Isbn", "Isbn");
+            var ediLivros = _context.EdiLivros
+                .Include(e => e.Autores)
+                .Include(e => e.Editor)
+                .Select(e => new EdiLivroViewModel
+                {
+                    Isbn = e.Isbn,
+                    Titulo = e.Titulo,
+                    Autores = string.Join(", ", e.Autores.Select(a => a.Nome)),
+                    Editor = e.Editor.Nome
+                }).ToList();
+
+            ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText");
             return View("/Views/Bibliotecario/UniLivros/Create.cshtml");
         }
 
         // POST: UniLivros/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Numero,Isbn,Estado,PrecoAquisicao,DataAquisicao,Requisitado,Disponivel,Anotacoes")] UniLivro uniLivro)
+        public async Task<IActionResult> Create([Bind("Id,Isbn,Estado,PrecoAquisicao,DataAquisicao,Requisitado,Disponivel,Anotacoes")] UniLivro uniLivro)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +81,18 @@ namespace biblioon.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Isbn"] = new SelectList(_context.EdiLivros, "Isbn", "Isbn", uniLivro.Isbn);
+            var ediLivros = _context.EdiLivros
+                .Include(e => e.Autores)
+                .Include(e => e.Editor)
+                .Select(e => new EdiLivroViewModel
+                {
+                    Isbn = e.Isbn,
+                    Titulo = e.Titulo,
+                    Autores = string.Join(", ", e.Autores.Select(a => a.Nome)),
+                    Editor = e.Editor.Nome
+                }).ToList();
+
+            ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText", uniLivro.Isbn);
             return View("/Views/Bibliotecario/UniLivros/Create.cshtml", uniLivro);
         }
 
@@ -87,14 +110,25 @@ namespace biblioon.Controllers
             {
                 return NotFound();
             }
-            ViewData["Isbn"] = new SelectList(_context.EdiLivros, "Isbn", "Isbn", uniLivro.Isbn);
+            var ediLivros = _context.EdiLivros
+                .Include(e => e.Autores)
+                .Include(e => e.Editor)
+                .Select(e => new EdiLivroViewModel
+                {
+                    Isbn = e.Isbn,
+                    Titulo = e.Titulo,
+                    Autores = string.Join(", ", e.Autores.Select(a => a.Nome)),
+                    Editor = e.Editor.Nome
+                }).ToList();
+
+            ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText", uniLivro.Isbn);
             return View("/Views/Bibliotecario/UniLivros/Edit.cshtml", uniLivro);
         }
 
         // POST: UniLivros/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Numero,Isbn,Estado,PrecoAquisicao,DataAquisicao,Requisitado,Disponivel,Anotacoes")] UniLivro uniLivro)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Isbn,Estado,PrecoAquisicao,DataAquisicao,Requisitado,Disponivel,Anotacoes")] UniLivro uniLivro)
         {
             if (id != uniLivro.Id)
             {
@@ -121,7 +155,18 @@ namespace biblioon.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Isbn"] = new SelectList(_context.EdiLivros, "Isbn", "Isbn", uniLivro.Isbn);
+            var ediLivros = _context.EdiLivros
+                .Include(e => e.Autores)
+                .Include(e => e.Editor)
+                .Select(e => new EdiLivroViewModel
+                {
+                    Isbn = e.Isbn,
+                    Titulo = e.Titulo,
+                    Autores = string.Join(", ", e.Autores.Select(a => a.Nome)),
+                    Editor = e.Editor.Nome
+                }).ToList();
+
+            ViewBag.Isbn = new SelectList(ediLivros, "Isbn", "DisplayText", uniLivro.Isbn);
             return View("/Views/Bibliotecario/UniLivros/Edit.cshtml", uniLivro);
         }
 
