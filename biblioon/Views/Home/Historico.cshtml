@@ -22,16 +22,42 @@
 		</select>		</div>
 		<div class="grid-item">
 		<select id="results">
-		  <option value="20">20</option>
-		  <option value="50">50</option>
+		  <option value="5">5</option>
+		  <option value="10">10</option>
 		  <option value="100">100</option>
-		</select>		</div>
+		</select>		
+		</div>
 	</div>
 
 
-	<div class="row10">
+	<div class="row9" id="itemContainer">
+
+	
+
+</div>
+</div>
+
+
+<script>
+	const itemCount = document.getElementById('results');
+	const itemContainer = document.getElementById('itemContainer');
+
+	function renderItems(count) {
+		itemContainer.innerHTML = ''; // Clear existing items
+		for (let i = 0; i < count; i++) {
+			const item = document.createElement('div');
+			item.className = 'item';
+			item.innerHTML = `
+				<div class="row8" >
+
 		<div class="grid-item">
+			<a href="#">
+
 						<img src="https://placehold.co/159x239">
+		</a>
+
+		</div>
+
 	<div  >
 		NOME DO LIVRO
 
@@ -40,6 +66,25 @@
 			NOME DO ESCRITOR
 		</a>
 	</div>
-	</div>
-</div>
+
+			<div>
+					Data Requesicao:00/00/00
+			</div>
+			<div>
+				Data Entrega:00/00/00
+			</div>
+						</div>
+
+			`;
+			itemContainer.appendChild(item);
+		}
+	}
+
+	renderItems(parseInt(itemCount.value, 10));
+
+	itemCount.addEventListener('change', () => {
+		renderItems(parseInt(itemCount.value, 10));
+	});
+</script>
+
 
