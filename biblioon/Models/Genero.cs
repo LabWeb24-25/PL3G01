@@ -10,6 +10,8 @@ namespace biblioon.Models
         [Required(ErrorMessage = "Este é um field obrigatório.")]
         public required string Nome { get; set; }
 
+        public string? ShName { get; set; }
+        public int? Tipo { get; set; }
         public ICollection<EdiLivro> EdiLivros { get; set; } = new List<EdiLivro>();
     }
 }
