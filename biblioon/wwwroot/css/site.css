@@ -227,37 +227,37 @@ body {
     gap: 10px;
 }
 
-        .dash {
-            all: unset;
-            color: #dfc67b !important;
-            font-size: 22px;
-        }
+.dash {
+    all: unset;
+    color: #dfc67b !important;
+    font-size: 22px;
+}
 
-        livros1 {
-            all: unset;
-            color: black !important;
-            font-family: "Linux Libertine Display G";
-            letter-spacing: 0.5px;
-            font-optical-sizing: auto;
-            font-weight:800;
-            font-style: normal;
-            letter-spacing: 1px;
-            font-size: 14px;
-            text-decoration: none;
-        }
+.livros1 {
+    all: unset;
+    color: black !important;
+    font-family: "Linux Libertine Display G";
+    letter-spacing: 0.5px;
+    font-optical-sizing: auto;
+    font-weight:800;
+    font-style: normal;
+    letter-spacing: 1px;
+    font-size: 14px;
+    text-decoration: none;
+}
 
 
-            livros1:visited {
-                color: black !important;
+.livros1:visited {
+    color: black !important;
 
-            }
+}
 
-            livros1:hover {
-                color: black !important;
-                cursor: pointer;
-                font-weight: 900;
-                font-size: 14.5px;
-            }
+.livros1:hover {
+    color: black !important;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 14.5px;
+}
 
 
 .row4 {

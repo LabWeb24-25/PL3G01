@@ -1,136 +1,239 @@
 ﻿@{
-    ViewData["Title"] = "Books";
+    ViewData["Title"] = "Pesquisa";
+    var cgeneros = ViewData["generos"] as List<biblioon.Models.Genero>;
+    var cautores = ViewData["autores"] as List<biblioon.Models.Autor>;
+    var ceditores = ViewData["editores"] as List<biblioon.Models.Editor>;
+    var resultados = ViewData["resultados"] as List<biblioon.Models.EdiLivro>;
+    var currentPage = ViewData["currentPage"] as int? ?? 1;
+    var totalPages = ViewData["totalPages"] as int? ?? 1;
 }
 
+<div class="containerPesquisa" style="display:flex;">
+    <div class="barralateralpesquisa" style="width:250px;padding:10px;background-color:#f4f4f4;">
 
+        <div class="XdeXresultados"> @ViewData["textoresultados"]</div>
 
-
-<div class="row8">
-	<div>
-		<div class="grid-item">
-				1 - NUMERO SELECIONADO of TOTAL items
-			<select id="results">
-				<option value="15">15</option>
-				<option value="30">30</option>
-				<option value="100">100</option>
-			</select>
-		</div>
-
-        <div class="filter-section">
-        <h3>Entregas Express</h3>
-        <div class="filter-option">
-            <input type="checkbox" id="loja">
-            <label for="loja">15 min grátis em loja</label>
+        <div class="pageCounter">
+            <button onclick="changePage(-1)" @if (currentPage == 1){<text>disabled</text>}>&lt
+            </button>
+            <span>Página @currentPage de @totalPages</span>
+            <button onclick="changePage(1)" @if (currentPage == totalPages){<text>disabled</text>}>&gt</button>
         </div>
-        <div class="filter-option">
-            <input type="checkbox" id="casa">
-            <label for="casa">2 horas em casa</label>
+
+
+        <div class="seletorOrdenarPor">
+            <label for="sort">Ordenar por:</label>
+            <select id="sort" onchange="updateSortQueryString()">
+                <option value="popular">Mais requisitados</option>
+                <option value="popular-inv" >Menos requisitados</option>
+                <option value="alpha-az" >Alfabeticamente (A-Z)</option>
+                <option value="alpha-za" >Alfabeticamente (Z-A)</option>
+                <option value="data-desc" >Mais recente para mais antigo</option>
+                <option value="data-asc" >Mais antigo para mais recente</option>
+            </select>
         </div>
+
+
+	    <div class="seletorNresultados">
+            <label for="npp">Resultados por página:</label>
+		    <select id="npp" onchange="updateNPPQueryString()">
+			    <option value="15">15</option>
+			    <option value="30">30</option>
+                <option value="60">60</option>
+			    <option value="90">90</option>
+		    </select>
+	    </div>
+
+        <div class="filtros">
+
+            <label>Filtros</label>
+            <button onclick="updateFilterQueryString()">Aplicar filtros</button>
+
+
+            @if (cgeneros != null && cgeneros.Count > 0)
+            {
+                <div class="filtro seletorGeneros">
+                    <label>Géneros</label>
+                    @foreach (var g in cgeneros)
+                    {
+                        <div class="filter-option">
+                            <input type="checkbox" id="@g.GeneroId">
+                        <label for="@g.GeneroId.">@g.Nome</label>
+                    </div>
+                    }
+                </div>
+            }
+
+            @if (cautores != null && cautores.Count > 0)
+            {
+                <div class="filtro seletorAutores">
+                    <label>Autores</label>
+                    @foreach (var a in cautores)
+                    {
+                        <div class="filter-option">
+                            <input type="checkbox" id="@a.Id">
+                        <label for="@a.Id">@a.Nome</label>
+                    </div>
+                    }
+                </div>
+            }
+
+            @if (ceditores != null && ceditores.Count > 0)
+            {
+                <div class="filtro seletorEditores">
+                    <label>Editores</label>
+
+                    @foreach (var e in ceditores)
+                    {
+                        <div class="filter-option">
+                            <input type="checkbox" id="@e.Id">
+                        <label for="@e.Id">@e.Nome</label>
+                    </div>
+                    }
+                </div>
+            }
+
+        </div>
+
     </div>
 
-    <div class="filter-section">
-        <h3>Melhores Escolhas</h3>
-        <div class="filter-option">
-            <input type="checkbox" id="portes-gratis">
-            <label for="portes-gratis">Portes Grátis</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="em-campanha">
-            <label for="em-campanha">Em Campanha</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="exclusivo-worten">
-            <label for="exclusivo-worten">Exclusivo Worten</label>
-        </div>
-    </div>
+    <div class="resultados row6">
 
-    <div class="filter-section">
-        <h3>Desconto Direto</h3>
-        <div class="filter-option">
-            <input type="checkbox" id="ate-20">
-            <label for="ate-20">Até 20%</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="20-30">
-            <label for="20-30">De 20% a 30%</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="30-50">
-            <label for="30-50">De 30% a 50%</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="superior-50">
-            <label for="superior-50">Superior a 50%</label>
-        </div>
-    </div>
+        @if (resultados == null || !resultados.Any())
+        {
+            <p>&lt; sem livros &gt</p>
+        }
+        else
+        {
+            @foreach (var livro in resultados)
+            {
+                <div class="grid-book">
+                    <div>
+                        <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                            <div>
+                                <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                            </div>
+                        </a>
+                    </div>
+                    <div>
+                        <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                            @livro.Titulo
+                        </a>
+                    </div>
+                    <div>
+                        @{
+                            var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                        }
+                    </div>
+                </div>
+            }
+        }
 
-    <div class="filter-section">
-        <h3>Entrega estimada em</h3>
-        <div class="filter-option">
-            <input type="checkbox" id="24h">
-            <label for="24h">Até 24 horas úteis</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="2-dias">
-            <label for="2-dias">Até 2 dias úteis</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="3-dias">
-            <label for="3-dias">Até 3 dias úteis</label>
-        </div>
-        <div class="filter-option">
-            <input type="checkbox" id="4-dias">
-            <label for="4-dias">Até 4 dias úteis</label>
-        </div>
-    </div>
-	</div>
-
-    <div >
-		<div class="row7" id="itemContainer">
 
     </div>
-	</div>
 </div>
 
-
 <script>
-	const itemCount = document.getElementById('results');
-	const itemContainer = document.getElementById('itemContainer');
+    function changePage(direction) {
+        var url = new URL(window.location.href);
+        var currentPage = parseInt(url.searchParams.get('np')) || 1;
+        var newPage = currentPage + direction;
+        url.searchParams.set('np', newPage);
+        window.location.href = url.toString();
+    }
 
-	function renderItems(count) {
-		itemContainer.innerHTML = '';
-		for (let i = 0; i < count; i++) {
-			const item = document.createElement('div');
-			item.className = 'item';
-			item.innerHTML = `
-				<div class="row8" >
+    function updateSortQueryString() {
+        var select = document.getElementById("sort");
+        var selectedValue = select.value;
+        var url = new URL(window.location.href);
+        url.searchParams.set('sort', selectedValue);
+        window.location.href = url.toString();
+    }
 
-		<div class="grid-item">
-			<a href="#">
+    function updateNPPQueryString() {
+        var select = document.getElementById("npp");
+        var selectedValue = select.value;
+        var url = new URL(window.location.href);
+        url.searchParams.set('npp', selectedValue);
+        window.location.href = url.toString();
+    }
 
-						<img src="/images/placeholder.svg">
-		</a>
+    function updateFilterQueryString() {
+        var url = new URL(window.location.href);
+        var generos = document.querySelectorAll('.seletorGeneros input:checked');
+        var autores = document.querySelectorAll('.seletorAutores input:checked');
+        var editores = document.querySelectorAll('.seletorEditores input:checked');
 
-		</div>
+        var generosIds = Array.from(generos).map(g => g.id);
+        var autoresIds = Array.from(autores).map(a => a.id);
+        var editoresIds = Array.from(editores).map(e => e.id);
 
-	<div  >
-		NOME DO LIVRO
+        url.searchParams.set('generos', generosIds.join(';'));
+        url.searchParams.set('autores', autoresIds.join(';'));
+        url.searchParams.set('editores', editoresIds.join(';'));
 
-	<div>
-		<a href="#">
-			NOME DO ESCRITOR
-		</a>
-	</div>
-			`;
-			itemContainer.appendChild(item);
-		}
-	}
+        window.location.href = url.toString();
+    }
 
-	renderItems(parseInt(itemCount.value, 10));
 
-	itemCount.addEventListener('change', () => {
-		renderItems(parseInt(itemCount.value, 10));
-	});
+    function setSortSelection() {
+        var url = new URL(window.location.href);
+        var sortValue = url.searchParams.get('sort');
+        if (sortValue) {
+            var select = document.getElementById("sort");
+            select.value = sortValue;
+        }
+    }
+
+    function setNPPSelection() {
+        var url = new URL(window.location.href);
+        var resultsValue = url.searchParams.get('npp');
+        if (resultsValue) {
+            var select = document.getElementById("npp");
+            select.value = resultsValue;
+        }
+    }
+
+    function setFiltrosSelection() {
+        var url = new URL(window.location.href);
+        var generos = url.searchParams.get('generos');
+        var autores = url.searchParams.get('autores');
+        var editores = url.searchParams.get('editores');
+
+        if (generos) {
+            var generosIds = generos.split(';');
+            generosIds.forEach(id => {
+                var input = document.getElementById(id);
+                if (input) {
+                    input.checked = true;
+                }
+            });
+        }
+
+        if (autores) {
+            var autoresIds = autores.split(';');
+            autoresIds.forEach(id => {
+                var input = document.getElementById(id);
+                if (input) {
+                    input.checked = true;
+                }
+            });
+        }
+
+        if (editores) {
+            var editoresIds = editores.split(';');
+            editoresIds.forEach(id => {
+                var input = document.getElementById(id);
+                if (input) {
+                    input.checked = true;
+                }
+            });
+        }
+    
+    }
+
+    document.addEventListener("DOMContentLoaded", setSortSelection);
+    document.addEventListener("DOMContentLoaded", setNPPSelection);
+    document.addEventListener("DOMContentLoaded", setFiltrosSelection);
 </script>
-
-

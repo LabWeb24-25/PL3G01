@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.Drawing.Printing;
 
 namespace biblioon.Controllers
 {
@@ -128,8 +129,154 @@ namespace biblioon.Controllers
             return View();
         }
 
-        public IActionResult Books()
+        public IActionResult Books(string q, string npp, string np, string sort, string generos, string autores, string editores, string gsn)
         {
+            var cgeneros = _context.Generos.ToList();
+            var cautores = _context.Autores.ToList();
+            var ceditores = _context.Editores.ToList();
+            List<EdiLivro>? livros = null;
+
+            ViewData["Generos"] = cgeneros;
+            ViewData["Autores"] = cautores;
+            ViewData["Editores"] = ceditores;
+
+            var numlivros = _context.EdiLivros.Count();
+
+            if (!string.IsNullOrEmpty(q))
+            {
+                livros = _context.EdiLivros
+                    .Include(a => a.Autores)
+                    .Include(g => g.Generos)
+                    .Include(e => e.Editor)
+                    .Where(l => l.Titulo.Contains(q) || l.Autores.Any(a => a.Nome.Contains(q)) || l.Isbn.Contains(q))
+                    .ToList();
+
+            } else
+            {
+                livros = _context.EdiLivros
+                    .Include(a => a.Autores)
+                    .Include(g => g.Generos)
+                    .Include(e => e.Editor)
+                    .ToList();
+            }
+
+            if (!string.IsNullOrEmpty(gsn))
+            {
+                var generosList = gsn.Split(";").ToList();
+                var generoIds = cgeneros.Where(g => g.ShName != null && generosList.Contains(g.ShName)).Select(g => g.GeneroId).ToList();
+                generos = string.Join(";", generoIds);
+
+                var queryParams = new Dictionary<string, string>
+                {
+                    { "q", q },
+                    { "npp", npp },
+                    { "np", np },
+                    { "sort", sort },
+                    { "generos", generos },
+                    { "autores", autores },
+                    { "editores", editores }
+                };
+
+                var queryString = string.Join("&", queryParams.Where(kvp => !string.IsNullOrEmpty(kvp.Value)).Select(kvp => $"{kvp.Key}={kvp.Value}"));
+                return Redirect($"Books?{queryString}");
+            }
+        
+            
+            if (!string.IsNullOrEmpty(generos) && string.IsNullOrEmpty(gsn))
+            {
+                var generosList = generos.Split(";").ToList();
+                livros = livros.Where(l => l.Generos.Any(g => generosList.Contains(g.GeneroId))).ToList();
+            }
+
+
+            if (!string.IsNullOrEmpty(autores))
+            {
+                var autoresList = autores.Split(";").ToList();
+                livros = livros.Where(l => l.Autores.Any(a => autoresList.Contains(a.Id))).ToList();
+            }
+
+            if (!string.IsNullOrEmpty(editores))
+            {
+                var editoresList = editores.Split(";").ToList();
+                livros = livros.Where(l => editoresList.Contains(l.Editor.Id)).ToList();
+            }
+
+
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                /*
+                <div class="seletorOrdenarPor">
+                    <label for="sort">Ordenar por:</label>
+                    <select id="sort" onchange="updateSortQueryString()">
+                        <option value="popular">Mais requisitados</option>
+                        <option value="popular-inv" >Menos requisitados</option>
+                        <option value="alpha-az" >Alfabeticamente (A-Z)</option>
+                        <option value="alpha-za" >Alfabeticamente (Z-A)</option>
+                        <option value="data-desc" >Mais recente para mais antigo</option>
+                        <option value="data-asc" >Mais antigo para mais recente</option>
+                    </select>
+                </div>
+                */
+                switch (sort)
+                {
+                    case "popular":
+                        livros = livros.OrderByDescending(l => l.NEmprestimos).ThenBy(l => l.Titulo).ToList();
+                        break;
+                    case "popular-inv":
+                        livros = livros.OrderBy(l => l.NEmprestimos).ThenBy(l => l.Titulo).ToList();
+                        break;
+                    case "alpha-az":
+                        livros = livros.OrderBy(l => l.Titulo).ToList();
+                        break;
+                    case "alpha-za":
+                        livros = livros.OrderByDescending(l => l.Titulo).ToList();
+                        break;
+                    case "data-desc":
+                        livros = livros.OrderByDescending(l => l.DataPublicacao).ToList();
+                        break;
+                    case "data-asc":
+                        livros = livros.OrderBy(l => l.DataPublicacao).ToList();
+                        break;
+                    default:
+                        livros = livros.OrderByDescending(l => l.NEmprestimos).ThenBy(l => l.Titulo).ToList();
+                        break;
+                }
+            }
+
+
+
+            // PAGINAÇÃO
+
+            int numPorPagina = 15; // default
+            int numPagina = 1; // default
+
+            if (!string.IsNullOrEmpty(npp) && int.TryParse(npp, out int parsedNpp))
+            {
+                numPorPagina = parsedNpp;
+            }
+
+            if (!string.IsNullOrEmpty(np) && int.TryParse(np, out int parsedNp))
+            {
+                numPagina = parsedNp;
+            }
+
+            int skipQuant = (numPagina - 1) * numPorPagina;
+
+            var numResultados = livros.Count();
+
+            livros = livros.Skip(skipQuant).Take(numPorPagina).ToList();
+
+            var numNaPagina = livros.Count();
+
+            ViewData["textoresultados"] = $"A mostrar {numNaPagina} de {numResultados} resultados";
+
+            ViewData["currentPage"] = numPagina;
+            ViewData["totalPages"] = (int)Math.Ceiling((double)numResultados / numPorPagina);
+
+            ViewData["resultados"] = livros;
+
+
             return View();
         }
 
