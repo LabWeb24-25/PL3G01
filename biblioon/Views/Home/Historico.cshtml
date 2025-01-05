@@ -1,72 +1,88 @@
 ﻿@model IEnumerable<biblioon.Models.Emprestimo>
 
 @{
-	ViewData["Title"] = "Historico";
+    ViewData["Title"] = "Historico";
 }
 
 <div class="grid-autores">
     <div class="grid-titleautores">
-			Histórico
-		</div>
-	</div>
+        Histórico
+    </div>
+</div>
 
+@if (Model.Count() == 0)
+{
+    <div style="text-align:center">
+        &lt; sem empréstimos &gt;
+    </div>
+}
+else
+{
     <div class="gridh2">
         <div class="caixa">
             <label for="sort" class="htxt">Ordenar por:</label>
-            <select id="sort" class="lableh1">
-                <option value="newest" class="lableh">Mais recente para mais antigo</option>
-                <option value="oldest" class="lableh">Mais antigo para mais recente</option>
+            <select id="sort" class="lableh1" onchange="updateSortQueryString()">
+                <option value="desc" class="lableh">Mais recente para mais antigo</option>
+                <option value="asc" class="lableh">Mais antigo para mais recente</option>
             </select>
         </div>
-
     </div>
 
-
-
-@foreach (var emprestimo in Model)
-{
-    <div class="rowh">
-        <div class="colunaslivroh">
-            <div class="livroh">
-
+    @foreach (var emprestimo in Model)
+    {
+        <div class="rowh">
+            <div class="colunaslivroh">
+                <div class="livroh">
                     <img width="175" src="@(!string.IsNullOrEmpty(@emprestimo.EdiLivro.Capa) ? @emprestimo.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
-
-            </div>
-
-            <div class="coluninha lableh4" >
-
-
-                <a class="lableh" href="/home/livro/@emprestimo.EdiLivroISBN">@emprestimo.EdiLivro.Titulo</a>
-
-
-
-            <div>
-                    @{
-                        var autorNames = emprestimo.EdiLivro.Autores.Select(a => $"<a class=\"lableh\" href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
-                        @Html.Raw(string.Join(", ", autorNames))
-                    }
                 </div>
-                <div class="grid-item"></div>
-                <div class="rating">
-
+                <div class="coluninha lableh4">
+                    <a class="lableh" href="/home/livro/@emprestimo.EdiLivroISBN">@emprestimo.EdiLivro.Titulo</a>
+                    <div>
+                        @{
+                            var autorNames = emprestimo.EdiLivro.Autores.Select(a => $"<a class=\"lableh\" href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                            @Html.Raw(string.Join(", ", autorNames))
+                        }
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="rating"></div>
                 </div>
-            </div>
-            <div class="coluninha">
-                <div class="lableh2">
-                    Data de Requisição: @emprestimo.DataRequisitado.ToString("dd/MM/yyyy")
-                </div>
-                <div class="lableh2">
-                    Data Limite de Entrega: @emprestimo.DataLimiteEntrega.ToString("dd/MM/yyyy")
-                </div>
-                <div class="grid-item"> </div>
-                <div class="lableh2">
-                    Data de Levantamento: @(emprestimo.DataLevantamento?.ToString("dd/MM/yyyy") ?? "< por levantar >")
-                </div>
-                <div class="lableh2">
-                    Data de Entrega: @(emprestimo.DataLevantamento?.ToString("dd/MM/yyyy") ?? "< por entregar >")
+                <div class="coluninha">
+                    <div class="lableh2">
+                        Data de Requisição: @emprestimo.DataRequisitado.ToString("dd/MM/yyyy")
+                    </div>
+                    <div class="lableh2">
+                        Data Limite de Entrega: @emprestimo.DataLimiteEntrega.ToString("dd/MM/yyyy")
+                    </div>
+                    <div class="grid-item"></div>
+                    <div class="lableh2">
+                        Data de Levantamento: @(emprestimo.DataLevantamento?.ToString("dd/MM/yyyy") ?? "< por levantar >")
+                    </div>
+                    <div class="lableh2">
+                        Data de Entrega: @(emprestimo.DataLevantamento?.ToString("dd/MM/yyyy") ?? "< por entregar >")
+                    </div>
                 </div>
             </div>
-
         </div>
-    </div>
+    }
 }
+
+<script>
+    function updateSortQueryString() {
+        var select = document.getElementById("sort");
+        var selectedValue = select.value;
+        var url = new URL(window.location.href);
+        url.searchParams.set('sort', selectedValue);
+        window.location.href = url.toString();
+    }
+
+    function setSortSelection() {
+        var url = new URL(window.location.href);
+        var sortValue = url.searchParams.get('sort');
+        if (sortValue) {
+            var select = document.getElementById("sort");
+            select.value = sortValue;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", setSortSelection);
+</script>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using biblioon.Data;
 
@@ -11,9 +12,11 @@ using biblioon.Data;
 namespace biblioon.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250105013005_addTiposGeneros")]
+    partial class addTiposGeneros
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -491,9 +494,6 @@ namespace biblioon.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NEmprestimos")
-                        .HasColumnType("int");
-
                     b.Property<string>("Sinopse")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -595,9 +595,6 @@ namespace biblioon.Data.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Tipo")

@@ -21,6 +21,95 @@ namespace biblioon.Controllers
 
         public IActionResult Index()
         {
+            var lExatas = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "exatas"))
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lExatas"] = lExatas;
+
+            
+            var lNaturais = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "naturais"))
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lNaturais"] = lNaturais;
+
+            var lTecnologicas = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "tecnologicas"))
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lTecnologicas"] = lTecnologicas;
+
+            var lAgrarias = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "agrarias"))
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lAgrarias"] = lAgrarias;
+
+            var lHumanas = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "humanasesociais"))               
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lHumanas"] = lHumanas;
+
+            var lSaude = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "saude"))
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lSaude"] = lSaude;
+
+            var lFiccao = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "ficcao"))
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lFiccao"] = lFiccao;
+
+            var lNaoFiccao = _context.EdiLivros
+                .Include(a => a.Autores)
+                .Include(g => g.Generos)
+                .Include(e => e.Editor)
+                .Where(l => l.Generos.Any(g => g.ShName == "naoficcao"))
+                .OrderByDescending(l => l.NEmprestimos)
+                .Take(5)
+                .ToList();
+
+            ViewData["lNaoFiccao"] = lNaoFiccao;
+
             return View();
         }
 
@@ -134,23 +223,6 @@ namespace biblioon.Controllers
                 return RedirectToAction("Index");
             }
 
-            /*
-            var newrequisicao = new Emprestimo
-            {
-                Id = Guid.NewGuid().ToString(),
-                UniLivroId = id,
-                EdiLivroISBN = unit.Isbn,
-                LeitorId = userid,
-                DataRequisitado = DateTime.Now,
-                DataLimiteEntrega = DateTime.Now.AddDays(15),
-                DataEntrega = null,
-                IsEntregue = false,
-                IsLevantado = false,
-                UniLivro = unit,
-                EdiLivro = unit.EdiLivro,
-                Leitor = user,
-            };
-            */
 
             var data = DateTime.Now;
             var dataLimite = data.AddDays(15);
@@ -248,6 +320,8 @@ namespace biblioon.Controllers
             leitor.NRequisicoes++;
             _context.Leitores.Update(leitor);
 
+            unit.EdiLivro.NEmprestimos++;
+            _context.EdiLivros.Update(unit.EdiLivro);
 
             _context.SaveChanges();
 

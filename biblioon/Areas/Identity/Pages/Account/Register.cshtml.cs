@@ -186,6 +186,37 @@ namespace biblioon.Areas.Identity.Pages.Account
                     _context.Leitores.Add(leitor);
                     await _context.SaveChangesAsync();
 
+                    var generos = new List<(string Nome, string ShName)>
+                        {
+                            ("Ciências Exatas", "exatas"),
+                            ("Ciências Naturais", "naturais"),
+                            ("Ciências Tecnológicas", "tecnologicas"),
+                            ("Ciências Agrárias", "agrarias"),
+                            ("Ciências Humanas e Sociais", "humanasesociais"),
+                            ("Ciências Saúde", "saude"),
+                            ("Ficção", "ficcao"),
+                            ("Não Ficção", "naoficcao")
+                        };
+
+                    var generoNames = generos.Select(g => g.Nome).ToList();
+
+                    var existingGeneros = _context.Generos
+                        .Where(g => generoNames.Contains(g.Nome) && g.Tipo == 1)
+                        .Select(g => g.Nome)
+                        .ToList();
+
+                    var newGeneros = generos
+                        .Where(g => !existingGeneros.Contains(g.Nome))
+                        .Select(g => new Genero { Nome = g.Nome, ShName = g.ShName, Tipo = 1 })
+                        .ToList();
+
+                    if (newGeneros.Count != 0)
+                    {
+                        _context.Generos.AddRange(newGeneros);
+                        await _context.SaveChangesAsync();
+
+                    }
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
