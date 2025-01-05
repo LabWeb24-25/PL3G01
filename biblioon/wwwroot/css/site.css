@@ -1763,6 +1763,32 @@ input[type="checkbox"] {
     align-content: center;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #3e5962;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #50727e;
+    }
+
+
+/* Buttons */
+::-webkit-scrollbar-button:single-button {
+    background-color: #3e5962;
+    height: 20px;
+}
+
 .fontdebotaoestupido2 {
     font-size: 14px;
     font-family: "heebo";
