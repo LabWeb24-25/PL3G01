@@ -1,90 +1,45 @@
-﻿@{
+﻿@model IEnumerable<biblioon.Models.Emprestimo>
+
+@{
 	ViewData["Title"] = "Historico";
 }
-
 <div class="border">
+    <div class="row9">
+        <div class="grid-item">
+            Historico
+        </div>
+    </div>
 
-	<div class="row9">
-		<div class="grid-item">
-			Historico
-		</div>
-	</div>
+    <div class="row9" id="itemContainer">
+        @foreach (var emprestimo in Model)
+        {
+            <div class="item">
+                <div class="row8">
+                    <div class="grid-item">
+                        <img height="250" src="@(!string.IsNullOrEmpty(@emprestimo.EdiLivro.Capa) ? @emprestimo.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+                    </div>
+                    <div>
+                        <div>
+                            <a href="/home/livro/@emprestimo.EdiLivroISBN">@emprestimo.EdiLivro.Titulo</a></div>
+                        <div>
+                            Autores:
+                            @{
+                                var autorNames = emprestimo.EdiLivro.Autores.Select(a => $"<a href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
+                        <div>Levantado?: @(emprestimo.IsLevantado ? "Sim" : "Não")</div>
+                        <div>Entregue?: @(emprestimo.IsEntregue ? "Sim" : "Não")</div>
 
-	<div class="row10">
-		<div class="grid-item">
-			1 - NUMERO SELECIONADO of TOTAL items
-		</div>
-		<div class="grid-item">
-		<label for="sort">Sort by:</label>
-		<select id="sort">
-		  <option value="newest">Newest to Oldest</option>
-		  <option value="oldest">Oldest to Newest</option>
-		</select>		</div>
-		<div class="grid-item">
-		<select id="results">
-		  <option value="5">5</option>
-		  <option value="10">10</option>
-		  <option value="100">100</option>
-		</select>		
-		</div>
-	</div>
-
-
-	<div class="row9" id="itemContainer">
-
-	
-
+                        <div>Data Requisição: @emprestimo.DataRequisitado.ToString("dd/MM/yyyy")</div>
+                        <div>Data Levantamento: @(emprestimo.DataLevantamento?.ToString("dd/MM/yyyy") ?? "N/A")</div>
+                        <div>Data Limite Entrega: @emprestimo.DataLimiteEntrega.ToString("dd/MM/yyyy")</div>
+                        <div>Data Entrega: @(emprestimo.DataEntrega?.ToString("dd/MM/yyyy") ?? "N/A")</div>
+                        <div>ID unidade: @emprestimo.UniLivro.Id</div>
+                        <div>ID empréstimo: @emprestimo.Id</div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
-</div>
-
-
-<script>
-	const itemCount = document.getElementById('results');
-	const itemContainer = document.getElementById('itemContainer');
-
-	function renderItems(count) {
-		itemContainer.innerHTML = '';
-		for (let i = 0; i < count; i++) {
-			const item = document.createElement('div');
-			item.className = 'item';
-			item.innerHTML = `
-				<div class="row8" >
-
-		<div class="grid-item">
-			<a href="#">
-
-						<img src="/images/placeholder.svg">
-		</a>
-
-		</div>
-
-	<div  >
-		NOME DO LIVRO
-
-	<div>
-		<a href="#">
-			NOME DO ESCRITOR
-		</a>
-	</div>
-
-			<div>
-					Data Requesicao:00/00/00
-			</div>
-			<div>
-				Data Entrega:00/00/00
-			</div>
-						</div>
-
-			`;
-			itemContainer.appendChild(item);
-		}
-	}
-
-	renderItems(parseInt(itemCount.value, 10));
-
-	itemCount.addEventListener('change', () => {
-		renderItems(parseInt(itemCount.value, 10));
-	});
-</script>
-
-

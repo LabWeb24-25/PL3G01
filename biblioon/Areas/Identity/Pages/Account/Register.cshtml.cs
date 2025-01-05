@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using biblioon.Data;
 using biblioon.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -19,6 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using SQLitePCL;
 
 namespace biblioon.Areas.Identity.Pages.Account
 {
@@ -31,6 +33,7 @@ namespace biblioon.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -38,7 +41,8 @@ namespace biblioon.Areas.Identity.Pages.Account
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -47,6 +51,7 @@ namespace biblioon.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -168,6 +173,18 @@ namespace biblioon.Areas.Identity.Pages.Account
                     }
 
                     await _userManager.AddToRoleAsync(user, "Leitor");
+
+                    var leitor = new Leitor
+                    {
+                        Id = user.Id,
+                        User = user,
+                        LivrosLidos = 0,
+                        NRequisicoes = 0,
+                        IsBanido = false,
+                    };
+
+                    _context.Leitores.Add(leitor);
+                    await _context.SaveChangesAsync();
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
