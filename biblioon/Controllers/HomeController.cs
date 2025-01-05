@@ -129,7 +129,7 @@ namespace biblioon.Controllers
             return View();
         }
 
-        public IActionResult Books(string q, string npp, string np, string sort, string generos, string autores, string editores)
+        public IActionResult Books(string q, string npp, string np, string sort, string generos, string autores, string editores, string gsn)
         {
             var cgeneros = _context.Generos.ToList();
             var cautores = _context.Autores.ToList();
@@ -165,6 +165,13 @@ namespace biblioon.Controllers
                 var generosList = generos.Split(";").ToList();
                 livros = livros.Where(l => l.Generos.Any(g => generosList.Contains(g.GeneroId))).ToList();
             }
+
+            if (!string.IsNullOrEmpty(gsn))
+            {
+                var generosList = gsn.Split(";").ToList();
+                livros = livros.Where(l => l.Generos.Any(g => g.ShName != null && generosList.Contains(g.ShName))).ToList();
+            }
+
 
             if (!string.IsNullOrEmpty(autores))
             {
