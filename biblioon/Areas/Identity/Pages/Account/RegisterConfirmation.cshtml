@@ -4,20 +4,26 @@
     ViewData["Title"] = "Register confirmation";
 }
 
-<h1>@ViewData["Title"]</h1>
-@{
-    if (@Model.DisplayConfirmAccountLink)
-    {
-        <p class="lableh">
-            Esta app atualmente não possui um remetente de e-mail real registrado. Vê <a href="https://aka.ms/aspaccountconf">estes documentos</a> para saber como configurar um remetente de e-mail real.
-    Normalmente, isto seria enviado por email <a id="confirm-link" href="@Model.EmailConfirmationUrl">Clica aqui para confirmares a tua conta</a>.
-</p>
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Confirmação de Registo
+    </div>
+</div>
+<div class="bordercaga">
+    @{
+        if (@Model.DisplayConfirmAccountLink)
+        {
+            <p class="fonttxt">
+                Esta app atualmente não possui um remetente de e-mail real registrado. Vê <a class="fontlink2" href="https://aka.ms/aspaccountconf">estes documentos</a> para saber como configurar um remetente de e-mail real.
+                Normalmente, isto seria enviado por email <a id="confirm-link" class="fontlink2" href="@Model.EmailConfirmationUrl">Clica aqui para confirmares a tua conta</a>.
+            </p>
+        }
+        else
+        {
+            <p class="fonttxt">
+                Acede ao email para confirmares a tua conta.
+            </p>
+        }
     }
-    else
-    {
-        <p class="lableh">
-            Acede ao email para confirmares a tua conta.
-</p>
-    }
-}
+</div>
 
