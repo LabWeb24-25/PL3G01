@@ -255,7 +255,7 @@ namespace biblioon.Controllers
         }
 
         [Authorize(Roles = "Leitor")]
-        public IActionResult Historico()
+        public IActionResult Historico(string sort)
         {
             var userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var emprestimos = _context.Emprestimos
@@ -267,8 +267,18 @@ namespace biblioon.Controllers
                 .Include(e => e.EdiLivro)
                     .ThenInclude(e => e.Editor)
                 .Where(e => e.LeitorId == userid)
-                .OrderByDescending(e => e.DataRequisitado)
                 .ToList();
+
+            switch (sort)
+            {
+                case "asc":
+                    emprestimos = emprestimos.OrderBy(e => e.DataRequisitado).ToList();
+                    break;
+                case "desc":
+                default:
+                    emprestimos = emprestimos.OrderByDescending(e => e.DataRequisitado).ToList();
+                    break;
+            }
 
             return View(emprestimos);
         }
