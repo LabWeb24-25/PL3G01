@@ -1212,7 +1212,7 @@ body {
         transform: rotate(-1turn);
     }
 }
-}
+
 
 h1 {
     display: none;
@@ -1249,7 +1249,7 @@ display: none;
 }
 
 col-md-9 {
-    padding-right0;
+    padding-right: 0;
     padding-left: 0;
 }
 
@@ -1496,7 +1496,7 @@ col-md-9 {
     font-weight: 600;
     align-content: center;
 }
-}
+
 
 .fonttxt {
     background-color: white;
