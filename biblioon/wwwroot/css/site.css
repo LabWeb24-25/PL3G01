@@ -22,13 +22,13 @@ body {
 }
 
 
-.grid-container1 { /* Grids para �reas como privacy e termos de uso e assim */
+.grid-container1 { /* Grids para áreas como privacy e termos de uso e assim */
     display: grid;
     grid-template-rows: repeat(2, auto);
     gap: 10px;
     padding: 15px 0px;
 }
-.grid-titletxt { /* Grids para �reas como privacy e termos de uso e assim */
+.grid-titletxt { /* Grids para áreas como privacy e termos de uso e assim */
     background-color: #3e5962;
     height: 60px;
     padding: 0px;
@@ -48,7 +48,7 @@ body {
     color: white;
 }
 
-.grid-txt { /* Grids para �reas como privacy e termos de uso e assim */
+.grid-txt { /* Grids para áreas como privacy e termos de uso e assim */
     background-color: white;
     padding: 20px 250px;
     text-align: center;
@@ -103,17 +103,30 @@ body {
             text-align: center;
         }
 
-        .grid-item3 {
-            background-color: white;
-            padding: 30px 50px;
-            text-align: center;
-            position: relative;
-            display: inline-block;
-            display: flex;
-            justify-content: right;
-            align-items: center;
-            text-align: center;
-        }
+.grid-item3 {
+    background-color: white;
+    padding: 30px 50px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.grid-item8 {
+    background-color: white;
+    padding: 30px 50px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    text-align: center;
+}
 
         .dashh {
             all: unset;
@@ -169,7 +182,7 @@ body {
             display: flex; /* Usa flexbox para alinhar */
             align-items: center;
             gap: 10px;
-            width: 100%; /* Garante que o container ocupe o espa�o dispon�vel */
+            width: 100%; /* Garante que o container ocupe o espaço disponível */
         }
 
     .searchbar {
@@ -451,15 +464,33 @@ body {
     color: #3e5962 !important;
     font-size: 12px;
     font-family: "heebo";
+    text-transform: capitalize;
 }
 
-.link-dropdown:hover {
-    color: #3e5962 !important;
-    text-decoration: underline;
-    text-decoration-color: #3e5962;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    .link-dropdown:hover {
+        color: #3e5962 !important;
+        text-decoration: underline;
+        text-decoration-color: #3e5962;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+        text-transform: capitalize;
+    }
+
+.buttonlink2 {
+    padding: 10px;
+    background-color: white;
+    height: 40px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
 }
+
+    .buttonlink2:hover {
+        background-color: white;
+        border: none;
+    }
+
 
 .borderindex {
     display: grid;
@@ -502,6 +533,7 @@ body {
     text-decoration: underline;
     text-decoration-color:white;
     justify-content: center;
+    text-transform: uppercase;
 }
     .bookproperty1:hover {
         color: black !important;
@@ -509,6 +541,7 @@ body {
         text-decoration-color: #000000;
         text-decoration-thickness: 1px;
         text-underline-offset: 4px;
+        text-transform: uppercase;
     }
 
 .bookproperty2 {
@@ -520,6 +553,7 @@ body {
     text-decoration: underline;
     text-decoration-color: black;
     text-underline-offset: 4px;
+    text-transform: uppercase;
 }
 
     .bookproperty2:hover {
@@ -529,6 +563,7 @@ body {
         text-decoration-color: #3e5962;
         text-decoration-thickness: 1px;
         text-underline-offset: 4px;
+        text-transform: uppercase;
     }
 
 .bookcategory {
@@ -636,6 +671,155 @@ body {
     
 }
 
+.linksbibliotecario {
+    padding: 20px 0 10px 0;
+    all: unset;
+    color: #484848 !important;
+    font-family: "heebo";
+    font-size: 16px;
+    text-decoration: underline;
+    text-decoration-color: white;
+    text-align: center;
+}
+
+    .linksbibliotecario:hover {
+        padding: 20px 0 10px 0;
+        all: unset;
+        font-family: "heebo";
+        color: #484848 !important;
+        text-decoration: underline;
+        cursor: pointer;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+        text-align: center;
+    }
+
+    /*Pagina Histórico*/
+
+.gridh {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    align-content: center;
+    gap: 10px;
+    padding: 0px 0px 0 40px;
+}
+
+.gridh2 {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    align-content: center;
+    gap: 10px;
+}
+
+.colunash {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    padding: 0px 100px 10px 100px;
+    align-content: center;
+}
+
+
+.caixa {
+    border: 1px solid black;
+    align-content: center;
+    justify-items: center;
+    align-self: center;
+    justify-self: center;
+}
+
+.htxt {
+    font-size: 14px;
+    font-family: "heebo";
+    color: black;
+    background-color: white;
+    padding: 5px;
+}
+
+.lableh {
+    font-size: 14px;
+    font-family: Arial;
+    color: black;
+    background-color: white;
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 0;
+    padding: 0px;
+    font-weight: 500;
+}
+
+.lableh4 {
+    font-size: 16px;
+    font-family: 'Linux Libertine G';
+    color: black;
+    background-color: white;
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 0;
+    padding: 0px;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.lableh1 {
+    font-size: 14px;
+    font-family: "heebo";
+    color: black;
+    background-color: white;
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 0;
+    padding: 0px;
+}
+
+.lableh2 {
+    font-size: 14px;
+    font-family: "heebo";
+    color: black;
+    background-color: white;
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 0;
+    padding: 0px;
+    text-transform: uppercase;
+    text-align: right;
+}
+
+
+.coluninha {
+    display: grid;
+    grid-template-rows: repeat(5, auto);
+    align-content: start;
+    padding: 10px;
+}
+
+.colunaslivroh {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    padding: 0 200px;
+    align-content: center;
+}
+
+.rowh {
+    display: grid;
+    grid-template-rows: repeat(2, auto);
+    align-content: start;
+    border-bottom: solid 1px #bfbfbf;
+    width: 90%;
+    align-self: center;
+    align-content: center;
+    justify-self: center;
+    margin: 0 auto;
+    padding: 50px 0;
+}
+
+.livroh {
+    display: flex;
+    justify-content: flex-start;
+    color:black;
+    font-family: "heebo";
+}
+
+.rating{
 
 .card {
     --shadow: rgba(60, 64, 67, 0.3) 0 1px 2px 0, rgba(60, 64, 67, 0.15) 0 2px 6px 2px;
