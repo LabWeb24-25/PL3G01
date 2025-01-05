@@ -53,14 +53,14 @@
                         </div>
                             @if (e.Requisitado == false && e.Disponivel == true)
                             {
-                                <div class="livrotexto2">
-                                    <a class="buttonreq" href="/home/requisitar/@e.Id">REQUISITAR</a>
+                            <div class="buttonreq4">
+                                <a class="fontdebotaoestupido2" href="/home/requisitar/@e.Id">Requisitar</a>
                                 </div>
                             }
                             else
                             {
                                 <div class="livrotexto2">
-                                    <button disabled class="buttonreq">INDISPONÍVEL</button>
+                                    <button disabled class="buttonreq4">Indisponível</button>
                                 </div>
                             }
                     </div>
@@ -83,7 +83,7 @@
 
 
 
-<div class="borderlivro2">
+<div class="borderlivro3">
     <div class="sinopseborder">
         <p class="livrotexto2">@Model.Sinopse</p>
     </div>
@@ -92,7 +92,7 @@
         <button class="buttoninfolivro" onclick="showInfo('livro')">Sobre o Livro</button>
         <button class="buttoninfolivro" onclick="showInfo('autor')">Sobre o Autor</button>
         </div>
-<div class="borderlivro2 sinopseborder">
+<div class="borderlivro3 sinopseborder">
         <div id="info">
             <div id="livroInfo">
                 <h2>Sobre o Livro</h2>

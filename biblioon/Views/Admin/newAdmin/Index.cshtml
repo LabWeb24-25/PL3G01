@@ -5,8 +5,24 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Criar novo admin</h1>
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Criar Novo Administrador
+    </div>
+</div>
+<div class="portalborder">
 
+    <div class="portalcolumns">
+        <a class="linksbibliotecario" href="/Admin/">[Início]</a>
+        <a class="linksbibliotecario" href="/Admin/leitorBans">[Banir Leitores]</a>
+        <a class="linksbibliotecario" href="/Admin/mBibliotecarios">[Gerir Bibliotecários]</a>
+        <a class="linksbibliotecario" href="/Admin/newAdmin">[Criar Novo Administrador]</a>
+    </div>
+
+</div>
+<div>
+    <br />
+</div>
 <div class="row">
     <div class="col-md-4">
         <form id="registerForm" asp-action="newAdmin" method="post">

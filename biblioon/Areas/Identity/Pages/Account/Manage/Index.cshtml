@@ -5,46 +5,51 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-    <h3>@ViewData["Title"]</h3>
-    <partial name="_StatusMessage" for="StatusMessage" />
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gerir Conta
+    </div>
+</div>
 
     <div class="row">
         <div class="col-md-6">
-            <form id="profile-form" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Username" class="form-control" placeholder="Alterar Username" disabled />
-                    <label asp-for="Username" class="form-label"></label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.NomeCompleto" class="form-control" placeholder="Alterar Nome" />
-                    <label asp-for="Input.NomeCompleto" class="form-label"></label>
-                    <span asp-validation-for="Input.NomeCompleto" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Alterar Número de Telemóvel" />
-                    <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.MoradaRua" class="form-control" placeholder="Alterar Endereço" />
-                    <label asp-for="Input.MoradaRua" class="form-label"></label>
-                    <span asp-validation-for="Input.MoradaRua" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.MoradaCodPostal" class="form-control" placeholder="Alterar código-postal" />
-                    <label asp-for="Input.MoradaCodPostal" class="form-label"></label>
-                    <span asp-validation-for="Input.MoradaCodPostal" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.MoradaLocalidade" class="form-control" placeholder="Alterar Localidade" />
-                    <label asp-for="Input.MoradaLocalidade" class="form-label"></label>
-                    <span asp-validation-for="Input.MoradaLocalidade" class="text-danger"></span>
-                </div>
-                <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Guardar</button>
-            </form>
+            
         </div>
     </div>
+
+<div class="rowde3">
+    <div> </div>
+    <section class="borderconta">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <input asp-for="Username" class="form-control" placeholder="Alterar Username" disabled />
+            </div>
+            <div class=" mb-3">
+                <input asp-for="Input.NomeCompleto" class="form-control" placeholder="Alterar Nome" />
+                <span asp-validation-for="Input.NomeCompleto" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Alterar Número de Telemóvel" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <input asp-for="Input.MoradaRua" class="form-control" placeholder="Alterar Endereço" />
+                <span asp-validation-for="Input.MoradaRua" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <input asp-for="Input.MoradaCodPostal" class="form-control" placeholder="Alterar código-postal" />
+                <span asp-validation-for="Input.MoradaCodPostal" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <input asp-for="Input.MoradaLocalidade" class="form-control" placeholder="Alterar Localidade" />
+                <span asp-validation-for="Input.MoradaLocalidade" class="text-danger"></span>
+            </div>
+            <button id="update-profile-button" type="submit" class="buttonreq3">GUARDAR ALTERAÇÕES</button>
+        </form>
+    </section>
+    <div> </div>
+</div>
 
     @section Scripts {
         <partial name="_ValidationScriptsPartial" />

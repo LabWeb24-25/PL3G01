@@ -8,6 +8,25 @@
     var bansAnteriores = ViewData["bansanteriores"] as IEnumerable<biblioon.Models.Ban>;
 }
 
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gerir Bans de Leitores
+    </div>
+</div>
+<div class="portalborder">
+
+    <div class="portalcolumns">
+        <a class="linksbibliotecario" href="/Admin/">[Início]</a>
+        <a class="linksbibliotecario" href="/Admin/leitorBans">[Banir Leitores]</a>
+        <a class="linksbibliotecario" href="/Admin/mBibliotecarios">[Gerir Bibliotecários]</a>
+        <a class="linksbibliotecario" href="/Admin/newAdmin">[Criar Novo Administrador]</a>
+    </div>
+
+</div>
+<div>
+    <br />
+</div>
+
 <h1>Leitores ativos</h1>
 
 @if (leitores == null || leitores.Count() == 0)

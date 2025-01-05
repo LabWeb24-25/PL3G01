@@ -6,7 +6,24 @@
     var bibliotecariosAtivos = ViewData["bibliotecariosAtivos"] as IEnumerable<biblioon.Models.Bibliotecario>;
 
 }
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gerir Bibliotecários
+    </div>
+</div>
+<div class="portalborder">
 
+    <div class="portalcolumns">
+        <a class="linksbibliotecario" href="/Admin/">[Início]</a>
+        <a class="linksbibliotecario" href="/Admin/leitorBans">[Banir Leitores]</a>
+        <a class="linksbibliotecario" href="/Admin/mBibliotecarios">[Gerir Bibliotecários]</a>
+        <a class="linksbibliotecario" href="/Admin/newAdmin">[Criar Novo Administrador]</a>
+    </div>
+
+</div>
+<div>
+    <br />
+</div>
 <h1>Bibliotecarios desativados</h1>
 
 @if (bibliotecarios == null || bibliotecarios.Count() == 0)

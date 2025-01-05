@@ -1212,7 +1212,7 @@ body {
         transform: rotate(-1turn);
     }
 }
-}
+
 
 h1 {
     display: none;
@@ -1249,7 +1249,7 @@ display: none;
 }
 
 col-md-9 {
-    padding-right0;
+    padding-right: 0;
     padding-left: 0;
 }
 
@@ -1496,7 +1496,7 @@ col-md-9 {
     font-weight: 600;
     align-content: center;
 }
-}
+
 
 .fonttxt {
     background-color: white;
@@ -1714,6 +1714,7 @@ input[type="checkbox"] {
     font-weight: 600;
     width: 300px;
     height: 40px;
+    text-align: center;
 }
 
 
@@ -1721,6 +1722,8 @@ input[type="checkbox"] {
         background-color: #3e5962;
         box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         transform: translateY(-2px);
+        color: white;
+        text-align: center;
     }
 
 
@@ -1746,12 +1749,19 @@ input[type="checkbox"] {
     text-decoration: none;
 }
 
+.fontdebotaoestupido:hover {
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    color: #3e5962;
+    text-decoration: none;
+}
+
 .bordercaga {
     margin: 20px 200px;
     text-align: center;
     align-content: center;
 }
-
 
 /* width */
 ::-webkit-scrollbar {
@@ -1777,4 +1787,169 @@ input[type="checkbox"] {
 ::-webkit-scrollbar-button:single-button {
     background-color: #3e5962;
     height: 20px;
+}
+
+.fontdebotaoestupido2 {
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    background-color: #3e5962;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.fontdebotaoestupido2:hover {
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    background-color: #3e5962;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    justify-content: center;
+    align-content: center;
+}
+
+.buttonreq4 {
+    background-color: #3e5962;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    width: 200px;
+    height: 40px;
+    text-align: center;
+    align-content: center;
+}
+
+
+    .buttonreq4:hover {
+        background-color: #3e5962;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+        color: white;
+        text-align: center;
+        color: white;
+    }
+
+
+    .buttonreq4:active {
+        background-color: #3e5962;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        color: white;
+    }
+
+
+    .buttonreq4:disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    /*Pagina de Requisitar*/
+
+.columnsr {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+}
+
+
+.borderlivro2 {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    margin: 10px 200px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.buttonreq5 {
+    background-color: #3e5962;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    width: 370px;
+    height: 40px;
+    text-align: center;
+    align-content: center;
+}
+
+
+    .buttonreq5:hover {
+        background-color: #3e5962;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+        color: white;
+        text-align: center;
+        color: white;
+    }
+
+
+    .buttonreq5:active {
+        background-color: #3e5962;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        color: white;
+    }
+
+
+    .buttonreq5:disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+.borderlivro2 {
+    display: grid;
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    margin: 0px 200px;
+    text-align: center;
+    position: relative;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.gridlivro2 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    margin: 0px;
+    align-self: center;
+}
+
+.borderlivro3 {
+    display: grid;
+    gap: 10px;
+    margin: 50px 200px;
+    text-align: center;
+    position: relative;
+    align-items: center;
+    text-align: center;
 }

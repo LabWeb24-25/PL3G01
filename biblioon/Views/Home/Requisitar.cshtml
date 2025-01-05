@@ -8,89 +8,95 @@
     <div class="grid-titleautores">
         Requisitar Livro
     </div>
+    <p class="fonttxt" style="text-align: center">Aviso: só é possível ter requisitados ao mesmo tempo, no máximo, um livro de cada edição e dois livros ao todo.</p>
 </div>
-<div class="border">
-    <h2>Informações do Livro</h2>
-    <div>
-        <img height="250" src="@(!string.IsNullOrEmpty(Model.EdiLivro.Capa) ? Model.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
-    </div>
-    <div>
-        <strong>Título:</strong> @Model.EdiLivro.Titulo
-    </div>
-    <div>
-        <strong>Autores:</strong>
-        @{
-        var autorNames = Model.EdiLivro.Autores.Select(a => $"<a href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
-        @Html.Raw(string.Join(", ", autorNames))
-        }
+<div class="borderlivro">
+    <div class="gridlivro2">
+        <div>
+            <img height="250" src="@(!string.IsNullOrEmpty(Model.EdiLivro.Capa) ? Model.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+        </div>
+            <div class="grid-rowslivro">
+            <div class="fonttxt">
+                <strong>Título:</strong> @Model.EdiLivro.Titulo
+            </div>
+            <div class="fonttxt">
+                <strong>Autores:</strong>
+                @{
+                    var autorNames = Model.EdiLivro.Autores.Select(a => $"<a class=\"fontlink2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                    @Html.Raw(string.Join(", ", autorNames))
+                }
+
+            </div>
+            <div class="fonttxt">
+                <strong>Editor:</strong> @Model.EdiLivro.Editor.Nome
+            </div>
+            <div class="fonttxt">
+                <strong>Géneros:</strong> @Model.EdiLivro.Generos.Select(g => g.Nome).Aggregate((a, b) => $"{a}, {b}")
+            </div>
+            <div class="fonttxt">
+                <strong>Data de Publicação:</strong> @Model.EdiLivro.DataPublicacao.ToString("dd/MM/yyyy")
+            </div>
+            <div class="fonttxt">
+                <strong>ISBN:</strong> @Model.EdiLivro.Isbn
+            </div>
+            <div class="fonttxt">
+                <strong>Sinopse:</strong> @Model.EdiLivro.Sinopse
+            </div>
+        </div>
 
     </div>
-    <div>
-        <strong>Editor:</strong> @Model.EdiLivro.Editor.Nome
-    </div>
-    <div>
-        <strong>Géneros:</strong> @Model.EdiLivro.Generos.Select(g => g.Nome).Aggregate((a, b) => $"{a}, {b}")
-    </div>
-    <div>
-        <strong>Data de Publicação:</strong> @Model.EdiLivro.DataPublicacao.ToString("dd/MM/yyyy")
-    </div>
-    <div>
-        <strong>ISBN:</strong> @Model.EdiLivro.Isbn
-    </div>
-    <div>
-        <strong>Sinopse:</strong> @Model.EdiLivro.Sinopse
-    </div>
-</div>
-
-<div class="border">
-    <h2>Informações da Unidade</h2>
-
-    <div>
-        <strong>ID:</strong> @Model.Id
-    </div>
-    <div>
-        <strong>Estado:</strong> @Model.Estado
-    </div>
+ 
+    
 </div>
 
-<div class="border">
-    <h2>Informações da Unidade</h2>
+<div class="borderlivro2">
+    <div class="gridlivro2">
+        <div>
+            @if (Model.Disponivel && !Model.Requisitado)
+            {
+                <form asp-action="RequisitarPost" method="post">
+                    <input type="hidden" name="id" value="@Model.Id" />
+                    <input type="hidden" name="idLeitor" value="@ViewData["IdLeitor"]" />
+                    <button class="buttonreq5"   type="submit">Requisitar</button>
+                </form>
+            }
+            else
+            {
+                <button disabled>Indisponível</button>
+            }
+        </div>
+        <div class="grid-rowslivro">
+            <div class="fonttxt">
+                <strong>ID:</strong> @Model.Id
+            </div>
+            <div class="fonttxt">
+                <strong>Estado:</strong> @Model.Estado
+            </div>
+            <div class="fonttxt">
+                <strong>ID:</strong> @Model.Id
+            </div>
+            <div class="fonttxt">
+                <strong>Estado:</strong> @Model.Estado
+            </div>
+            <div class="fonttxt">
+                <strong>Data de Requisição:</strong> Hoje, dia @ViewData["DataRequisitado"]
+            </div>
 
-    <div>
-        <strong>ID:</strong> @Model.Id
+            <div class="fonttxt">
+                <strong>Data limite de devolução:</strong> Daqui a 15 dias, dia @ViewData["DataLimiteEntrega"]
+            </div>
+            <div class="fonttxt">
+                <strong>Requisitante:</strong> @ViewData["NomeLeitor"]
+            </div>
+        </div>
+
     </div>
-    <div>
-        <strong>Estado:</strong> @Model.Estado
-    </div>
+
+
 </div>
 
-<div class="border">
-    <h2>Informações da Requisição</h2>
-
-    <div>
-        <strong>Data de Requisição:</strong> Hoje, dia @ViewData["DataRequisitado"]
-    </div>
-
-    <div>
-        <strong>Data limite de devolução:</strong> Daqui a 15 dias, dia @ViewData["DataLimiteEntrega"]
-    </div>
-    <div>
-        <strong>Requisitante:</strong> @ViewData["NomeLeitor"]
-    </div>
-</div>
 
 
-@if (Model.Disponivel && !Model.Requisitado)
-{
-    <form asp-action="RequisitarPost" method="post">
-        <input type="hidden" name="id" value="@Model.Id" />
-        <input type="hidden" name="idLeitor" value="@ViewData["IdLeitor"]" />
-        <button type="submit">Requisitar</button>
-    </form>
-}
-else
-{
-    <button disabled>Indisponível</button>
-}
 
-<p >Aviso: só é possível ter requisitados ao mesmo tempo, no máximo, um livro de cada edição e dois livros ao todo.</p>
+
+
