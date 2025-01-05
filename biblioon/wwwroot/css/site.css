@@ -1674,6 +1674,7 @@ input[type="checkbox"] {
     font-family: "heebo";
     font-weight: 600;
     width: 300px;
+    height:40px;
 }
 
 
@@ -1712,6 +1713,7 @@ input[type="checkbox"] {
     font-family: "heebo";
     font-weight: 600;
     width: 300px;
+    height: 40px;
 }
 
 
@@ -1742,4 +1744,10 @@ input[type="checkbox"] {
     font-weight: 600;
     color: #3e5962;
     text-decoration: none;
+}
+
+.bordercaga {
+    margin: 20px 200px;
+    text-align: center;
+    align-content: center;
 }
