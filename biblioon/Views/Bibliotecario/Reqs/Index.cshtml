@@ -1,0 +1,377 @@
+﻿@model IEnumerable<biblioon.Models.Emprestimo>
+@{
+    ViewData["Title"] = "Requisições";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var porentregar = ViewData["porentregar"] as List<biblioon.Models.Emprestimo>;
+    var porlevantar = ViewData["porlevantar"] as List<biblioon.Models.Emprestimo>;
+    var ematraso = ViewData["ematraso"] as List<biblioon.Models.Emprestimo>;
+    var restantes = ViewData["restantes"] as List<biblioon.Models.Emprestimo>;
+
+
+}
+
+<div id="divporlevantar">
+    <h1>Requisições Por Levantar</h1>
+    <p>Livros que ainda não foram levantados</p>
+
+    @if (porlevantar == null || porlevantar.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Data de Requisição
+                    </th>
+                    <th>
+                        Data Limite Entrega
+                    </th>
+                    <th>
+                        Leitor
+                    </th>
+                    <th>
+                        Edição
+                    </th>
+                    <th>
+                        Unidade
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in porlevantar)
+                {
+                    <tr>
+                        <td>
+                            @(item.DataRequisitado.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >")
+                        </td>
+                        <td>
+                            @(item.DataLimiteEntrega.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >")
+                        </td>
+                        <td>
+                            <strong><a href="#" >@Html.DisplayFor(modelItem => item.Leitor.User.NomeCompleto)</a></strong> <br />
+                            <strong>email: </strong> <a href="mailto:@Html.DisplayFor(modelItem => item.Leitor.User.Email)">@Html.DisplayFor(modelItem => item.Leitor.User.Email)</a> <br />
+                            <strong>tel: </strong><a href="tel:@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)">@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)</a>
+                            
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaRua))
+                            {
+                                <br />@Html.DisplayFor(modelItem => item.Leitor.User.MoradaRua)
+
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaCodPostal))
+                            {
+                                <br />@Html.DisplayFor(modelItem => item.Leitor.User.MoradaCodPostal)
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaLocalidade))
+                            {
+                                <br /> @Html.DisplayFor(modelItem => item.Leitor.User.MoradaLocalidade)
+                            }
+                        
+                        
+                        </td>
+                        <td>
+                            <div class="tlivro">
+                                <div class="tlivro-img">
+                                    <img height="150" src="@(!string.IsNullOrEmpty(@item.EdiLivro.Capa) ? @item.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+                                </div>
+                                <div class="tlivro-txt">
+                                    <a href="/home/livro/@item.EdiLivroISBN">@item.EdiLivro.Titulo</a>
+                                    <div>de 
+                                        @{
+                                            var autorNames = item.EdiLivro.Autores.Select(a => $"<a href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                            @Html.Raw(string.Join(", ", autorNames))
+                                        }
+                                    </div>
+                                    <div><strong>Editor: </strong>@item.EdiLivro.Editor.Nome</div>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(item.EdiLivro.DescFisica))
+                                        {
+                                            <strong>Desc Física: </strong>@Html.DisplayFor(modelItem => item.EdiLivro.DescFisica)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id) <br />
+                            <strong>Estado: </strong>@Html.DisplayFor(modelItem => item.UniLivro.Estado) 
+                            
+                            @if (!string.IsNullOrEmpty(item.UniLivro.Anotacoes)) {
+                                <br /> <strong>Anotações: </strong><br /> @Html.DisplayFor(modelItem => item.UniLivro.Anotacoes)
+                            }
+                        </td>
+                        <td>
+                            <button>LEVANTAMENTO</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+         </table>
+    }
+</div>
+
+<div id="ematraso">
+    <h1>Requisições Em Atraso</h1>
+    <p>Livros que já foram levantados, ainda não foram entregues e estão fora da data limite</p>
+
+    @if (ematraso == null || ematraso.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataRequisitado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataLimiteEntrega)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataLevantamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataEntrega)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsLevantado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsEntregue)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Leitor)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UniLivro)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EdiLivro)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ematraso)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataRequisitado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataLimiteEntrega)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataLevantamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataEntrega)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsLevantado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsEntregue)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Leitor.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EdiLivro.Isbn)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">ENTREGAR</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+
+
+<div id="porentregar">
+    <h1>Requisições Por Entregar</h1>
+    <p>Livros que já foram levantados, ainda não foram entregues e estão dentro da data limite</p>
+
+    @if (porentregar == null || porentregar.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataRequisitado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataLimiteEntrega)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataLevantamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataEntrega)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsLevantado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsEntregue)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Leitor)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UniLivro)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EdiLivro)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in porentregar)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataRequisitado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataLimiteEntrega)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataLevantamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataEntrega)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsLevantado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsEntregue)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Leitor.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EdiLivro.Isbn)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">ENTREGAR</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+<div id="restantes">
+    <h1>Requisições Entregues</h1>
+    <p>Livros que já foram entregues na biblioteca</p>
+
+    @if (restantes == null || restantes.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataRequisitado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataLimiteEntrega)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataLevantamento)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DataEntrega)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsLevantado)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsEntregue)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Leitor)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UniLivro)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EdiLivro)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in restantes)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataRequisitado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataLimiteEntrega)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataLevantamento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DataEntrega)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsLevantado)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsEntregue)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Leitor.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EdiLivro.Isbn)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">ENTREGAR</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
