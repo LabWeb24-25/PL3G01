@@ -58,8 +58,14 @@ namespace biblioon.Controllers
         // POST: Generos/Create
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("GeneroId,Nome")] Genero genero)
+        public async Task<IActionResult> Create([Bind("GeneroId,Nome,Tipo")] Genero genero)
         {
+            if (genero.Tipo == 1)
+            {
+                ModelState.AddModelError("", "Cannot create a Genero with Tipo 1.");
+                return View("/Views/Bibliotecario/Generos/Create.cshtml", genero);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(genero);
@@ -83,16 +89,28 @@ namespace biblioon.Controllers
             {
                 return NotFound();
             }
+
+            if (genero.Tipo == 1)
+            {
+                return NotFound();
+            }
+
             return View("/Views/Bibliotecario/Generos/Edit.cshtml", genero);
         }
 
         // POST: Generos/Edit/5
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("GeneroId,Nome")] Genero genero)
+        public async Task<IActionResult> Edit(string id, [Bind("GeneroId,Nome,Tipo")] Genero genero)
         {
             if (id != genero.GeneroId)
             {
+                return NotFound();
+            }
+
+            if (genero.Tipo == 1)
+            {
+                ModelState.AddModelError("", "Cannot edit a Genero with Tipo 1.");
                 return NotFound();
             }
 
@@ -135,6 +153,11 @@ namespace biblioon.Controllers
                 return NotFound();
             }
 
+            if (genero.Tipo == 1)
+            {
+                return NotFound();
+            }
+
             return View("/Views/Bibliotecario/Generos/Delete.cshtml", genero);
         }
 
@@ -144,6 +167,11 @@ namespace biblioon.Controllers
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var genero = await _context.Generos.FindAsync(id);
+            if (genero != null && genero.Tipo == 1)
+            {
+                return NotFound();
+            }
+
             if (genero != null)
             {
                 _context.Generos.Remove(genero);

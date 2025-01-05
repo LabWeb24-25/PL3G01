@@ -44,6 +44,8 @@ namespace biblioon.Models
 
         public ICollection<Comentario> Comentarios { get; set; } = new List<Comentario>();
 
+        public required int NEmprestimos { get; set; } = 0;
+
     }
 
 }
