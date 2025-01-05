@@ -23,7 +23,7 @@ namespace biblioon.Controllers
         public IActionResult Index()
         {
 
-            var allLivros = _context.EdiLivros
+                var allLivros = _context.EdiLivros
                 .Include(a => a.Autores)
                 .Include(g => g.Generos)
                 .Include(e => e.Editor)
