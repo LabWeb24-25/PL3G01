@@ -1,8 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var lExatas = ViewData["lExatas"] as List<biblioon.Models.EdiLivro>;
+    var lNaturais = ViewData["lNaturais"] as List<biblioon.Models.EdiLivro>;
+    var lTecnologicas = ViewData["lTecnologicas"] as List<biblioon.Models.EdiLivro>;
+    var lAgrarias = ViewData["lAgrarias"] as List<biblioon.Models.EdiLivro>;
+    var lHumanas = ViewData["lHumanas"] as List<biblioon.Models.EdiLivro>;
+    var lSaude = ViewData["lSaude"] as List<biblioon.Models.EdiLivro>;
+    var lFiccao = ViewData["lFiccao"] as List<biblioon.Models.EdiLivro>;
+    var lNaoFiccao = ViewData["lNaoFiccao"] as List<biblioon.Models.EdiLivro>;
 }
 
 <div class="borderindex">
+
     <div class="rowbooks1">
         <div class="bookcategory">
             Ciências Exatas
@@ -15,134 +24,39 @@
             </a>
         </div>
 
-    </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
         </div>
+        <div class="row6">
 
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
+            @if (lExatas == null || !lExatas.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lExatas)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
+                }
+            }
     </div>
 
     <div class="rowbooks1">
@@ -155,137 +69,41 @@
             <a href="#" class="booklink">
                 See all
             </a>
+            </div>
         </div>
+        <div class="row6">
 
-    </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
+            @if (lNaturais == null || !lNaturais.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lNaturais)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
+                }
+            }
         </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-    </div>
 
     <div class="rowbooks1">
         <div class="bookcategory">
@@ -298,136 +116,40 @@
                 See all
             </a>
         </div>
-
-    </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
         </div>
+        <div class="row6">
 
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
+            @if (lTecnologicas == null || !lTecnologicas.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lTecnologicas)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
+                }
+            }
         </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-    </div>
 
     <div class="rowbooks1">
         <div class="bookcategory">
@@ -439,137 +161,41 @@
             <a href="#" class="booklink">
                 See all
             </a>
-        </div>
+        </div> </div>
+        <div class="row6">
 
+            @if (lAgrarias == null || !lAgrarias.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lAgrarias)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
+                    </div>
+                }
+            }
     </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
 
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-    </div>
 
     <div class="rowbooks1">
         <div class="bookcategory">
@@ -581,136 +207,40 @@
             <a href="#" class="booklink">
                 See all
             </a>
-        </div>
+        </div> </div>
 
-    </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
+        <div class="row6">
+
+            @if (lHumanas == null || !lHumanas.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lHumanas)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
+                }
+            }
     </div>
 
     <div class="rowbooks1">
@@ -723,139 +253,44 @@
             <a href="#" class="booklink">
                 See all
             </a>
-        </div>
+        </div> </div>
 
-    </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
+        <div class="row6">
+
+            @if (lSaude == null || !lSaude.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lSaude)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
+                }
+            }
         </div>
 
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
 
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-    </div>
-
-        <div class="rowbooks1">
+    <div class="rowbooks1">
         <div class="bookcategory">
             Livros de Ficção
         </div>
@@ -865,139 +300,44 @@
             <a href="#" class="booklink">
                 See all
             </a>
-        </div>
+        </div> </div>
 
-    </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
+        <div class="row6">
+
+            @if (lFiccao == null || !lFiccao.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lFiccao)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
+                }
+            }
     </div>
 
-        <div class="rowbooks1">
+
+    <div class="rowbooks1">
         <div class="bookcategory">
             Livros de Não Ficção
         </div>
@@ -1007,137 +347,42 @@
             <a href="#" class="booklink">
                 See all
             </a>
-        </div>
+        </div> </div>
 
-    </div>
-    <div class="row6">
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
+        <div class="row6">
+
+            @if (lNaoFiccao == null || !lNaoFiccao.Any())
+            {
+                <p>&lt; sem livros &gt</p>
+            }
+            else
+            {
+                @foreach (var livro in lNaoFiccao)
+                {
+                    <div class="grid-book">
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookcover">
+                                <div>
+                                    <img width="175" src="@(!string.IsNullOrEmpty(livro.Capa) ? livro.Capa : "/images/placeholder.svg")">
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="@Url.Action("Livro", "Home", new { id = livro.Isbn })" class="bookproperty1">
+                                @livro.Titulo
+                            </a>
+                        </div>
+                        <div>
+                            @{
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                @Html.Raw(string.Join(", ", autorNames))
+                            }
+                        </div>
                     </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
+                }
+            }
         </div>
 
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-        <div class="grid-book">
-            <div>
-                <a href="#" class="bookcover">
-                    <div>
-                        <img src="/images/placeholder.svg">
-                    </div>
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty1">
-                    NOME DO LIVRO
-                </a>
-            </div>
-            <div>
-                <a href="#" class="bookproperty2">
-                    NOME DO ESCRITOR
-                </a>
-            </div>
-
-        </div>
-
-    </div>
 </div>
 
 

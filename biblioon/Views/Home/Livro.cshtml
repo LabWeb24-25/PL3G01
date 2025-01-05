@@ -24,19 +24,18 @@
                 }
             </div>
 
+            @if (User.IsInRole("Bibliotecario"))
+            {
+                <div class="linksbibliotecario2">
+                    <a class="linksbibliotecario2" style="text-align:left" href="/Bibliotecario/UniLivros/?isbn=@Model.Isbn">[editar no painel bibliotecário]</a>
+                </div>
+            }
 
             @if (Model.UniLivros != null && Model.UniLivros.Any())
             {
                 <div class="livrotextotitulo" style="text-align:left">
                     Lista de Exemplares
                 </div>
-                @if (User.IsInRole("Bibliotecario"))
-                {
-                    <div class="linksbibliotecario2">
-                        <a class="linksbibliotecario2" style="text-align:left" href="/Bibliotecario/UniLivros/?isbn=@Model.Isbn">[editar no painel bibliotecário]</a>
-                    </div>
-                }
-
 
                 var counter = 1;
                 @foreach (var e in Model.UniLivros)
