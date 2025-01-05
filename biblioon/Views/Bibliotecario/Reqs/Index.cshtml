@@ -1,0 +1,517 @@
+﻿@model IEnumerable<biblioon.Models.Emprestimo>
+@{
+    ViewData["Title"] = "Requisições";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var porentregar = ViewData["porentregar"] as List<biblioon.Models.Emprestimo>;
+    var porlevantar = ViewData["porlevantar"] as List<biblioon.Models.Emprestimo>;
+    var ematraso = ViewData["ematraso"] as List<biblioon.Models.Emprestimo>;
+    var restantes = ViewData["restantes"] as List<biblioon.Models.Emprestimo>;
+
+
+}
+
+<div id="divporlevantar">
+    <h1>Requisições Por Levantar</h1>
+    <p>Livros que ainda não foram levantados</p>
+
+    @if (porlevantar == null || porlevantar.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Data de Requisição
+                    </th>
+                    <th>
+                        Data Limite Entrega
+                    </th>
+                    <th>
+                        Leitor
+                    </th>
+                    <th>
+                        Edição
+                    </th>
+                    <th>
+                        Unidade
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in porlevantar)
+                {
+                    <tr>
+                        <td>
+                            @(item.DataRequisitado.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >")
+                        </td>
+                        <td>
+                            @(item.DataLimiteEntrega.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >")
+                        </td>
+                        <td>
+                            <strong><a href="#" >@Html.DisplayFor(modelItem => item.Leitor.User.NomeCompleto)</a></strong> (@item.Leitor.User.UserName) <br />
+                            <strong>email: </strong> <a href="mailto:@Html.DisplayFor(modelItem => item.Leitor.User.Email)">@Html.DisplayFor(modelItem => item.Leitor.User.Email)</a> <br />
+                            <strong>tel: </strong><a href="tel:@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)">@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)</a>
+                            
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaRua))
+                            {
+                                <br />@Html.DisplayFor(modelItem => item.Leitor.User.MoradaRua)
+
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaCodPostal))
+                            {
+                                <br />@Html.DisplayFor(modelItem => item.Leitor.User.MoradaCodPostal)
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaLocalidade))
+                            {
+                                <br /> @Html.DisplayFor(modelItem => item.Leitor.User.MoradaLocalidade)
+                            }
+                        
+                        
+                        </td>
+                        <td>
+                            <div class="tlivro">
+                                <div class="tlivro-img">
+                                    <img height="150" src="@(!string.IsNullOrEmpty(@item.EdiLivro.Capa) ? @item.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+                                </div>
+                                <div class="tlivro-txt">
+                                    <a href="/home/livro/@item.EdiLivroISBN">@item.EdiLivro.Titulo</a>
+                                    <div>de 
+                                        @{
+                                            var autorNames = item.EdiLivro.Autores.Select(a => $"<a href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                            @Html.Raw(string.Join(", ", autorNames))
+                                        }
+                                    </div>
+                                    <div><strong>Editor: </strong>@item.EdiLivro.Editor.Nome</div>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(item.EdiLivro.DescFisica))
+                                        {
+                                            <strong>Desc Física: </strong>@Html.DisplayFor(modelItem => item.EdiLivro.DescFisica)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id) <br />
+                            <strong>Estado: </strong>@Html.DisplayFor(modelItem => item.UniLivro.Estado) 
+                            
+                            @if (!string.IsNullOrEmpty(item.UniLivro.Anotacoes)) {
+                                <br /> <strong>Anotações: </strong><br /> @Html.DisplayFor(modelItem => item.UniLivro.Anotacoes)
+                            }
+                        </td>
+                        <td>
+                            <form asp-action="levantamento" method="post">
+                                <input type="hidden" name="ReqId" value="@item.Id" />
+                                <input type="hidden" name="op" value="lev" />
+                                <button type="submit" class="btn btn-primary">LEVANTAMENTO</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+         </table>
+    }
+</div>
+
+<div id="ematraso">
+    <h1>Requisições Em Atraso</h1>
+    <p>Livros que já foram levantados, ainda não foram entregues e estão fora da data limite</p>
+
+    @if (ematraso == null || ematraso.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Data de Requisição
+                    </th>
+                    <th>
+                        Data Limite Entrega
+                    </th>
+                    <th>
+                        Leitor
+                    </th>
+                    <th>
+                        Edição
+                    </th>
+                    <th>
+                        Unidade
+                    </th>
+                    <th>
+                        Data de Levantamento
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ematraso)
+                {
+                    <tr>
+                        <td>
+                            @(item.DataRequisitado.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >")
+                        </td>
+                        <td>
+                            @(item.DataLimiteEntrega.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >") <br />
+                            @{
+                                var daysLate = (DateTime.Now - item.DataLimiteEntrega).Days;
+                            }
+                            <span>@daysLate dias de atraso</span>
+
+                        </td>
+                        <td>
+                            <strong><a href="#">@Html.DisplayFor(modelItem => item.Leitor.User.NomeCompleto)</a></strong> (@item.Leitor.User.UserName) <br />
+                            <strong>email: </strong> <a href="mailto:@Html.DisplayFor(modelItem => item.Leitor.User.Email)">@Html.DisplayFor(modelItem => item.Leitor.User.Email)</a> <br />
+                            <strong>tel: </strong><a href="tel:@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)">@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)</a>
+
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaRua))
+                            {
+                                <br />
+
+                                @Html.DisplayFor(modelItem => item.Leitor.User.MoradaRua)
+
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaCodPostal))
+                            {
+                                <br />
+
+                                @Html.DisplayFor(modelItem => item.Leitor.User.MoradaCodPostal)
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaLocalidade))
+                            {
+                                <br /> @Html.DisplayFor(modelItem => item.Leitor.User.MoradaLocalidade)
+                            }
+
+
+                        </td>
+                        <td>
+                            <div class="tlivro">
+                                <div class="tlivro-img">
+                                    <img height="150" src="@(!string.IsNullOrEmpty(@item.EdiLivro.Capa) ? @item.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+                                </div>
+                                <div class="tlivro-txt">
+                                    <a href="/home/livro/@item.EdiLivroISBN">@item.EdiLivro.Titulo</a>
+                                    <div>
+                                        de
+                                        @{
+                                            var autorNames = item.EdiLivro.Autores.Select(a => $"<a href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                            @Html.Raw(string.Join(", ", autorNames))
+                                        }
+                                    </div>
+                                    <div><strong>Editor: </strong>@item.EdiLivro.Editor.Nome</div>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(item.EdiLivro.DescFisica))
+                                        {
+                                            <strong>Desc Física: </strong>
+
+                                            @Html.DisplayFor(modelItem => item.EdiLivro.DescFisica)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id) <br />
+                            <strong>Estado: </strong>@Html.DisplayFor(modelItem => item.UniLivro.Estado)
+
+                            @if (!string.IsNullOrEmpty(item.UniLivro.Anotacoes))
+                            {
+                                <br /> <strong>Anotações: </strong>
+
+                                <br /> @Html.DisplayFor(modelItem => item.UniLivro.Anotacoes)
+                            }
+                        </td>
+                        <td>
+                            @(item.DataLevantamento?.ToString("dd/MM/yyyy HH:mm") ?? "< por levantar >") <br />
+                            @(item.BibliotecarioLevantamento?.User?.NomeCompleto ?? "< sem informação bibliotecário >") (
+                            @(item.BibliotecarioLevantamento?.User?.UserName ?? "n/a") )
+                        </td>
+
+
+
+                        <td>
+                            <form asp-action="levantamento" method="post">
+                                <input type="hidden" name="ReqId" value="@item.Id" />
+                                <input type="hidden" name="op" value="entr" />
+                                <button type="submit" class="btn btn-primary">ENTREGA</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+<div id="porentregar">
+    <h1>Requisições Por Entregar</h1>
+    <p>Livros que já foram levantados, ainda não foram entregues e estão dentro da data limite</p>
+
+    @if (porentregar == null || porentregar.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Data de Requisição
+                    </th>
+                    <th>
+                        Data Limite Entrega
+                    </th>
+                    <th>
+                        Leitor
+                    </th>
+                    <th>
+                        Edição
+                    </th>
+                    <th>
+                        Unidade
+                    </th>
+                    <th>
+                        Data de Levantamento
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in porentregar)
+                {
+                    <tr>
+                        <td>
+                            @(item.DataRequisitado.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >")
+                        </td>
+                        <td>
+                            @(item.DataLimiteEntrega.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >") <br />
+                            @{
+                                var daysRemaining = (item.DataLimiteEntrega - DateTime.Now).Days;
+                            }
+                            <span>@daysRemaining dias restantes</span>
+                        </td>
+                        <td>
+                            <strong><a href="#">@Html.DisplayFor(modelItem => item.Leitor.User.NomeCompleto)</a></strong> (@item.Leitor.User.UserName) <br />
+                            <strong>email: </strong> <a href="mailto:@Html.DisplayFor(modelItem => item.Leitor.User.Email)">@Html.DisplayFor(modelItem => item.Leitor.User.Email)</a> <br />
+                            <strong>tel: </strong><a href="tel:@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)">@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)</a>
+
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaRua))
+                            {
+                                <br />
+
+                                @Html.DisplayFor(modelItem => item.Leitor.User.MoradaRua)
+
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaCodPostal))
+                            {
+                                <br />
+
+                                @Html.DisplayFor(modelItem => item.Leitor.User.MoradaCodPostal)
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaLocalidade))
+                            {
+                                <br /> @Html.DisplayFor(modelItem => item.Leitor.User.MoradaLocalidade)
+                            }
+
+
+                        </td>
+                        <td>
+                            <div class="tlivro">
+                                <div class="tlivro-img">
+                                    <img height="150" src="@(!string.IsNullOrEmpty(@item.EdiLivro.Capa) ? @item.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+                                </div>
+                                <div class="tlivro-txt">
+                                    <a href="/home/livro/@item.EdiLivroISBN">@item.EdiLivro.Titulo</a>
+                                    <div>
+                                        de
+                                        @{
+                                            var autorNames = item.EdiLivro.Autores.Select(a => $"<a href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                            @Html.Raw(string.Join(", ", autorNames))
+                                        }
+                                    </div>
+                                    <div><strong>Editor: </strong>@item.EdiLivro.Editor.Nome</div>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(item.EdiLivro.DescFisica))
+                                        {
+                                            <strong>Desc Física: </strong>
+
+                                            @Html.DisplayFor(modelItem => item.EdiLivro.DescFisica)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id) <br />
+                            <strong>Estado: </strong>@Html.DisplayFor(modelItem => item.UniLivro.Estado)
+
+                            @if (!string.IsNullOrEmpty(item.UniLivro.Anotacoes))
+                            {
+                                <br /> <strong>Anotações: </strong>
+
+                                <br /> @Html.DisplayFor(modelItem => item.UniLivro.Anotacoes)
+                            }
+                        </td>
+                        <td>
+                        @(item.DataLevantamento?.ToString("dd/MM/yyyy HH:mm") ?? "< por levantar >") <br />
+                            @(item.BibliotecarioLevantamento?.User?.NomeCompleto ?? "< sem informação bibliotecário >") (
+                            @(item.BibliotecarioLevantamento?.User?.UserName ?? "n/a") )
+                        </td>
+
+
+
+                        <td>
+                            <form asp-action="levantamento" method="post">
+                                <input type="hidden" name="ReqId" value="@item.Id" />
+                                <input type="hidden" name="op" value="entr" />
+                                <button type="submit" class="btn btn-primary">ENTREGA</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+
+<div id="restantes">
+    <h1>Requisições Entregues</h1>
+    <p>Livros que já foram entregues na biblioteca</p>
+
+    @if (restantes == null || restantes.Count == 0)
+    {
+        <p>̨&lt; sem resultados &gt</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Data de Requisição
+                    </th>
+                    <th>
+                        Data Limite Entrega
+                    </th>
+                    <th>
+                        Leitor
+                    </th>
+                    <th>
+                        Edição
+                    </th>
+                    <th>
+                        Unidade
+                    </th>
+                    <th>
+                        Data de Levantamento
+                    </th>
+                    <th>
+                        Data de Entrega
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in restantes)
+                {
+                    <tr>
+                        <td>
+                            @(item.DataRequisitado.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >")
+                        </td>
+                        <td>
+                            @(item.DataLimiteEntrega.ToString("dd/MM/yyyy HH:mm") ?? "< sem informação >") <br />
+                        </td>
+                        <td>
+                            <strong><a href="#">@Html.DisplayFor(modelItem => item.Leitor.User.NomeCompleto)</a></strong> (@item.Leitor.User.UserName) <br />
+                            <strong>email: </strong> <a href="mailto:@Html.DisplayFor(modelItem => item.Leitor.User.Email)">@Html.DisplayFor(modelItem => item.Leitor.User.Email)</a> <br />
+                            <strong>tel: </strong><a href="tel:@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)">@Html.DisplayFor(modelItem => item.Leitor.User.PhoneNumber)</a>
+
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaRua))
+                            {
+                                <br />
+
+                                @Html.DisplayFor(modelItem => item.Leitor.User.MoradaRua)
+
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaCodPostal))
+                            {
+                                <br />
+
+                                @Html.DisplayFor(modelItem => item.Leitor.User.MoradaCodPostal)
+                            }
+                            @if (!string.IsNullOrEmpty(item.Leitor.User.MoradaLocalidade))
+                            {
+                                <br /> @Html.DisplayFor(modelItem => item.Leitor.User.MoradaLocalidade)
+                            }
+
+
+                        </td>
+                        <td>
+                            <div class="tlivro">
+                                <div class="tlivro-img">
+                                    <img height="150" src="@(!string.IsNullOrEmpty(@item.EdiLivro.Capa) ? @item.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+                                </div>
+                                <div class="tlivro-txt">
+                                    <a href="/home/livro/@item.EdiLivroISBN">@item.EdiLivro.Titulo</a>
+                                    <div>
+                                        de
+                                        @{
+                                            var autorNames = item.EdiLivro.Autores.Select(a => $"<a href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                            @Html.Raw(string.Join(", ", autorNames))
+                                        }
+                                    </div>
+                                    <div><strong>Editor: </strong>@item.EdiLivro.Editor.Nome</div>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(item.EdiLivro.DescFisica))
+                                        {
+                                            <strong>Desc Física: </strong>
+
+                                            @Html.DisplayFor(modelItem => item.EdiLivro.DescFisica)
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UniLivro.Id) <br />
+                            <strong>Estado: </strong>@Html.DisplayFor(modelItem => item.UniLivro.Estado)
+
+                            @if (!string.IsNullOrEmpty(item.UniLivro.Anotacoes))
+                            {
+                                <br /> <strong>Anotações: </strong>
+
+                                <br /> @Html.DisplayFor(modelItem => item.UniLivro.Anotacoes)
+                            }
+                        </td>
+                        <td>
+                            @(item.DataLevantamento?.ToString("dd/MM/yyyy HH:mm") ?? "< por levantar >") <br />
+                            @(item.BibliotecarioLevantamento?.User?.NomeCompleto ?? "< sem informação bibliotecário >") (
+                            @(item.BibliotecarioLevantamento?.User?.UserName ?? "n/a") )
+                        </td>
+
+                        <td>
+                            @(item.DataEntrega?.ToString("dd/MM/yyyy HH:mm") ?? "< por entregar >") <br />
+                            @(item.BibliotecarioEntrega?.User?.NomeCompleto ?? "< sem informação bibliotecário >") (
+                            @(item.BibliotecarioEntrega?.User?.UserName ?? "n/a") )
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+

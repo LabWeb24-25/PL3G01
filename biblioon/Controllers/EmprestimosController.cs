@@ -54,40 +54,9 @@ namespace biblioon.Controllers
             return View("/Views/Bibliotecario/Emprestimos/Details.cshtml", emprestimo);
         }
 
-        // GET: Emprestimos/Create
-        [HttpGet("Create")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Create()
-        {
-            ViewData["IdBibliotecarioEntrega"] = new SelectList(_context.Bibliotecarios, "Id", "Id");
-            ViewData["IdBibliotecarioLevantamento"] = new SelectList(_context.Bibliotecarios, "Id", "Id");
-            ViewData["EdiLivroISBN"] = new SelectList(_context.EdiLivros, "Isbn", "Isbn");
-            ViewData["LeitorId"] = new SelectList(_context.Leitores, "Id", "Id");
-            ViewData["UniLivroId"] = new SelectList(_context.UniLivros, "Id", "Id");
-            return View("/Views/Bibliotecario/Emprestimos/Create.cshtml");
-        }
-
-        // POST: Emprestimos/Create
-        [HttpPost("Create")]
-        [Authorize(Roles = "Admin")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,LeitorId,UniLivroId,EdiLivroISBN,DataRequisitado,DataLimiteEntrega,DataLevantamento,DataEntrega,IsLevantado,IsEntregue,IdBibliotecarioLevantamento,IdBibliotecarioEntrega")] Emprestimo emprestimo)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(emprestimo);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IdBibliotecarioEntrega"] = new SelectList(_context.Bibliotecarios, "Id", "Id", emprestimo.IdBibliotecarioEntrega);
-            ViewData["IdBibliotecarioLevantamento"] = new SelectList(_context.Bibliotecarios, "Id", "Id", emprestimo.IdBibliotecarioLevantamento);
-            ViewData["EdiLivroISBN"] = new SelectList(_context.EdiLivros, "Isbn", "Isbn", emprestimo.EdiLivroISBN);
-            ViewData["LeitorId"] = new SelectList(_context.Leitores, "Id", "Id", emprestimo.LeitorId);
-            ViewData["UniLivroId"] = new SelectList(_context.UniLivros, "Id", "Id", emprestimo.UniLivroId);
-            return View("/Views/Bibliotecario/Emprestimos/Create.cshtml", emprestimo);
-        }
 
         // GET: Emprestimos/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(string id)
         {
@@ -110,6 +79,7 @@ namespace biblioon.Controllers
         }
 
         // POST: Emprestimos/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(string id, [Bind("Id,LeitorId,UniLivroId,EdiLivroISBN,DataRequisitado,DataLimiteEntrega,DataLevantamento,DataEntrega,IsLevantado,IsEntregue,IdBibliotecarioLevantamento,IdBibliotecarioEntrega")] Emprestimo emprestimo)
@@ -148,6 +118,7 @@ namespace biblioon.Controllers
         }
 
         // GET: Emprestimos/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -172,6 +143,7 @@ namespace biblioon.Controllers
         }
 
         // POST: Emprestimos/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost("Delete/{id}"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)

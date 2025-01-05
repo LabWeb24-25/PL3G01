@@ -1,0 +1,102 @@
+﻿@model IEnumerable<biblioon.Models.ApplicationUser>
+@{
+    ViewData["Title"] = "Bibliotecarios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var bibliotecarios = ViewData["bibliotecarios"] as IEnumerable<biblioon.Models.ApplicationUser>;
+    var bibliotecariosAtivos = ViewData["bibliotecariosAtivos"] as IEnumerable<biblioon.Models.Bibliotecario>;
+
+}
+
+<h1>Bibliotecarios desativados</h1>
+
+@if (bibliotecarios == null || bibliotecarios.Count() == 0)
+{
+    <p>
+        Não existem bibliotecários por ativar.
+    </p>
+} else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Nome Completo</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Data Criacao</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in bibliotecarios)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.UserName</td>
+                    <td>@item.NomeCompleto</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Email</td>
+                    <td>@item.DataCriacao.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <form asp-action="ChangeRole" method="post">
+                            <input type="hidden" name="userId" value="@item.Id" />
+                            <input type="hidden" name="op" value="enable" />
+                            <button type="submit" class="btn btn-primary">Enable</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<h1>Bibliotecarios ativados</h1>
+
+@if (bibliotecariosAtivos == null || bibliotecariosAtivos.Count() == 0)
+{
+    <p>
+        Não existem bibliotecários ativos.
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Nome Completo</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Data Criacao</th>
+                <th>Data Ativacao</th>
+                <th>Admin Ativador</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in bibliotecariosAtivos)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.User.UserName</td>
+                    <td>@item.User.NomeCompleto</td>
+                    <td>@item.User.PhoneNumber</td>
+                    <td>@item.User.Email</td>
+                    <td>@item.User.DataCriacao.ToString("dd/MM/yyyy")</td>
+                    <td>@item.DataAtivacao.ToString("dd/MM/yyyy")</td>
+                    <td>@item.AdminAtivador.User.UserName<td>
+                    <td>
+                        <form asp-action="ChangeRole" method="post">
+                            <input type="hidden" name="userId" value="@item.Id" />
+                            <input type="hidden" name="op" value="disable" />
+                            <button type="submit" class="btn btn-primary">Disable</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

@@ -8,7 +8,7 @@ namespace biblioon.Models
         [Key]
         public required string Id { get; set; }
 
-        public required string IdCriador { get; set; }
+        public string? IdCriador { get; set; }
 
         public required DateTime? DataCriacao { get; set; }
 
@@ -16,7 +16,7 @@ namespace biblioon.Models
         public required ApplicationUser User { get; set; }
 
         [ForeignKey("IdCriador")]
-        public required ApplicationUser Criador { get; set; }
+        public ApplicationUser? Criador { get; set; }
 
 
         public ICollection<Ban> BansAplicados { get; set; } = new List<Ban>();

@@ -1,0 +1,47 @@
+﻿@model biblioon.Controllers.AdminController.InputModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Criar novo admin</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form id="registerForm" asp-action="newAdmin" method="post">
+            <h2>Criar uma nova conta de bibliotecário.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" autocomplete="username" aria-required="true" placeholder="fulano123" />
+                <label asp-for="Username">Username</label>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="NomeCompleto" class="form-control" autocomplete="name" aria-required="true" placeholder="Fulano da Silva" />
+                <label asp-for="NomeCompleto">Nome Completo</label>
+                <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Email" class="form-control" autocomplete="email" aria-required="true" placeholder="fulano123@sapo.pt" />
+                <label asp-for="Email">Email</label>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="Password">Password</label>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <label asp-for="ConfirmPassword">Confirmar Password</label>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Registar</button>
+        </form>
+    </div>
+</div>

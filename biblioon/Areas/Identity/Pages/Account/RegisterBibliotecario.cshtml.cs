@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace biblioon.Areas.Identity.Pages.Account
@@ -135,10 +136,10 @@ namespace biblioon.Areas.Identity.Pages.Account
 
                 user.NomeCompleto = Input.NomeCompleto;
                 user.PhoneNumber = Input.PhoneNumber;
+                user.IsBibliotecario = true;
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -146,14 +147,50 @@ namespace biblioon.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    // ROLES AQUI
-                    if (!await _roleManager.RoleExistsAsync("Bibliotecario"))
+                    // Ensure the Bibliotecario role exists
+                    if (!await _roleManager.RoleExistsAsync("Bibliotecario") || !await _roleManager.RoleExistsAsync("PreBibliotecario"))
                     {
                         var role = new IdentityRole("Bibliotecario");
+                        var role2 = new IdentityRole("PreBibliotecario");
+                        await _roleManager.CreateAsync(role);
+                        await _roleManager.CreateAsync(role2);
+                    }
+
+                    await _userManager.AddToRoleAsync(user, "PreBibliotecario");
+
+                    // Ensure the Admin role exists
+                    if (!await _roleManager.RoleExistsAsync("Admin"))
+                    {
+                        var role = new IdentityRole("Admin");
                         await _roleManager.CreateAsync(role);
                     }
 
-                    await _userManager.AddToRoleAsync(user, "Bibliotecario");
+                    // Check if an admin user already exists
+                    var adminUser = await _userManager.FindByNameAsync("admin");
+                    if (adminUser == null)
+                    {
+                        adminUser = CreateUser();
+
+                        adminUser.UserName = "admin";
+                        adminUser.NomeCompleto = "Administrador por Default";
+                        adminUser.Email = "admin@local.pt";
+                        adminUser.EmailConfirmed = true;
+                        adminUser.IsAdmin = true;
+
+                        var resultAdmin = await _userManager.CreateAsync(adminUser, "GajoPadrão@1111");
+
+                        if (resultAdmin.Succeeded)
+                        {
+                            await _userManager.AddToRoleAsync(adminUser, "Admin");
+                        }
+                        else
+                        {
+                            foreach (var error in resultAdmin.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                        }
+                    }
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
