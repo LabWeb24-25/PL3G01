@@ -8,58 +8,63 @@
     var totalPages = ViewData["totalPages"] as int? ?? 1;
 }
 
-<div class="containerPesquisa" style="display:flex;">
-    <div class="barralateralpesquisa" style="width:250px;padding:10px;background-color:#f4f4f4;">
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Pesquisa Livros
+    </div>
+</div>
 
-        <div class="XdeXresultados"> @ViewData["textoresultados"]</div>
+<div class="primeiralinha">
+    <div class="XdeXresultados bookstxt left-column"> @ViewData["textoresultados"]</div>
 
-        <div class="pageCounter">
-            <button onclick="changePage(-1)" @if (currentPage == 1){<text>disabled</text>}>&lt
+    <div class="pageCounter right-column">
+            <button class="buttonreq" onclick="changePage(-1)" @if (currentPage == 1){<text>disabled</text>}>&lt
             </button>
             <span>Página @currentPage de @totalPages</span>
-            <button onclick="changePage(1)" @if (currentPage == totalPages){<text>disabled</text>}>&gt</button>
+            <button class="buttonreq" onclick="changePage(1)" @if (currentPage == totalPages)
+            {
+                <text>disabled</text>
+            }>&gt</button>
         </div>
+</div>
 
-
+<div class="segundalinha">
+    <div class="left-column2">
         <div class="seletorOrdenarPor">
-            <label for="sort">Ordenar por:</label>
-            <select id="sort" onchange="updateSortQueryString()">
-                <option value="popular">Mais requisitados</option>
-                <option value="popular-inv" >Menos requisitados</option>
-                <option value="alpha-az" >Alfabeticamente (A-Z)</option>
-                <option value="alpha-za" >Alfabeticamente (Z-A)</option>
-                <option value="data-desc" >Mais recente para mais antigo</option>
-                <option value="data-asc" >Mais antigo para mais recente</option>
+            <label class="bookstitle" for="sort">Ordenar por:</label>
+            <select id="sort" class="booksselect" onchange="updateSortQueryString()">
+                <option style="font-family: Arial" value="popular">Mais requisitados</option>
+                <option style="font-family: Arial" value="popular-inv">Menos requisitados</option>
+                <option style="font-family: Arial" value="alpha-az">Alfabeticamente (A-Z)</option>
+                <option style="font-family: Arial" value="alpha-za">Alfabeticamente (Z-A)</option>
+                <option style="font-family: Arial" value="data-desc">Mais recente para mais antigo</option>
+                <option style="font-family: Arial" value="data-asc">Mais antigo para mais recente</option>
             </select>
         </div>
 
 
-	    <div class="seletorNresultados">
-            <label for="npp">Resultados por página:</label>
-		    <select id="npp" onchange="updateNPPQueryString()">
-			    <option value="15">15</option>
-			    <option value="30">30</option>
-                <option value="60">60</option>
-			    <option value="90">90</option>
-		    </select>
-	    </div>
+        <div class="seletorNresultados">
+            <label class="bookstitle" for="npp">Resultados por página:</label>
+            <select id="npp" class="booksselect" onchange="updateNPPQueryString()">
+                <option style="font-family: Arial" value="15">15</option>
+                <option style="font-family: Arial" value="30">30</option>
+                <option style="font-family: Arial" value="60">60</option>
+                <option style="font-family: Arial" value="90">90</option>
+            </select>
+        </div>
 
         <div class="filtros">
-
-            <label>Filtros</label>
-            <button onclick="updateFilterQueryString()">Aplicar filtros</button>
-
-
+           
             @if (cgeneros != null && cgeneros.Count > 0)
             {
                 <div class="filtro seletorGeneros">
-                    <label>Géneros</label>
+                    <label class="bookstitle">Géneros</label>
                     @foreach (var g in cgeneros)
                     {
                         <div class="filter-option">
                             <input type="checkbox" id="@g.GeneroId">
-                        <label for="@g.GeneroId.">@g.Nome</label>
-                    </div>
+                            <label class="bookstxt" for="@g.GeneroId.">@g.Nome</label>
+                        </div>
                     }
                 </div>
             }
@@ -67,13 +72,13 @@
             @if (cautores != null && cautores.Count > 0)
             {
                 <div class="filtro seletorAutores">
-                    <label>Autores</label>
+                    <label class="bookstitle">Autores</label>
                     @foreach (var a in cautores)
                     {
                         <div class="filter-option">
                             <input type="checkbox" id="@a.Id">
-                        <label for="@a.Id">@a.Nome</label>
-                    </div>
+                            <label class="bookstxt" for="@a.Id">@a.Nome</label>
+                        </div>
                     }
                 </div>
             }
@@ -81,23 +86,22 @@
             @if (ceditores != null && ceditores.Count > 0)
             {
                 <div class="filtro seletorEditores">
-                    <label>Editores</label>
+                    <label class="bookstitle">Editores</label>
 
                     @foreach (var e in ceditores)
                     {
                         <div class="filter-option">
                             <input type="checkbox" id="@e.Id">
-                        <label for="@e.Id">@e.Nome</label>
-                    </div>
+                            <label class="bookstxt" for="@e.Id">@e.Nome</label>
+                        </div>
                     }
                 </div>
             }
 
         </div>
-
+        <button class="buttonreq" style="max-width:82%" onclick="updateFilterQueryString()">Aplicar filtros</button>
     </div>
-
-    <div class="resultados row6">
+    <div class="right-column2">
 
         @if (resultados == null || !resultados.Any())
         {
@@ -123,16 +127,16 @@
                     <div>
                         @{
                             var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
-                                @Html.Raw(string.Join(", ", autorNames))
+                            @Html.Raw(string.Join(", ", autorNames))
                         }
                     </div>
                 </div>
             }
         }
-
-
     </div>
 </div>
+
+
 
 <script>
     function changePage(direction) {
