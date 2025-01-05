@@ -5,46 +5,69 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gestão de Livros
+    </div>
+</div>
+<div class="portalborder">
+
+    <div class="portalcolumns">
+        <a class="linksbibliotecario" href="/Bibliotecario/">[Início]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Autores">[Autores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/EdiLivros">[Edições de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/UniLivros">[Unidades de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Editores">[Editores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Reqs">[Requisições]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Generos">[Géneros]</a>
+    </div>
+
+</div>
+
+
 <h1>Livros (edições)</h1>
 
+
+
+<div class="portalborder1">
 <p>
-    <a asp-action="Create">Create New</a>
+        <a class="fontlink" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
+                <th class="fonttitle">
+                Título
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Autores)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Generos)
+                <th class="fonttitle">
+                Géneros
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Sinopse)
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Capa)
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Idioma)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DescFisica)
+                <th class="fonttitle">
+                Descrição Física
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DataPublicacao)
+                Data de Publicação
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Editor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Isbn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BarCode)
+                IBSN
+            </th class="fonttitle">
+            <th class="fonttitle">
+                Código de Barras
             </th>
             <th></th>
         </tr>
@@ -52,27 +75,27 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Titulo)
             </td>
-            <td>
+            <td class="fonttxt">
                 @foreach (var autor in item.Autores)
                 {
                     <span>@autor.Nome</span>
                     <br />
                 }
             </td>
-            <td>
+            <td class="fonttxt">
                 @foreach (var genero in item.Generos)
                 {
                     <span>@genero.Nome</span>
                     <br />
                 }
             </td>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Sinopse)
             </td>
-            <td>
+            <td class="fonttxt">
                 @if (string.IsNullOrEmpty(item.Capa))
                 {
                     <span>&lt;sem fotografia&gt;</span>
@@ -82,30 +105,31 @@
                     <img src="@item.Capa" alt="Capa" style="max-width: 100px; max-height: 150px;" />
                 }
             </td>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Idioma)
             </td>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.DescFisica)
             </td>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.DataPublicacao)
             </td>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Editor.Nome)
             </td>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Isbn)
             </td>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.BarCode)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Isbn">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Isbn">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Isbn">Delete</a>
+            <td class="fonttxt">
+                        <a class="fontlink" asp-action="Edit" asp-route-id="@item.Isbn">Edit</a> |
+                        <a class="fontlink" asp-action="Details" asp-route-id="@item.Isbn">Details</a> |
+                        <a class="fontlink" asp-action="Delete" asp-route-id="@item.Isbn">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>

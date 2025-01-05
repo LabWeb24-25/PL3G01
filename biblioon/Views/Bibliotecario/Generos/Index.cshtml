@@ -5,15 +5,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Géneros</h1>
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gestão de Géneros
+    </div>
+</div>
+<div class="portalborder">
 
+    <div class="portalcolumns">
+        <a class="linksbibliotecario" href="/Bibliotecario/">[Início]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Autores">[Autores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/EdiLivros">[Edições de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/UniLivros">[Unidades de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Editores">[Editores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Reqs">[Requisições]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Generos">[Géneros]</a>
+    </div>
+
+</div>
+
+
+<h1>Géneros</h1>
+<div class="portalborder1">
 <p>
-    <a asp-action="Create">Create New</a>
+        <a class="fontlink" asp-action="Create">Adicionar Novo Género</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th></th>
@@ -22,15 +42,16 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.GeneroId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GeneroId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GeneroId">Delete</a>
+                        <a class="fontlink" asp-action="Edit" asp-route-id="@item.GeneroId">Edit</a> |
+                        <a class="fontlink" asp-action="Details" asp-route-id="@item.GeneroId">Details</a> |
+                        <a class="fontlink" asp-action="Delete" asp-route-id="@item.GeneroId">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>

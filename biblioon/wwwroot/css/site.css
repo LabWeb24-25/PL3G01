@@ -71,6 +71,12 @@ body {
     background-color: white;
 }
 
+.border1 {
+    border: none !important;
+    display: grid;
+    background-color: white;
+}
+
 .row1 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -630,6 +636,23 @@ body {
 
 .grid-item7{
     padding: 0px 0px 0px 190px;
+}
+
+.grid-item9 {
+    padding: 0px 0px 0px 20px;
+}
+
+.grid-autorestxt9 {
+    background-color: white;
+    text-align: justify;
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-indent: 2em;
+    font-family: "heebo";
+    font-size: 14px;
+    grid-column: span 2;
+    padding: 0px 20px 0px 100px;
 }
 
 .grid-autorestxt { 
@@ -1258,10 +1281,9 @@ col-md-9 {
     display: grid;
     grid-template-rows: repeat(2, auto);
     gap: 10px;
-    margin: 10px 200px;
+    margin: 50px 200px;
     text-align: center;
     position: relative;
-    justify-content: center;
     align-items: center;
     text-align: center;
 }
@@ -1269,18 +1291,40 @@ col-md-9 {
 .gridlivro1 {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    gap: 100px;
-    margin: 50px 0 0 150px;
+    gap: 20px;
+    margin: 50px 0 0 0px;
+    align-self:center;
+}
+
+.gridlivro2 {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 20px;
+    align-self: center;
+}
+    .gridlivro1 img {
+        align-self: flex-start;
+    }
+
+.colunaslivro {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 10px;
+    margin: 0 100px 0 0;
 }
 
 .grid-rowslivro {
     display: grid;
     grid-template-rows: repeat(6, auto);
-    gap: 10px;
-    align-content: center;
     align-items: center;
-    align-self: center;
-    text-align:left;
+    text-align: left;
+    border: 1px solid black;
+    padding: 20px;
+}
+
+.sinopseborder {
+    outline: 1px solid black;
+    padding: 20px;
 }
 
 .livrotexto {
@@ -1309,7 +1353,7 @@ col-md-9 {
     color: black !important;
     font-size: 14px;
     font-family: "heebo";
-    font-weight: 300;
+    font-weight: 500;
     align-content: center;
 }
 
@@ -1323,23 +1367,64 @@ col-md-9 {
 
 .livrotextotitulo {
     color: black !important;
-    font-size: 20px;
+    font-size: 18px;
     font-family: "heebo";
     font-weight: 600;
     align-content: center;
 }
 
-.buttonreq {
-    background-color: white;
-    height: 20px;
-    border: 1px solid black;
-    color: black;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    padding: 5px;
+.buttoninfolivro {
+    background-color: #3e5962;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-family: "Linux Libertine Display G";
+    letter-spacing: 0.5px;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
 }
+
+.buttonreq {
+    background-color: #3e5962; 
+    color: white; 
+    padding: 5px 10px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease; 
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 300;
+}
+
+
+    .buttonreq:hover {
+        background-color: #3e5962; 
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); 
+        transform: translateY(-2px); 
+    }
+
+
+    .buttonreq:active {
+        background-color: #3e5962; 
+        transform: translateY(0); 
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    }
+
+
+    .buttonreq:disabled {
+        background-color: #ccc;
+        color: #666; 
+        cursor: not-allowed; 
+        box-shadow: none; 
+    }
 
 .linksbibliotecario2 {
     all: unset;
@@ -1352,15 +1437,78 @@ col-md-9 {
 }
 
 .linksbibliotecario2:hover {
-    all: unset;
-    font-family: "heebo";
-    color: #484848 !important;
-    text-decoration: underline;
-    cursor: pointer;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    text-align: left;
+        all: unset;
+        font-family: "heebo";
+        color: #484848 !important;
+        text-decoration: underline;
+        cursor: pointer;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+        text-align: left;
+    }
+
+.butgap{
+    grid-template-columns: repeat(2, auto);
+    gap: 20px;
 }
+
+/*Pagina Index Bibliotecário*/
+
+.portalborder {
+    outline: 1px solid black;
+    padding: 20px;
+    margin: 0px 20px;
+}
+
+.portalborder1 {
+    outline: 1px solid black;
+    padding: 20px;
+    margin: 20px 20px;
+}
+
+.portalcolumns{
+    display:grid;
+    grid-template-columns: repeat(7,auto);
+}
+
+.fontlink {
+    color: #3e5962 !important;
+    font-size: 14px;
+    font-family: "heebo";
+    text-transform: capitalize;
+    text-decoration: underline;
+    text-decoration-color: white;
+}
+
+    .fontlink:hover {
+        color: #3e5962 !important;
+        text-decoration: underline;
+        text-decoration-color: #3e5962;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+        text-transform: capitalize;
+    }
+
+.fonttitle {
+    color: black !important;
+    font-size: 18px;
+    font-family: "heebo";
+    font-weight: 600;
+    align-content: center;
+}
+}
+
+.fonttxt {
+    background-color: white;
+    text-align: justify;
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-indent: 2em;
+    font-family: "heebo";
+    font-size: 14px;
+    grid-column: span 2;
+    padding: 0px 20px 0px 100px;
 
 
 #popup-overlay {

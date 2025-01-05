@@ -5,24 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gestão de Editores
+    </div>
+</div>
+<div class="portalborder">
+
+    <div class="portalcolumns">
+        <a class="linksbibliotecario" href="/Bibliotecario/">[Início]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Autores">[Autores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/EdiLivros">[Edições de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/UniLivros">[Unidades de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Editores">[Editores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Reqs">[Requisições]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Generos">[Géneros]</a>
+    </div>
+
+</div>
+
+
 <h1>Editores</h1>
 
+<div class="portalborder1">
 <p>
-    <a asp-action="Create">Create New</a>
+        <a class="fontlink" asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Descricao)
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Foto)
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Site)
             </th>
             <th></th>
@@ -31,24 +52,25 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Descricao)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Foto)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Site)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            <td >
+                        <a class="fontlink" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a class="fontlink" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a class="fontlink" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>
