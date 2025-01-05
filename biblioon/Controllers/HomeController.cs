@@ -160,16 +160,32 @@ namespace biblioon.Controllers
                     .ToList();
             }
 
-            if (!string.IsNullOrEmpty(generos))
-            {
-                var generosList = generos.Split(";").ToList();
-                livros = livros.Where(l => l.Generos.Any(g => generosList.Contains(g.GeneroId))).ToList();
-            }
-
             if (!string.IsNullOrEmpty(gsn))
             {
                 var generosList = gsn.Split(";").ToList();
-                livros = livros.Where(l => l.Generos.Any(g => g.ShName != null && generosList.Contains(g.ShName))).ToList();
+                var generoIds = cgeneros.Where(g => g.ShName != null && generosList.Contains(g.ShName)).Select(g => g.GeneroId).ToList();
+                generos = string.Join(";", generoIds);
+
+                var queryParams = new Dictionary<string, string>
+                {
+                    { "q", q },
+                    { "npp", npp },
+                    { "np", np },
+                    { "sort", sort },
+                    { "generos", generos },
+                    { "autores", autores },
+                    { "editores", editores }
+                };
+
+                var queryString = string.Join("&", queryParams.Where(kvp => !string.IsNullOrEmpty(kvp.Value)).Select(kvp => $"{kvp.Key}={kvp.Value}"));
+                return Redirect($"Books?{queryString}");
+            }
+        
+            
+            if (!string.IsNullOrEmpty(generos) && string.IsNullOrEmpty(gsn))
+            {
+                var generosList = generos.Split(";").ToList();
+                livros = livros.Where(l => l.Generos.Any(g => generosList.Contains(g.GeneroId))).ToList();
             }
 
 
