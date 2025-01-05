@@ -273,7 +273,7 @@
                 overlay.style.display = "flex";
             }
 
-		    if (!(privacyData && currentTime - privacyData.timestamp < 1 * 1 * 5 * 1000)) {
+			if (!(privacyData && currentTime - privacyData.timestamp < 30 * 24 * 60 * 1000)) {
 		      localStorage.removeItem("privacyAccepted");
               overlay.style.display = "flex";  
 		    }
