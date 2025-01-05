@@ -14,13 +14,15 @@ namespace biblioon.Controllers
         private readonly ILogger<BibliotecarioController> _logger;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(ILogger<BibliotecarioController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AdminController(ILogger<BibliotecarioController> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
 
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         public IActionResult Index()
         {
@@ -102,7 +104,7 @@ namespace biblioon.Controllers
                 if (await _userManager.IsInRoleAsync(user, "Bibliotecario"))
                 {
                     Console.WriteLine("ESTA NO ROLE Bibliotecario");
-                    return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                    return RedirectToAction("mBibliotecarios");
                 }
 
                 if (await _userManager.IsInRoleAsync(user, "PreBibliotecario"))
@@ -113,7 +115,7 @@ namespace biblioon.Controllers
                     if (currUser == null)
                     {
                         Console.WriteLine("CURRUSER NULL");
-                        return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                        return RedirectToAction("mBibliotecarios");
                     }
 
 
@@ -122,7 +124,7 @@ namespace biblioon.Controllers
                     if (currAdmin == null)
                     {
                         Console.WriteLine("CURRADMIN NULL");
-                        return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                        return RedirectToAction("mBibliotecarios");
                     }
 
                     var existingBibliotecario = await _context.Bibliotecarios.FirstOrDefaultAsync(b => b.Id == user.Id);
@@ -159,7 +161,7 @@ namespace biblioon.Controllers
                     await _userManager.RemoveFromRoleAsync(user, "PreBibliotecario");
 
                     Console.WriteLine("MUDOU PARA BIBLIOTECARIO");
-                    return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                    return RedirectToAction("mBibliotecarios");
                 }
 
 
@@ -170,7 +172,7 @@ namespace biblioon.Controllers
                 if (await _userManager.IsInRoleAsync(user, "PreBibliotecario"))
                 {
                     Console.WriteLine("ESTA NO ROLE PreBibliotecario");
-                    return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                    return RedirectToAction("mBibliotecarios");
                 }
 
                 if (await _userManager.IsInRoleAsync(user, "Bibliotecario"))
@@ -179,7 +181,7 @@ namespace biblioon.Controllers
                     if (bibliotecario == null)
                     {
                         Console.WriteLine("BIBLIOTECARIO NULL");
-                        return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                        return RedirectToAction("mBibliotecarios");
                     }
 
                     bibliotecario.IsAtivado = false;
@@ -190,19 +192,214 @@ namespace biblioon.Controllers
                     await _userManager.RemoveFromRoleAsync(user, "Bibliotecario");
 
                     Console.WriteLine("MUDOU PARA PREBIBLIOTECARIO");
-                    return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                    return RedirectToAction("mBibliotecarios");
                 }
 
             }
             else
             {
                 Console.WriteLine("ELSE");
-                return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+                return RedirectToAction("mBibliotecarios");
             }
 
             Console.WriteLine("FIM");
-            return View("/Views/Admin/mBibliotecarios/Index.cshtml");
+            return RedirectToAction("mBibliotecarios");
         }
+
+
+        [HttpGet("Admin/leitorBans")]
+        public async Task<IActionResult> leitorBans()
+        {
+            var users = await _context.Users.ToListAsync();
+            var leitores = new List<ApplicationUser>();
+
+            foreach (var user in users)
+            {
+                if (await _userManager.IsInRoleAsync(user, "Leitor"))
+                {
+                    leitores.Add(user);
+                }
+            }
+
+            ViewData["leitores"] = leitores;
+
+
+            var leitoresBanidos = _context.Bans
+                .Include(b => b.User)
+                .Include(a => a.Admin)
+                    .ThenInclude(a => a.User)
+                .Where(b => b.DataFim == null).ToList();
+
+            var bansAnteriores = _context.Bans
+                .Include(b => b.User)
+                .Include(a => a.Admin)
+                    .ThenInclude(a => a.User)
+                .Where(b => b.DataFim != null).ToList();
+
+            ViewData["bansanteriores"] = bansAnteriores;
+
+            ViewData["leitoresbanidos"] = leitoresBanidos;
+
+            return View("/Views/Admin/leitorBans/Index.cshtml");
+        }
+
+        [HttpPost("Admin/leitorbans")]
+        public async Task<IActionResult> ManageBan(string userId, string op) {
+
+
+            var currUser = await _userManager.GetUserAsync(User);
+            if (currUser == null)
+            {
+                return NotFound();
+            }
+
+
+            var currAdmin = await _context.Admins.FirstOrDefaultAsync(a => a.Id == currUser.Id);
+            if (currAdmin == null)
+            {
+                return NotFound();
+            }
+
+            Console.WriteLine("OP: " + op);
+            Console.WriteLine("USERID: " + userId);
+
+            if (op == "unban")
+            {
+
+                // to unban, remove the role LeitorBanido and add the role Leitor
+                // and then set the datafim of the ban to the current date
+                // and leitor.isbanido to false
+
+
+
+                var ban = _context.Bans
+                    .Include(b => b.User)
+                    .ThenInclude(b => b.User)
+                    .Include(b => b.Admin)
+                    .FirstOrDefault(b => b.Id == userId);
+
+
+                if (ban == null)
+                {
+                    return NotFound();
+                }
+
+                var user = ban.User.User;
+                var leitor = ban.User;
+
+                if (await _userManager.IsInRoleAsync(user, "Leitor"))
+                {
+                    Console.WriteLine("ESTA NO ROLE Leitor");
+                    return RedirectToAction("leitorBans");
+                }
+
+                if (await _userManager.IsInRoleAsync(user, "LeitorBanido"))
+                {
+
+                    if (leitor == null)
+                    {
+                        Console.WriteLine("leitor NULL");
+                        return RedirectToAction("leitorBans");
+                    }
+
+                    if (ban == null)
+                    {
+                        Console.WriteLine("ban NULL");
+                        return RedirectToAction("leitorBans");
+                    }
+
+
+                    await _userManager.AddToRoleAsync(user, "Leitor");
+                    await _userManager.RemoveFromRoleAsync(user, "LeitorBanido");
+
+                    leitor.IsBanido = false;
+                    _context.Leitores.Update(leitor);
+                    await _context.SaveChangesAsync();
+
+                    ban.DataFim = DateTime.Now;
+                    _context.Bans.Update(ban);
+                    await _context.SaveChangesAsync();
+
+                    Console.WriteLine("MUDOU PARA Leitor");
+                    return RedirectToAction("leitorBans");
+                }
+
+            }
+            else if (op == "ban")
+            {
+
+
+                var user = await _userManager.FindByIdAsync(userId);
+
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+
+                if (await _userManager.IsInRoleAsync(user, "LeitorBanido"))
+                {
+                    Console.WriteLine("ESTA NO ROLE LeitorBanido");
+                    return RedirectToAction("leitorBans");
+                }
+
+                if (await _userManager.IsInRoleAsync(user, "Leitor"))
+                {
+                    var leitor = await _context.Leitores
+                        .Include(l => l.User)
+                        .FirstOrDefaultAsync(b => b.Id == user.Id);
+                    if (leitor == null)
+                    {
+                        Console.WriteLine("leitor NULL");
+                        return RedirectToAction("leitorBans");
+                    }
+
+
+                    Ban banData = new Ban
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        IdUser = user.Id,
+                        DataInicio = DateTime.Now,
+                        Motivo = "Banido por um administrador",
+                        IdAdmin = currAdmin.Id,
+                        Admin = currAdmin,
+                        User = leitor
+
+                    };
+
+
+                    if (await _context.Roles.FirstOrDefaultAsync(r => r.Name == "LeitorBanido") == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("LeitorBanido"));
+                    }
+
+                    await _userManager.AddToRoleAsync(user, "LeitorBanido");
+                    await _userManager.RemoveFromRoleAsync(user, "Leitor");
+
+                    _context.Bans.Add(banData);
+                    await _context.SaveChangesAsync();
+
+                    leitor.IsBanido = true;
+                    _context.Leitores.Update(leitor);
+                    await _context.SaveChangesAsync();
+
+                    Console.WriteLine("MUDOU PARA LeitorBanido");
+                    return RedirectToAction("leitorBans");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("ELSE");
+                return RedirectToAction("leitorBans");
+            }
+
+            Console.WriteLine("FIM");
+            return RedirectToAction("leitorBans");
+
+
+        }
+
 
 
         [HttpGet("Admin/newAdmin")]

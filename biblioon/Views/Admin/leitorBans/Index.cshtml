@@ -1,0 +1,157 @@
+﻿@model IEnumerable<biblioon.Models.ApplicationUser>
+
+@{
+    ViewData["Title"] = "Leitores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var leitores = ViewData["leitores"] as IEnumerable<biblioon.Models.ApplicationUser>;
+    var leitoresBanidos = ViewData["leitoresBanidos"] as IEnumerable<biblioon.Models.Ban>;
+    var bansAnteriores = ViewData["bansanteriores"] as IEnumerable<biblioon.Models.Ban>;
+}
+
+<h1>Leitores ativos</h1>
+
+@if (leitores == null || leitores.Count() == 0)
+{
+    <p>
+        Não existem leitores desbanidos.
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Nome Completo</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Morada</th>
+                <th>Data Criacao</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in leitores)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.UserName</td>
+                    <td>@item.NomeCompleto</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Email</td>
+                    <td>@item.MoradaRua<br />@item.MoradaCodPostal<br />@item.MoradaLocalidade</td>
+                    <td>@item.DataCriacao.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <form asp-action="ManageBan" method="post">
+                            <input type="hidden" name="userId" value="@item.Id" />
+                            <input type="hidden" name="op" value="ban" />
+                            <button type="submit" class="btn btn-primary">Banir</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h1>Leitores banidos</h1>
+
+@if (leitoresBanidos == null || leitoresBanidos.Count() == 0)
+{
+    <p>
+        Não existem leitores banidos.
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Nome Completo</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Morada</th>
+                <th>Data Criacao</th>
+                <th>Ban</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in leitoresBanidos)
+            {
+                <tr>
+                    <td>@item.User.User.Id</td>
+                    <td>@item.User.User.UserName</td>
+                    <td>@item.User.User.NomeCompleto</td>
+                    <td>@item.User.User.PhoneNumber</td>
+                    <td>@item.User.User.Email</td>
+                    <td>@item.User.User.MoradaRua<br />@item.User.User.MoradaCodPostal<br />@item.User.User.MoradaLocalidade</td>
+                    <td>@item.User.User.DataCriacao.ToString("dd/MM/yyyy")</td>
+                    <td>@item.Motivo<br />
+                        @item.Admin.User.UserName - @item.Admin.User.NomeCompleto<br />
+                        Início: @(item.DataInicio?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")  <br />
+                        Fim: @(item.DataFim?.ToString("dd/MM/yyyy HH:mm") ?? "N/A") <br />
+                    </td>
+                    <td>
+                        <form asp-action="ManageBan" method="post">
+                            <input type="hidden" name="userId" value="@item.Id" />
+                            <input type="hidden" name="op" value="unban" />
+                            <button type="submit" class="btn btn-primary" @(item.DataFim != null ? "disabled" : "")>Desbanir</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<h1>Bans anteriores</h1>
+
+@if (bansAnteriores == null || bansAnteriores.Count() == 0)
+{
+    <p>
+        Não existem bans interiores.
+    </p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Nome Completo</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Morada</th>
+                <th>Data Criacao</th>
+                <th>Ban</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in bansAnteriores)
+            {
+                <tr>
+                    <td>@item.User.User.Id</td>
+                    <td>@item.User.User.UserName</td>
+                    <td>@item.User.User.NomeCompleto</td>
+                    <td>@item.User.User.PhoneNumber</td>
+                    <td>@item.User.User.Email</td>
+                    <td>@item.User.User.MoradaRua<br />@item.User.User.MoradaCodPostal<br />@item.User.User.MoradaLocalidade</td>
+                    <td>@item.User.User.DataCriacao.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        @item.Motivo<br />
+                        @item.Admin.User.UserName - @item.Admin.User.NomeCompleto<br />
+                        Início: @(item.DataInicio?.ToString("dd/MM/yyyy HH:mm") ?? "N/A")  <br />
+                        Fim: @(item.DataFim?.ToString("dd/MM/yyyy HH:mm") ?? "N/A") <br />
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
