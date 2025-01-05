@@ -22,10 +22,15 @@ namespace biblioon.Controllers
 
         public IActionResult Index()
         {
-            var lExatas = _context.EdiLivros
+
+            var allLivros = _context.EdiLivros
                 .Include(a => a.Autores)
                 .Include(g => g.Generos)
                 .Include(e => e.Editor)
+                .ToList();
+
+
+            var lExatas = allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "exatas"))
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
@@ -34,10 +39,7 @@ namespace biblioon.Controllers
             ViewData["lExatas"] = lExatas;
 
             
-            var lNaturais = _context.EdiLivros
-                .Include(a => a.Autores)
-                .Include(g => g.Generos)
-                .Include(e => e.Editor)
+            var lNaturais = allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "naturais"))
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
@@ -45,10 +47,7 @@ namespace biblioon.Controllers
 
             ViewData["lNaturais"] = lNaturais;
 
-            var lTecnologicas = _context.EdiLivros
-                .Include(a => a.Autores)
-                .Include(g => g.Generos)
-                .Include(e => e.Editor)
+            var lTecnologicas = allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "tecnologicas"))
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
@@ -56,10 +55,7 @@ namespace biblioon.Controllers
 
             ViewData["lTecnologicas"] = lTecnologicas;
 
-            var lAgrarias = _context.EdiLivros
-                .Include(a => a.Autores)
-                .Include(g => g.Generos)
-                .Include(e => e.Editor)
+            var lAgrarias = allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "agrarias"))
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
@@ -67,10 +63,7 @@ namespace biblioon.Controllers
 
             ViewData["lAgrarias"] = lAgrarias;
 
-            var lHumanas = _context.EdiLivros
-                .Include(a => a.Autores)
-                .Include(g => g.Generos)
-                .Include(e => e.Editor)
+            var lHumanas = allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "humanasesociais"))               
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
@@ -78,10 +71,7 @@ namespace biblioon.Controllers
 
             ViewData["lHumanas"] = lHumanas;
 
-            var lSaude = _context.EdiLivros
-                .Include(a => a.Autores)
-                .Include(g => g.Generos)
-                .Include(e => e.Editor)
+            var lSaude = allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "saude"))
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
@@ -89,10 +79,7 @@ namespace biblioon.Controllers
 
             ViewData["lSaude"] = lSaude;
 
-            var lFiccao = _context.EdiLivros
-                .Include(a => a.Autores)
-                .Include(g => g.Generos)
-                .Include(e => e.Editor)
+            var lFiccao =allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "ficcao"))
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
@@ -100,10 +87,7 @@ namespace biblioon.Controllers
 
             ViewData["lFiccao"] = lFiccao;
 
-            var lNaoFiccao = _context.EdiLivros
-                .Include(a => a.Autores)
-                .Include(g => g.Generos)
-                .Include(e => e.Editor)
+            var lNaoFiccao = allLivros
                 .Where(l => l.Generos.Any(g => g.ShName == "naoficcao"))
                 .OrderByDescending(l => l.NEmprestimos)
                 .Take(5)
