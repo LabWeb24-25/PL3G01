@@ -4,39 +4,56 @@
     ViewData["Title"] = "Livros (unidades)";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gestão de Livro
+    </div>
+</div>
+<div class="portalborder">
 
+    <div class="portalcolumns">
+        <a class="linksbibliotecario" href="/Bibliotecario/">[Início]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Autores">[Autores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/EdiLivros">[Edições de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/UniLivros">[Unidades de Livros]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Editores">[Editores]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Reqs">[Requisições]</a>
+        <a class="linksbibliotecario" href="/Bibliotecario/Generos">[Géneros]</a>
+    </div>
+
+</div>
 <h1>Livros (unidades)</h1>
-
+<div class="portalborder1">
 <p id="amostrar">
     @ViewData["amostrar"]
 </p>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="fontlink" asp-action="Create">Criar Livro Novo</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EdiLivro)
+            <th class="fonttitle">
+                Editar Livro
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Estado)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PrecoAquisicao)
+                <th class="fonttitle">
+                    Preco de Aquisição
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DataAquisicao)
+                <th class="fonttitle">
+                    Data de Aquisição
             </th>
-            <th>
+                <th class="fonttitle">
                 @Html.DisplayNameFor(model => model.Requisitado)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Disponivel)
+                <th class="fonttitle">
+                    Disponível
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Anotacoes)
+                <th class="fonttitle">
+                    Anotações
             </th>
             <th></th>
         </tr>
@@ -44,33 +61,34 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.EdiLivro.Titulo) - @Html.DisplayFor(modelItem => item.EdiLivro.Isbn) - @string.Join(", ", item.EdiLivro.Autores.Select(a => a.Nome)) - @Html.DisplayFor(modelItem => item.EdiLivro.Editor.Nome)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.PrecoAquisicao)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.DataAquisicao)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Requisitado)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Disponivel)
             </td>
-            <td>
+                    <td class="fonttxt">
                 @Html.DisplayFor(modelItem => item.Anotacoes)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="fontlink" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a class="fontlink" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a class="fontlink" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>

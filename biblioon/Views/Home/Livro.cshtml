@@ -9,9 +9,12 @@
 </div>
 
 <div class="borderlivro">
-    <div class="linksbibliotecario" style="text-align: center;">
-        <a class="linksbibliotecario" href="/Bibliotecario/EdiLivros/Edit/@Model.Isbn">[editar no painel bibliotecário]</a>
+    @if (User.IsInRole("Bibliotecario"))
+    {
+        <div class="linksbibliotecario" style="text-align: center;">
+            <a class="linksbibliotecario" href="/Bibliotecario/EdiLivros/Edit/@Model.Isbn">[editar livro no painel bibliotecário]</a>
     </div>
+    }
     <div class="gridlivro1">
         <div>
             <img height="250" src="@(!string.IsNullOrEmpty(Model.Capa) ? Model.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
@@ -24,32 +27,42 @@
                 }
             </div>
 
-            @if (User.IsInRole("Bibliotecario"))
-            {
-                <div class="linksbibliotecario2">
-                    <a class="linksbibliotecario2" style="text-align:left" href="/Bibliotecario/UniLivros/?isbn=@Model.Isbn">[editar no painel bibliotecário]</a>
-                </div>
-            }
 
             @if (Model.UniLivros != null && Model.UniLivros.Any())
             {
-                <div class="livrotextotitulo" style="text-align:left">
-                    Lista de Exemplares
-                </div>
+                <div class="colunaslivro">
+                    <div class="livrotextotitulo" style="text-align:left">
+                        EXEMPLARES DISPONÍVEIS:
+                    </div>
+                    @if (User.IsInRole("Bibliotecario"))
+                    {
+                        <div class="linksbibliotecario2">
+                            <a class="linksbibliotecario2" style="text-align:left" href="/Bibliotecario/UniLivros/?isbn=@Model.Isbn">[editar no painel bibliotecário]</a>
+                        </div>
+                    }
+                </div>    
+
+
 
                 var counter = 1;
                 @foreach (var e in Model.UniLivros)
                 {
-                    <div class="livrotexto2" style="text-align:left">
-                        Exemplar @counter; @e.Estado
-                        @if (e.Requisitado == false && e.Disponivel == true)
-                        {
-                            <a class="buttonreq livrotexto2" href="/home/requisitar/@e.Id">Requisitar</a>
-                        }
-                        else
-                        {
-                            <button disabled class="livrotexto2" style="text-align:left">Indisponível</button>
-                        }
+                    <div class="colunaslivro">
+                        <div class="livrotexto2 " style="text-align:left">
+                            @counter. Exemplar @counter: @e.Estado
+                        </div>
+                            @if (e.Requisitado == false && e.Disponivel == true)
+                            {
+                                <div class="livrotexto2">
+                                    <a class="buttonreq" href="/home/requisitar/@e.Id">REQUISITAR</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="livrotexto2">
+                                    <button disabled class="buttonreq">INDISPONÍVEL</button>
+                                </div>
+                            }
                     </div>
                     counter++;
                 }
@@ -71,25 +84,28 @@
 
 
 <div class="borderlivro2">
-    <div>
-        <p class="livrotexto3">@Model.Sinopse</p>
+    <div class="sinopseborder">
+        <p class="livrotexto2">@Model.Sinopse</p>
     </div>
-    <div>
-        <button onclick="showInfo('livro')">Sobre o Livro</button>
-        <button onclick="showInfo('autor')">Sobre o Autor</button>
+</div>
+        <div class="grid-titleautores butgap" style="margin: 50px 0px 0px 0px">
+        <button class="buttoninfolivro" onclick="showInfo('livro')">Sobre o Livro</button>
+        <button class="buttoninfolivro" onclick="showInfo('autor')">Sobre o Autor</button>
+        </div>
+<div class="borderlivro2 sinopseborder">
         <div id="info">
             <div id="livroInfo">
                 <h2>Sobre o Livro</h2>
-                <div>
+                <div class="livrotexto2">
                     ISBN: @Model.Isbn
                 </div>
-                <div>
+                <div class="livrotexto2">
                     Editor: @Model.Editor.Nome
                 </div>
-                <div>
+                <div class="livrotexto2">
                     Géneros: @Model.Generos.Select(c => c.Nome).Aggregate((a, b) => $"{a}, {b}")
                 </div>
-                <div>
+                <div class="livrotexto2">
                     Data de publicação: @Model.DataPublicacao.ToString("dd/MM/yyyy")
                 </div>
             </div>
@@ -97,25 +113,26 @@
                 <h2>Sobre o Autor</h2>
                 @foreach (var autor in Model.Autores)
                 {
-                    <div class="border">
+                    <div class="border1">
                         <div class="row9">
-                            <div class="grid-item">
+                        <div class="grid-item livrotextotitulo">
                                 <span id="nomeAutor">@autor.Nome</span>
                             </div>
                         </div>
-                        <div class="row8">
-                            <div class="grid-item">
-                                <img height="250" src="@(!string.IsNullOrEmpty(autor.Foto) ? autor.Foto : "/images/placeholder.svg")" alt="Foto do Autor">
-                            </div>
-                            <div class="grid-item" id="descAutor">
-                                @(string.IsNullOrEmpty(autor.Desc) ? "< sem descrição >" : autor.Desc)
-                            </div>
+                    <div class="gridlivro2">
+                        <div class="grid-item9">
+                            <img height="250" src="@(!string.IsNullOrEmpty(autor.Foto) ? autor.Foto : "/images/placeholder.svg")" alt="Foto do Autor">
                         </div>
+                        <div class="grid-autorestxt9">
+                            @(!string.IsNullOrEmpty(autor.Desc) ? autor.Desc : "< sem descrição >")
+                        </div>
+                        </div>
+
                     </div>
                 }
             </div>
         </div>
-    </div>
+
 
     <script>
         function showInfo(type) {
