@@ -1354,13 +1354,18 @@ col-md-9 {
     text-align:left;
 }
 
-    .linksbibliotecario2:hover {
-        all: unset;
-        font-family: "heebo";
-        color: #484848 !important;
-        text-decoration: underline;
-        cursor: pointer;
-        text-decoration-thickness: 1px;
-        text-underline-offset: 3px;
-        text-align: left;
-    }
+.linksbibliotecario2:hover {
+    all: unset;
+    font-family: "heebo";
+    color: #484848 !important;
+    text-decoration: underline;
+    cursor: pointer;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-align: left;
+}
+
+
+#popup-overlay {
+    display: none;
+}
