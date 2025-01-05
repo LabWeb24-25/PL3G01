@@ -148,13 +148,15 @@ namespace biblioon.Areas.Identity.Pages.Account
                     _logger.LogInformation("User created a new account with password.");
 
                     // Ensure the Bibliotecario role exists
-                    if (!await _roleManager.RoleExistsAsync("Bibliotecario"))
+                    if (!await _roleManager.RoleExistsAsync("Bibliotecario") || !await _roleManager.RoleExistsAsync("PreBibliotecario"))
                     {
                         var role = new IdentityRole("Bibliotecario");
+                        var role2 = new IdentityRole("PreBibliotecario");
                         await _roleManager.CreateAsync(role);
+                        await _roleManager.CreateAsync(role2);
                     }
 
-                    await _userManager.AddToRoleAsync(user, "Bibliotecario");
+                    await _userManager.AddToRoleAsync(user, "PreBibliotecario");
 
                     // Ensure the Admin role exists
                     if (!await _roleManager.RoleExistsAsync("Admin"))
