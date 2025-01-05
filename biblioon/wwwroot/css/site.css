@@ -1937,3 +1937,6 @@ input[type="checkbox"] {
     align-items: center;
     text-align: center;
 }
+.h1 {
+    display: none;
+}
