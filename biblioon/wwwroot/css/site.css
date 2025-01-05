@@ -1751,3 +1751,30 @@ input[type="checkbox"] {
     text-align: center;
     align-content: center;
 }
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #3e5962;
+}
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #50727e;
+    }
+
+
+/* Buttons */
+::-webkit-scrollbar-button:single-button {
+    background-color: #3e5962;
+    height: 20px;
+}
