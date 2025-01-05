@@ -1455,3 +1455,62 @@ col-md-9 {
     grid-template-columns: repeat(2, auto);
     gap: 20px;
 }
+
+/*Pagina Index Bibliotecário*/
+
+.portalborder {
+    outline: 1px solid black;
+    padding: 20px;
+    margin: 0px 20px;
+}
+
+.portalborder1 {
+    outline: 1px solid black;
+    padding: 20px;
+    margin: 20px 20px;
+}
+
+.portalcolumns{
+    display:grid;
+    grid-template-columns: repeat(7,auto);
+}
+
+.fontlink {
+    color: #3e5962 !important;
+    font-size: 14px;
+    font-family: "heebo";
+    text-transform: capitalize;
+    text-decoration: underline;
+    text-decoration-color: white;
+}
+
+    .fontlink:hover {
+        color: #3e5962 !important;
+        text-decoration: underline;
+        text-decoration-color: #3e5962;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+        text-transform: capitalize;
+    }
+
+.fonttitle {
+    color: black !important;
+    font-size: 18px;
+    font-family: "heebo";
+    font-weight: 600;
+    align-content: center;
+}
+}
+
+.fonttxt {
+    background-color: white;
+    text-align: justify;
+    position: relative;
+    display: flex;
+    align-items: center;
+    text-indent: 2em;
+    font-family: "heebo";
+    font-size: 14px;
+    grid-column: span 2;
+    padding: 0px 20px 0px 100px;
+}
