@@ -2,31 +2,37 @@
 	ViewData["Title"] = "Historico";
 }
 
-<div class="border">
-
-	<div class="row9">
-		<div class="grid-item">
-			Historico
+<div class="grid-autores">
+    <div class="grid-titleautores">
+			Histórico
 		</div>
 	</div>
 
-	<div class="row10">
-		<div class="grid-item">
-			1 - NUMERO SELECIONADO of TOTAL items
-		</div>
-		<div class="grid-item">
-		<label for="sort">Sort by:</label>
-		<select id="sort">
-		  <option value="newest">Newest to Oldest</option>
-		  <option value="oldest">Oldest to Newest</option>
-		</select>		</div>
-		<div class="grid-item">
-		<select id="results">
-		  <option value="5">5</option>
-		  <option value="10">10</option>
-		  <option value="100">100</option>
-		</select>		
-		</div>
+	<div class="gridh">
+        <div class="grid-item"> </div>
+		<div class="livroh">
+        A mostrar 1 - 1 de 1 livros
+    </div>
+    <div class="gridh2">
+        <div class="caixa">
+            <label for="sort" class="htxt">Ordenar por:</label>
+            <select id="sort" class="lableh1">
+                <option value="newest" class="lableh">Mais recente para mais antigo</option>
+                <option value="oldest" class="lableh">Mais antigo para mais recente</option>
+            </select>
+        </div>
+        <div class="caixa">
+            <label for="results" class="htxt"> Resultados: </label>
+            <select id="results" class="lableh1">
+                <option value="5" class="lableh"> 5</option>
+                <option value="10" class="lableh">10</option>
+                <option value="100" class="lableh">100</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="grid-item"> </div>
 	</div>
 
 
@@ -35,7 +41,7 @@
 	
 
 </div>
-</div>
+
 
 
 <script>
@@ -48,33 +54,46 @@
 			const item = document.createElement('div');
 			item.className = 'item';
 			item.innerHTML = `
-				<div class="row8" >
+    <div class="rowh">
+    <div class="colunaslivroh">
+            <div class="livroh">
+                <a href="#" class="livroh">
 
-		<div class="grid-item">
-			<a href="#">
+                    <img src="/images/placeholder.svg">
+                </a>
 
-						<img src="/images/placeholder.svg">
-		</a>
+            </div>
 
-		</div>
+            <div class="coluninha lableh4" >
+                Nome do Livro
+                <div>
+                    <a href="#" class="lableh">
+                        NOME DO ESCRITOR
+                    </a>
+                </div>
+                <div class="grid-item"></div>
+                <div class="rating">
 
-	<div  >
-		NOME DO LIVRO
+                </div>
+            </div>
+            <div class="coluninha">
+                <div class="lableh2">
+                    Data de Requesição: 00/00/00
+                </div>
+                <div class="lableh2">
+                    Data  Limite de Entrega: 00/00/00
+                </div>
+                <div class="grid-item"> </div>
+                <div class="lableh2">
+                    Data de Levantamento: 00/00/00
+                </div>
+                <div class="lableh2">
+                    Data de Entrega: 00/00/00
+                </div>
+            </div>
 
-	<div>
-		<a href="#">
-			NOME DO ESCRITOR
-		</a>
-	</div>
-
-			<div>
-					Data Requesicao:00/00/00
-			</div>
-			<div>
-				Data Entrega:00/00/00
-			</div>
-						</div>
-
+    </div>
+    </div>
 			`;
 			itemContainer.appendChild(item);
 		}

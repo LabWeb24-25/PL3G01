@@ -11,8 +11,8 @@
     
     @if (User.IsInRole("Bibliotecario"))
     {
-    <div class="linksbibliotecario" style="text-align: center;"> 
-            <a href="/Bibliotecario/Autores/Edit/@Model.Id">[editar no painel bibliotecário]</a>
+    <div class="linksbibliotecario">
+            <a class="linksbibliotecario" href="/Bibliotecario/Autores/Edit/@Model.Id">[ EDITAR AUTOR NO PAINEL DE BIBLIOTECÁRIO ]</a>
     </div>
     }
 </div>
@@ -59,7 +59,7 @@
                     <div>
                         <span class="bookproperty2">
                             @{
-                                var autorNames = livro.Autores.Select(a => $"<a href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                                var autorNames = livro.Autores.Select(a => $"<a class=\"bookproperty2\" href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
                                 @Html.Raw(string.Join(", ", autorNames))
                             }
                         </span>
