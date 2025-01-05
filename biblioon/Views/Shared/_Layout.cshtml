@@ -265,7 +265,7 @@
 				  const privacyData = JSON.parse(localStorage.getItem("privacyAccepted"));
 		const currentTime = new Date().getTime();
 
-		if (privacyData && currentTime - privacyData.timestamp < 30 * 24 * 60 * 1000) {
+		if (privacyData && currentTime - privacyData.timestamp < 1 * 1 * 1 * 1000) {
 		  overlay.style.display = "none";
 		} else {
 		  localStorage.removeItem("privacyAccepted");
