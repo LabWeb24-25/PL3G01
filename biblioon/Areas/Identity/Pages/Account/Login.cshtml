@@ -5,49 +5,47 @@
     ViewData["Title"] = "Log in";
 }
 
-<div class="row">
-    <div >
-        <section>
-            <form id="account" method="post">
-                <h2>Iniciar sessao</h2>
-                <hr />
-                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="fulano123" />
-                    <label asp-for="Input.Username" class="form-label">Username</label>
-                    <span asp-validation-for="Input.Username" class="text-danger"></span>
-                </div>
-                <div class="form-floating mb-3">
-                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password" />
-                    <label asp-for="Input.Password" class="form-label">Password</label>
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
-                <div>
-                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Iniciar sessao</button>
-                </div>
-                <div>
-					<p>
-						<a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Criar conta </a>
-					</p>
-
-					<p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Esqueceu-se da palavra chave?</a>
-                    </p>
-
-                    <p>
-                        <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Reenviar confirmacao por email</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Iniciar Sessão na Conta
     </div>
 </div>
+<div class="rowde3">
+    <div> </div>
+    <section class="borderconta">
+        <form id="account" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <input asp-for="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="Username" />
+                <span asp-validation-for="Input.Username" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <label asp-for="Input.RememberMe" class="form-label" style="text-align: start">
+                    <input class="fonttxt" asp-for="Input.RememberMe" />
+                    Manter sessão iniciada
+                </label>
+            <p class="mb-3">
+                <a class="fontlink2" id="forgot-password" asp-page="./ForgotPassword">Esqueceu-se da palavra-passe?</a>
+            </p>
+            <div style="max-width:100%" class="mb-3">
+                <button id="login-submit"  type="submit" class="buttonreq3">Iniciar sessão</button>
+            </div>
+            <div class="buttonreq2 mb-3">
+                <a class="fontdebotaoestupido"  asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Criar conta </a>
+            </div>
+            <p class="mb-3">
+                <a class="fontlink2" id="resend-confirmation" asp-page="./ResendEmailConfirmation">Reenviar confirmação por email</a>
+            </p>
+        </form>
+    </section>
+    <div> </div>
+</div>
+
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

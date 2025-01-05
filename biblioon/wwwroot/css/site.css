@@ -1509,8 +1509,237 @@ col-md-9 {
     font-size: 14px;
     grid-column: span 2;
     padding: 0px 20px 0px 100px;
-
+}
 
 #popup-overlay {
     display: none;
+}
+
+/*Pagina de Books*/
+
+.bookstxt {
+    background-color: white;
+    font-family: "heebo";
+    font-size: 14px;
+    font-weight:400;
+}
+
+.booksselect {
+    background-color: white;
+    font-family: "heebo";
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid #000; 
+    border-radius: 0;
+    background-color: white;
+    color: #333;
+    cursor: pointer;
+}
+
+.bookstitle {
+    color: black !important;
+    font-size: 18px;
+    font-family: "heebo";
+    font-weight: 600;
+    align-content: center;
+}
+
+checkbox:checked {
+    color: white;
+    background-color: #3e5962;
+}
+
+/*checkox*/
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    appearance: none; 
+    border: 2px solid #ccc; 
+    border-radius: 4px; 
+    background-color: white; 
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+    input[type="checkbox"]:checked {
+        background-color: #4a5568; 
+        border-color: #4a5568; 
+    }
+
+
+        input[type="checkbox"]:checked::after {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+            font-size: 14px;
+            color: white;
+            display: block;
+        }
+.primeiralinha {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    border-bottom: 1px solid #ccc; 
+    padding: 10px;
+    margin: 0px 100px;
+}
+
+.left-column {
+    text-align: left; 
+}
+
+.right-column {
+    text-align: right;
+}
+
+.segundalinha {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    padding: 10px;
+
+}
+
+.left-column2 {
+    text-align: left;
+    border-right: 1px solid #ccc;
+    display: grid;
+    margin: 20px 20px 0px 100px;
+    align-content: start;
+    gap: 10px;
+}
+
+.right-column2 {
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    margin: 20px 0px;
+}
+
+/*Paginas conta*/
+
+.borderconta {
+    align-content: center;
+    display: grid;
+    grid-template-rows: repeat(6, auto);
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 20px 350px;
+    row-gap: 100px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 30px;
+}
+.tinycol{
+    display:grid;
+    grid-template-columns: repeat(2,auto);
+}
+
+.fontlink2 {
+    color: #3e5962 !important;
+    font-size: 14px;
+    font-family: "heebo";
+    text-decoration: underline;
+    text-decoration-color: white;
+}
+
+    .fontlink2:hover {
+        color: #3e5962 !important;
+        text-decoration: underline;
+        text-decoration-color: #3e5962;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+    }
+
+.rowde3 {
+    display: grid;
+    grid-template-columns: repeat(3,auto);
+}
+
+.buttonreq2 {
+    background-color: white;
+    text-align: center;
+    color: #3e5962;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    width: 300px;
+}
+
+
+    .buttonreq2:hover {
+        background-color: white;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+
+    .buttonreq2:active {
+        background-color: white;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .buttonreq2:disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+
+.buttonreq3 {
+    background-color: #3e5962;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    width: 300px;
+}
+
+
+    .buttonreq3:hover {
+        background-color: #3e5962;
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+
+    .buttonreq3:active {
+        background-color: #3e5962;
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+
+    .buttonreq3:disabled {
+        background-color: #ccc;
+        color: #666;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+.fontdebotaoestupido {
+    font-size: 14px;
+    font-family: "heebo";
+    font-weight: 600;
+    color: #3e5962;
+    text-decoration: none;
 }
