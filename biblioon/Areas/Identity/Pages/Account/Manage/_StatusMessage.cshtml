@@ -1,5 +1,11 @@
 ﻿@model string
 
+<div class="grid-autores">
+    <div class="grid-titleautores">
+        Gerir Conta
+    </div>
+</div>
+
 @if (!String.IsNullOrEmpty(Model))
 {
     var statusMessageClass = Model.StartsWith("Error") ? "danger" : "success";
