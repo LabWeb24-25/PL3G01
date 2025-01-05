@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<biblioon.Models.Emprestimo>
+
+@{
 	ViewData["Title"] = "Historico";
 }
 
@@ -8,11 +10,6 @@
 		</div>
 	</div>
 
-	<div class="gridh">
-        <div class="grid-item"> </div>
-		<div class="livroh">
-        A mostrar 1 - 1 de 1 livros
-    </div>
     <div class="gridh2">
         <div class="caixa">
             <label for="sort" class="htxt">Ordenar por:</label>
@@ -21,55 +18,33 @@
                 <option value="oldest" class="lableh">Mais antigo para mais recente</option>
             </select>
         </div>
-        <div class="caixa">
-            <label for="results" class="htxt"> Resultados: </label>
-            <select id="results" class="lableh1">
-                <option value="5" class="lableh"> 5</option>
-                <option value="10" class="lableh">10</option>
-                <option value="100" class="lableh">100</option>
-            </select>
-        </div>
 
     </div>
 
-    <div class="grid-item"> </div>
-	</div>
 
 
-	<div class="row9" id="itemContainer">
-
-	
-
-</div>
-
-
-
-<script>
-	const itemCount = document.getElementById('results');
-	const itemContainer = document.getElementById('itemContainer');
-
-	function renderItems(count) {
-		itemContainer.innerHTML = '';
-		for (let i = 0; i < count; i++) {
-			const item = document.createElement('div');
-			item.className = 'item';
-			item.innerHTML = `
+@foreach (var emprestimo in Model)
+{
     <div class="rowh">
-    <div class="colunaslivroh">
+        <div class="colunaslivroh">
             <div class="livroh">
-                <a href="#" class="livroh">
 
-                    <img src="/images/placeholder.svg">
-                </a>
+                    <img width="175" src="@(!string.IsNullOrEmpty(@emprestimo.EdiLivro.Capa) ? @emprestimo.EdiLivro.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
 
             </div>
 
             <div class="coluninha lableh4" >
-                Nome do Livro
-                <div>
-                    <a href="#" class="lableh">
-                        NOME DO ESCRITOR
-                    </a>
+
+
+                <a class="lableh" href="/home/livro/@emprestimo.EdiLivroISBN">@emprestimo.EdiLivro.Titulo</a>
+
+
+
+            <div>
+                    @{
+                        var autorNames = emprestimo.EdiLivro.Autores.Select(a => $"<a class=\"lableh\" href =\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                        @Html.Raw(string.Join(", ", autorNames))
+                    }
                 </div>
                 <div class="grid-item"></div>
                 <div class="rating">
@@ -78,32 +53,20 @@
             </div>
             <div class="coluninha">
                 <div class="lableh2">
-                    Data de Requesição: 00/00/00
+                    Data de Requisição: @emprestimo.DataRequisitado.ToString("dd/MM/yyyy")
                 </div>
                 <div class="lableh2">
-                    Data  Limite de Entrega: 00/00/00
+                    Data Limite de Entrega: @emprestimo.DataLimiteEntrega.ToString("dd/MM/yyyy")
                 </div>
                 <div class="grid-item"> </div>
                 <div class="lableh2">
-                    Data de Levantamento: 00/00/00
+                    Data de Levantamento: @(emprestimo.DataLevantamento?.ToString("dd/MM/yyyy") ?? "< por levantar >")
                 </div>
                 <div class="lableh2">
-                    Data de Entrega: 00/00/00
+                    Data de Entrega: @(emprestimo.DataLevantamento?.ToString("dd/MM/yyyy") ?? "< por entregar >")
                 </div>
             </div>
 
+        </div>
     </div>
-    </div>
-			`;
-			itemContainer.appendChild(item);
-		}
-	}
-
-	renderItems(parseInt(itemCount.value, 10));
-
-	itemCount.addEventListener('change', () => {
-		renderItems(parseInt(itemCount.value, 10));
-	});
-</script>
-
-
+}
