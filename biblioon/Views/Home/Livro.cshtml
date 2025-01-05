@@ -4,30 +4,22 @@
     ViewData["Title"] = ViewData["Title"] ?? "Livro";
 }
 
+<div class="grid-titleautores" style="margin: 50px 0px 0px 0px">
+    @Model.Titulo
+</div>
 
-<div class="border">
-    @if (User.IsInRole("Bibliotecario"))
-    {
-        <div class="linksbibliotecario" style="text-align: center;">
-            <a href="/Bibliotecario/EdiLivros/Edit/@Model.Isbn">[editar no painel bibliotecário]</a>
-        </div>
-    }
-    <div class="row8">
-        <div class="grid-book">
-		    <div >
-                <img height="250" src="@(!string.IsNullOrEmpty(Model.Capa) ? Model.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
-            </div>
-
-	    </div>
-
+<div class="borderlivro">
+    <div class="linksbibliotecario" style="text-align: center;">
+        <a class="linksbibliotecario" href="/Bibliotecario/EdiLivros/Edit/@Model.Isbn">[editar no painel bibliotecário]</a>
+    </div>
+    <div class="gridlivro1">
         <div>
-            <div>
-                @Model.Titulo
-            </div>
-
+            <img height="250" src="@(!string.IsNullOrEmpty(Model.Capa) ? Model.Capa : "/images/placeholder.svg")" alt="Capa do Livro">
+        </div>
+        <div class="grid-rowslivro">
             <div>
                 @{
-                    var autorNames = Model.Autores.Select(a => $"<a href=\"/home/autor/{a.Id}\">{a.Nome}</a>");
+                    var autorNames = Model.Autores.Select(a => $"<a class=\"livrotexto\" style=\"text-align:left\" href=\"/home/autor/{a.Id}\">De {a.Nome}</a>");
                     @Html.Raw(string.Join(", ", autorNames))
                 }
             </div>
@@ -35,118 +27,110 @@
 
             @if (Model.UniLivros != null && Model.UniLivros.Any())
             {
-                <div>
-                    Exemplares
+                <div class="livrotextotitulo" style="text-align:left">
+                    Lista de Exemplares
                 </div>
                 @if (User.IsInRole("Bibliotecario"))
                 {
-                    <div class="linksbibliotecario">
-                        <a href="/Bibliotecario/UniLivros/?isbn=@Model.Isbn">[editar no painel bibliotecário]</a>
+                    <div class="linksbibliotecario2">
+                        <a class="linksbibliotecario2" style="text-align:left" href="/Bibliotecario/UniLivros/?isbn=@Model.Isbn">[editar no painel bibliotecário]</a>
                     </div>
                 }
 
-                
+
                 var counter = 1;
                 @foreach (var e in Model.UniLivros)
                 {
-                    <div>
+                    <div class="livrotexto2" style="text-align:left">
                         Exemplar @counter; @e.Estado
                         @if (e.Requisitado == false && e.Disponivel == true)
                         {
-                            <button>Requisitar</button>
+                            <button class="buttonreq livrotexto2">Requisitar</button>
                         }
                         else
                         {
-                            <button disabled>Indisponível</button>
+                            <button disabled class="livrotexto2" style="text-align:left">Indisponível</button>
                         }
                     </div>
                     counter++;
                 }
-            } else
+            }
+            else
             {
                 <div>
-                    <p>&lt; sem exemplares &gt;</p>
+                    <p class="livrotexto2" style="text-align:left" >&lt; sem exemplares &gt;</p>
                 </div>
             }
-          
-	    </div>
-
+        </div>
     </div>
-    <div class="row9">
+</div>    
 
-    <div class="grid-item">
-			    <div>
-
-			    <h2>Sinopse</h2>
-
-			    <div>
-			    <p>@Model.Sinopse</p>
-
-			    </div>
+<div class="grid-titleautores" style="margin: 50px 0px 0px 0px">
+    Sinopse
+</div>
 
 
+
+<div class="borderlivro2">
+    <div>
+        <p class="livrotexto3">@Model.Sinopse</p>
     </div>
-
-		    </div>
-
-    </div>
-    <div class="row9">
-        <div>
-            <button onclick="showInfo('livro')">Sobre o Livro</button>
-            <button onclick="showInfo('autor')">Sobre o Autor</button>
-            <div id="info">
-                <div id="livroInfo">
-                    <h2>Sobre o Livro</h2>
-                    <div>
-                        ISBN: @Model.Isbn
-                    </div>
-                    <div>
-                        Editor: @Model.Editor.Nome
-                    </div>
-                    <div>
-                        Géneros: @Model.Generos.Select(c => c.Nome).Aggregate((a, b) => $"{a}, {b}")
-                    </div>
-                    <div>
-                        Data de publicação: @Model.DataPublicacao.ToString("dd/MM/yyyy")
-                    </div>
+    <div>
+        <button onclick="showInfo('livro')">Sobre o Livro</button>
+        <button onclick="showInfo('autor')">Sobre o Autor</button>
+        <div id="info">
+            <div id="livroInfo">
+                <h2>Sobre o Livro</h2>
+                <div>
+                    ISBN: @Model.Isbn
                 </div>
-                <div id="autorInfo" style="display:none;">
-                    <h2>Sobre o Autor</h2>
-                    @foreach (var autor in Model.Autores)
-                    {
-                        <div class="border">
-                            <div class="row9">
-                                <div class="grid-item">
-                                    <span id="nomeAutor">@autor.Nome</span>
-                                </div>
-                            </div>
-                            <div class="row8">
-                                <div class="grid-item">
-                                    <img height="250" src="@(!string.IsNullOrEmpty(autor.Foto) ? autor.Foto : "/images/placeholder.svg")" alt="Foto do Autor">
-                                </div>
-                                <div class="grid-item" id="descAutor">
-                                    @(string.IsNullOrEmpty(autor.Desc) ? "< sem descrição >" : autor.Desc)
-                                </div>
-                            </div>
-                        </div>
-                    }
+                <div>
+                    Editor: @Model.Editor.Nome
+                </div>
+                <div>
+                    Géneros: @Model.Generos.Select(c => c.Nome).Aggregate((a, b) => $"{a}, {b}")
+                </div>
+                <div>
+                    Data de publicação: @Model.DataPublicacao.ToString("dd/MM/yyyy")
                 </div>
             </div>
+            <div id="autorInfo" style="display:none;">
+                <h2>Sobre o Autor</h2>
+                @foreach (var autor in Model.Autores)
+                {
+                    <div class="border">
+                        <div class="row9">
+                            <div class="grid-item">
+                                <span id="nomeAutor">@autor.Nome</span>
+                            </div>
+                        </div>
+                        <div class="row8">
+                            <div class="grid-item">
+                                <img height="250" src="@(!string.IsNullOrEmpty(autor.Foto) ? autor.Foto : "/images/placeholder.svg")" alt="Foto do Autor">
+                            </div>
+                            <div class="grid-item" id="descAutor">
+                                @(string.IsNullOrEmpty(autor.Desc) ? "< sem descrição >" : autor.Desc)
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
         </div>
-
-        <script>
-            function showInfo(type) {
-                   const livroInfo = document.getElementById('livroInfo');
-                   const autorInfo = document.getElementById('autorInfo');
-                      if (type === 'autor') {
-                       livroInfo.style.display = 'none';
-                       autorInfo.style.display = 'block';
-                   } else if (type === 'livro') {
-                       livroInfo.style.display = 'block';
-                          autorInfo.style.display = 'none';
-                   }
-               }
-        </script>
     </div>
 
+    <script>
+        function showInfo(type) {
+               const livroInfo = document.getElementById('livroInfo');
+               const autorInfo = document.getElementById('autorInfo');
+                  if (type === 'autor') {
+                   livroInfo.style.display = 'none';
+                   autorInfo.style.display = 'block';
+               } else if (type === 'livro') {
+                   livroInfo.style.display = 'block';
+                      autorInfo.style.display = 'none';
+               }
+           }
+    </script>
 </div>
+
+       
